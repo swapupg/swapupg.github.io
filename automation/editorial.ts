@@ -185,7 +185,15 @@ try {
     path: `src/content/${folder}/${id}.md`,
     disposition,
     dry,
-    sourceIds: selected.map((s) => s.url),
+    sourceIds: selected
+      .filter((s) =>
+        edition.stories.some(
+          (story) =>
+            story.sourceId === s.id ||
+            story.claims.some((claim) => claim.sourceId === s.id),
+        ),
+      )
+      .map((s) => s.url),
     reason: edition.reason,
   };
   await writeFile(
