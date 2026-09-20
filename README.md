@@ -47,3 +47,9 @@ GitHub Actions runs checks and four-browser journeys before deploying the exact 
 [SVG wordmark](https://modelfieldnotes.com/assets/wordmark.svg) · [Social preview](https://modelfieldnotes.com/assets/social-preview.png)
 
 Code and original site content are MIT licensed. Self-hosted fonts retain their included SIL Open Font License notices. Linked papers remain their authors' work and are summarized with attribution.
+
+## Automated publishing
+
+Daily briefings, review-first weekly research, and approved open-source candidates run through GitHub Actions. Automated writing has a separate byline and format filter. The pipeline has a $50/month API budget, a durable reservation ledger, and a global pause; it is not active until secure credentials and live dry runs are complete.
+
+Read the [operator guide](docs/automation/README.md) for schedules, activation, exact-candidate project approval, spending limits, and rollback. The public [editorial policy](https://modelfieldnotes.com/editorial/) explains attribution and corrections.

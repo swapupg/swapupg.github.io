@@ -9,3 +9,6 @@ test-results/
 
 # Generated from scripts/generate-assets.mjs; custom editorial media belongs in public/images/.
 /public/assets/
+
+.automation-output/
+.automation/

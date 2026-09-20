@@ -25,27 +25,34 @@ const projects = visible(await getCollection('projects'));
     {projects.map((project) => (
       <article class="project-list-card">
         <div>
-          <p class="eyebrow">Interactive learning / {project.data.stage}</p>
+          <p class="eyebrow">
+            {project.data.format} / {project.data.stage}
+          </p>
           <h2>
             <a href={`/projects/${project.id}/`}>{project.data.title} ↗</a>
           </h2>
           <p>{project.data.description}</p>
           <div class="project-actions">
             <a class="button primary" href={project.data.demo}>
-              Try the lab ↗
+              {project.data.format === 'Browser app'
+                ? 'Try the lab'
+                : 'Get the tool'}{' '}
+              ↗
             </a>
             <a class="text-link" href={project.data.repository}>
               View source ↗
             </a>
           </div>
         </div>
-        <img
-          src={project.data.image}
-          alt={project.data.imageAlt}
-          width="1200"
-          height="1282"
-          loading="lazy"
-        />
+        {project.data.image && (
+          <img
+            src={project.data.image}
+            alt={project.data.imageAlt}
+            width="1200"
+            height="1282"
+            loading="lazy"
+          />
+        )}
       </article>
     ))}
   </div>

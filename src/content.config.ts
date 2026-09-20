@@ -16,7 +16,8 @@ const shared = {
   published: z.coerce.date(),
   updated: z.coerce.date().optional(),
   status: z.enum(['draft', 'published']),
-  author: z.literal('Swapnil'),
+  author: z.enum(['Swapnil', 'Model Fieldnotes']),
+  authorship: z.enum(['human', 'automated']).default('human'),
   topics: z
     .array(z.enum(['Agents', 'Models', 'Economics', 'Governance', 'Research']))
     .min(1),
@@ -30,7 +31,7 @@ const notes = defineCollection({
   }),
   schema: z.object({
     ...shared,
-    kind: z.enum(['Essay', 'Fieldnote']),
+    kind: z.enum(['Essay', 'Fieldnote', 'Daily brief']),
     number: z.number().int().positive(),
     reviewed: z.coerce.date(),
   }),
@@ -68,8 +69,10 @@ const projects = defineCollection({
     stage: z.enum(['Public beta', 'Stable']),
     demo: z.string().startsWith('/agent-explainer/').or(z.url()),
     repository: z.url(),
-    image: z.string(),
-    imageAlt: z.string().min(1),
+    format: z.enum(['Browser app', 'CLI', 'Library']).default('Browser app'),
+    image: z.string().optional(),
+    imageAlt: z.string().min(1).optional(),
+    imageCaption: z.string().optional(),
   }),
 });
 export const collections = { notes, research, projects };

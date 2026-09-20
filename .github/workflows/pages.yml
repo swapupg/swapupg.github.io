@@ -6,9 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       deploy_ref:
-        description: Previous verified Model Fieldnotes commit for rollback
+        description: Exact candidate commit, or previous verified commit for rollback
         required: false
         type: string
+      verify_only:
+        description: Validate a review candidate without deploying
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -30,6 +34,7 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run test:publication
+      - run: npm run test:automation-content
       - run: npm audit --audit-level=high
       - run: npx playwright install --with-deps chromium firefox webkit
       - run: npm run test:e2e
@@ -49,11 +54,11 @@ jobs:
             playwright-report/
             test-results/
       - uses: actions/upload-pages-artifact@v3
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && !inputs.verify_only
         with:
           path: dist
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && !inputs.verify_only
     needs: verify
     runs-on: ubuntu-latest
     permissions:

@@ -1756,3 +1756,36 @@ main:focus {
   min-width: 44px;
   justify-content: center;
 }
+
+/* Editorial archive grows without crowding the flagship and original writing. */
+.latest-brief {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-block: 2rem;
+  border-block: 1px solid var(--line);
+}
+.latest-brief h2 {
+  font-size: clamp(1.25rem, 2vw, 1.8rem);
+  margin: 0.5rem 0;
+}
+.latest-brief p {
+  max-width: 65ch;
+}
+.archive-controls {
+  display: grid;
+  grid-template-columns:
+    minmax(180px, 2fr) minmax(130px, 1fr) minmax(130px, 1fr)
+    auto;
+}
+@media (max-width: 640px) {
+  .latest-brief {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .archive-controls {
+    grid-template-columns: 1fr;
+  }
+}

@@ -223,3 +223,30 @@ test('article and archive accessibility', async ({ page }) => {
     ).toEqual([]);
   }
 });
+
+test('format filter is bookmarkable and automation policy is transparent', async ({
+  page,
+}) => {
+  await page.goto('/notes/?format=Daily+brief');
+  await expect(page.getByLabel('Format', { exact: true })).toHaveValue(
+    'Daily brief',
+  );
+  for (const card of await page.locator('[data-note]:visible').all())
+    await expect(card).toHaveAttribute('data-kind', 'Daily brief');
+  await page.reload();
+  await expect(page.getByLabel('Format', { exact: true })).toHaveValue(
+    'Daily brief',
+  );
+  await page.getByRole('button', { name: 'Clear', exact: true }).click();
+  expect(
+    await page.locator('[data-note]:visible').count(),
+  ).toBeGreaterThanOrEqual(4);
+  await page.getByRole('link', { name: 'Automation policy' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'How the notes get made.',
+  );
+  await expect(page.locator('main')).toContainText('not human review');
+  await expect(
+    page.getByRole('link', { name: 'Report a correction' }),
+  ).toHaveAttribute('href', /github.com\/swapupg/);
+});

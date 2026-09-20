@@ -10,6 +10,7 @@ const { note } = Astro.props;
 <article
   class="note-card"
   data-note
+  data-kind={note.data.kind}
   data-search={`${note.data.title} ${note.data.description}`.toLowerCase()}
   data-topics={note.data.topics.join(',')}
 >

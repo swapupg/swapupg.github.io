@@ -5,6 +5,8 @@ export default [
   {
     ignores: [
       'dist/**',
+      '.automation-output/**',
+      '.automation/**',
       '.astro/**',
       'node_modules/**',
       'test-results/**',
@@ -18,6 +20,8 @@ export default [
     languageOptions: {
       globals: {
         console: 'readonly',
+        AbortSignal: 'readonly',
+        TextDecoder: 'readonly',
         process: 'readonly',
         document: 'readonly',
         window: 'readonly',

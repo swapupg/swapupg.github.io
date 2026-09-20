@@ -1,0 +1,73 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Editorial automation"
+  description="How Model Fieldnotes prepares automated briefings, reviews research, and releases open-source tools."
+>
+  <div class="shell page-content">
+    <header class="page-heading">
+      <p class="eyebrow">Methods & accountability</p>
+      <h1>How the notes get made.</h1>
+      <p>Useful summaries should make the evidence easier to inspect.</p>
+    </header>
+    <div class="prose standalone-prose">
+      <h2>Daily briefings</h2>
+      <p>
+        Entries labeled “Model Fieldnotes · Automated briefing” are AI-generated
+        from accessible public sources. The workflow checks dates, supporting
+        excerpts, duplicates, and source attribution, then runs a separate
+        automated verification pass. These checks can miss mistakes; they are
+        not human review. Original writing remains separately attributed to
+        Swapnil.
+      </p>
+      <p>
+        Daily publication is designed for a small selection of useful
+        developments, not a complete news service. Quiet days, inaccessible
+        sources, spending limits, or failed checks can mean no edition. Research
+        papers and vendor results are reported findings unless we explicitly
+        document a reproduction.
+      </p>
+      <h2>What needs review</h2>
+      <p>
+        Weekly five-paper selections go through review before publication.
+        Regulatory interpretation, allegations, sensitive advice, personal
+        opinions, and uncertain claims also require review. An automated
+        briefing does not express a personal endorsement by Swapnil.
+      </p>
+      <h2>Open-source projects</h2>
+      <p>
+        Weekly candidates start with a bounded problem and a comparison with
+        existing tools. Generated source is tested in an isolated environment
+        without publishing credentials. Public repositories require approval of
+        the exact candidate. Passing tests does not establish security or
+        production readiness; project pages document limitations and beta
+        status.
+      </p>
+      <h2>Sources, corrections, and history</h2>
+      <p>
+        Follow each entry’s original sources for context. We link to source
+        material rather than republishing full articles. Publication history and
+        corrections are visible in GitHub. Substantive corrections should update
+        the article, its date, and a correction note.
+      </p>
+      <p>
+        <a href="https://github.com/swapupg/swapupg.github.io/issues/new?title=Editorial%20correction">
+          Report a correction ↗
+        </a>
+        . Please include the page, disputed statement, and supporting source.
+      </p>
+      <h2>Public workflow, limited scope</h2>
+      <p>
+        The workflows and spending controls are{' '}
+        <a href="https://github.com/swapupg/swapupg.github.io/tree/main/automation">
+          open source
+        </a>
+        . Publication can be paused, and schedules are best effort. There is no
+        behavioral analytics, reader account, or email collection. See our{' '}
+        <a href="/privacy/">privacy page</a>.
+      </p>
+    </div>
+  </div>
+</Base>

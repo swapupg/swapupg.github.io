@@ -19,7 +19,11 @@
     "check": "npm run typecheck && npm run lint && npm test && npm run build",
     "test:publication": "node scripts/check-draft-exclusion.mjs",
     "predev": "node scripts/generate-assets.mjs",
-    "smoke:production": "node scripts/smoke-production.mjs"
+    "smoke:production": "node scripts/smoke-production.mjs",
+    "test:automation-content": "node scripts/check-automation-content.mjs",
+    "automation:daily": "node automation/editorial.ts daily",
+    "automation:research": "node automation/editorial.ts research",
+    "automation:build": "node automation/build.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",

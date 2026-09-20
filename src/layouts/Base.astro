@@ -5,6 +5,7 @@ interface Props {
   title?: string;
   description?: string;
   article?: boolean;
+  automated?: boolean;
   published?: Date;
   updated?: Date;
 }
@@ -12,6 +13,7 @@ const {
   title = 'Building with AI. Sharing what holds up.',
   description = 'Open-source tools, research notes, and practical experiments for people building with AI. By Swapnil.',
   article = false,
+  automated = false,
   published,
   updated,
 } = Astro.props;
@@ -33,8 +35,8 @@ const structured = article
       description,
       url: canonical.href,
       author: {
-        '@type': 'Person',
-        name: 'Swapnil',
+        '@type': automated ? 'Organization' : 'Person',
+        name: automated ? 'Model Fieldnotes' : 'Swapnil',
         url: new URL('/about/', Astro.site).href,
       },
       datePublished: published?.toISOString(),
@@ -226,6 +228,7 @@ const structured = article
         <a href="/rss.xml">Follow via RSS ↗</a>
         <a href="https://github.com/swapupg">GitHub ↗</a>
         <a href="/about/#editorial-principles">Editorial principles</a>
+        <a href="/editorial/">Automation policy</a>
         <a href="/privacy/">Privacy</a>
       </div>
       <div class="footer-bottom">

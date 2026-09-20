@@ -18,27 +18,34 @@ const { Content } = await render(entry);
       <a class="eyebrow back-link" href="/projects/">
         ← All projects
       </a>
-      <p class="pill">{entry.data.stage} · MIT licensed</p>
+      <p class="pill">
+        {entry.data.stage} · {entry.data.format} · MIT licensed
+      </p>
       <h1>{entry.data.title}</h1>
       <p>{entry.data.description}</p>
       <div class="project-actions">
         <a class="button primary" href={entry.data.demo}>
-          Open {entry.data.title} ↗
+          {entry.data.format === 'Browser app' ? 'Open' : 'Get'}{' '}
+          {entry.data.title} ↗
         </a>
         <a class="text-link" href={entry.data.repository}>
           Explore the source ↗
         </a>
       </div>
     </header>
-    <figure class="project-detail-image">
-      <img
-        src={entry.data.image}
-        alt={entry.data.imageAlt}
-        width="1200"
-        height="1282"
-      />
-      <figcaption>A real view of the browser-based learning lab.</figcaption>
-    </figure>
+    {entry.data.image && (
+      <figure class="project-detail-image">
+        <img
+          src={entry.data.image}
+          alt={entry.data.imageAlt || entry.data.title}
+          width="1200"
+          height="1282"
+        />
+        <figcaption>
+          {entry.data.imageCaption || 'A real view of the project.'}
+        </figcaption>
+      </figure>
+    )}
     <div class="prose standalone-prose">
       <Content />
     </div>

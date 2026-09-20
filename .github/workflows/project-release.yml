@@ -1,0 +1,61 @@
+name: Approved project release
+on:
+  workflow_dispatch:
+    inputs:
+      source_run:
+        description: Successful Weekly open-source candidate run ID
+        required: true
+        type: string
+      digest:
+        description: Exact reviewed SHA-256 candidate digest
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: model-fieldnotes-project-release
+  cancel-in-progress: false
+jobs:
+  provenance:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require a successful trusted candidate workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN: ${{ inputs.source_run }}
+          DIGEST: ${{ inputs.digest }}
+        run: |
+          [[ "$SOURCE_RUN" =~ ^[0-9]+$ ]] && [[ "$DIGEST" =~ ^[a-f0-9]{64}$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN" --jq '.conclusion == "success" and .head_branch == "main" and .path == ".github/workflows/weekly-build.yml" and (.event == "schedule" or .event == "workflow_dispatch")' | grep -qx true
+  release:
+    needs: provenance
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: project-release
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: candidate-${{ inputs.source_run }}
+          run-id: ${{ inputs.source_run }}
+          github-token: ${{ github.token }}
+          path: .automation-output
+      - name: Publish only the exact approved source; never execute candidate code
+        run: node automation/release.ts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROJECT_PUBLISH_TOKEN: ${{ secrets.PROJECT_PUBLISH_TOKEN }}
+          APPROVED_DIGEST: ${{ inputs.digest }}
+          SOURCE_RUN: ${{ inputs.source_run }}

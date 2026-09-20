@@ -1,0 +1,100 @@
+name: Daily briefing and weekly research
+on:
+  schedule:
+    - cron: '17 8 * * *'
+      timezone: America/New_York
+    - cron: '17 9 * * 5'
+      timezone: America/New_York
+  workflow_dispatch:
+    inputs:
+      kind:
+        type: choice
+        options: [daily, research]
+        default: daily
+      dry_run:
+        description: Paid generation and checks, without publication
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: model-fieldnotes-paid-automation
+  cancel-in-progress: false
+jobs:
+  editorial:
+    if: github.ref == 'refs/heads/main' && (vars.AUTOMATION_ENABLED == 'true' || (github.event_name == 'workflow_dispatch' && inputs.dry_run))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      actions: write
+    env:
+      ASTRO_TELEMETRY_DISABLED: 1
+      AUTOMATION_ENABLED: ${{ vars.AUTOMATION_ENABLED }}
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+      EDITION_KIND: ${{ inputs.kind || (github.event.schedule == '17 9 * * 5' && 'research' || 'daily') }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Discover, draft, and verify within budget
+        id: generate
+        run: node automation/editorial.ts "$EDITION_KIND"
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+      - name: Stage the content-only candidate
+        if: steps.generate.outputs.candidate == 'true'
+        run: node automation/publish.ts --stage
+      - name: Run site quality gates
+        if: steps.generate.outputs.candidate == 'true'
+        run: |
+          npm run check
+          npm run test:publication
+          npm run test:automation-content
+          npm audit --audit-level=high
+          npx playwright install --with-deps chromium firefox webkit
+          npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: editorial-${{ github.run_id }}
+          include-hidden-files: true
+          path: |
+            .automation-output/
+            dist/
+            playwright-report/
+          retention-days: 30
+      - name: Publish daily or open a review PR
+        id: publish
+        if: steps.generate.outputs.candidate == 'true' && env.DRY_RUN == 'false'
+        run: node automation/publish.ts
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Verify exact deployed commit, article, and RSS
+        if: steps.publish.outputs.auto == 'true'
+        run: node automation/smoke.ts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_COMMIT: ${{ steps.publish.outputs.commit }}
+          ARTICLE_URL: ${{ steps.publish.outputs.url }}
+          EDITION_ID: ${{ steps.publish.outputs.id }}
+      - name: Report failed candidate checks or publication
+        if: failure() && steps.generate.outputs.candidate == 'true'
+        run: node --input-type=module -e 'import {report,repo} from "./automation/github.ts"; import {localDate} from "./automation/policy.ts"; await report(`Automation needs attention- ${process.env.EDITION_KIND}-${localDate()}`, `Candidate checks or publication failed. Inspect https://github.com/${repo}/actions/runs/${process.env.GITHUB_RUN_ID}. Do not regenerate a committed edition.`)'
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Summarize
+        if: always()
+        run: |
+          echo "## Editorial run" >> "$GITHUB_STEP_SUMMARY"
+          echo "Mode: $EDITION_KIND. Dry run: $DRY_RUN. Job status: $JOB_STATUS. Evidence and HTML preview are in the 30-day artifact." >> "$GITHUB_STEP_SUMMARY"
+        env:
+          JOB_STATUS: ${{ job.status }}

@@ -20,6 +20,7 @@ const isResearch = entry.collection === 'research';
   title={entry.data.title}
   description={entry.data.description}
   article
+  automated={entry.data.authorship === 'automated'}
   published={entry.data.published}
   updated={entry.data.updated}
 >
@@ -36,7 +37,11 @@ const isResearch = entry.collection === 'research';
       <h1>{entry.data.title}</h1>
       <p class="article-deck">{entry.data.description}</p>
       <div class="article-byline">
-        <a href="/about/">By Swapnil</a>
+        {entry.data.authorship === 'automated' ? (
+          <a href="/editorial/">Model Fieldnotes · Automated briefing</a>
+        ) : (
+          <a href="/about/">By Swapnil</a>
+        )}
         <time datetime={entry.data.published.toISOString()}>
           {formatDate(entry.data.published)}
         </time>
@@ -82,8 +87,10 @@ const isResearch = entry.collection === 'research';
           <p class="source-note">
             {entry.collection === 'notes'
               ? `Sources checked ${formatDate(entry.data.reviewed)}.`
-              : 'A foundational collection, not a current model leaderboard. Results described here are reported by the paper authors; they have not been independently reproduced by Model Fieldnotes.'}{' '}
-            Research and drafting assisted by AI.
+              : `${entry.data.collection === 'Foundations' ? 'A foundational collection, not a current model leaderboard.' : 'A weekly research selection.'} Results described here are reported by the paper authors; they have not been independently reproduced by Model Fieldnotes.`}{' '}
+            {entry.data.authorship === 'automated'
+              ? 'AI-generated with automated evidence checks; this is not a claim of human review.'
+              : 'Research and drafting assisted by AI.'}
           </p>
           <a
             class="text-link"

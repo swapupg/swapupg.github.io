@@ -17,7 +17,7 @@ const topics = [...new Set(notes.flatMap((note) => note.data.topics))];
 >
   <div class="shell page-content">
     <header class="page-heading">
-      <p class="eyebrow">The fieldnotes / By Swapnil</p>
+      <p class="eyebrow">The fieldnotes / Model Fieldnotes</p>
       <h1>
         Questions, explored.
         <br />
@@ -48,6 +48,15 @@ const topics = [...new Set(notes.flatMap((note) => note.data.topics))];
           ))}
         </select>
       </div>
+      <div>
+        <label for="format">Format</label>
+        <select id="format" name="format">
+          <option value="all">All formats</option>
+          <option>Essay</option>
+          <option>Fieldnote</option>
+          <option>Daily brief</option>
+        </select>
+      </div>
       <button type="reset" class="button secondary">
         Clear
       </button>
@@ -68,7 +77,8 @@ const topics = [...new Set(notes.flatMap((note) => note.data.topics))];
   const form = document.querySelector<HTMLFormElement>('.archive-controls');
   const search = document.querySelector<HTMLInputElement>('#search');
   const topic = document.querySelector<HTMLSelectElement>('#topic');
-  if (form && search && topic) {
+  const format = document.querySelector<HTMLSelectElement>('#format');
+  if (form && search && topic && format) {
     const cards = [...document.querySelectorAll<HTMLElement>('[data-note]')];
     const update = (push = true) => {
       const query = search.value.trim().toLowerCase();
@@ -77,7 +87,8 @@ const topics = [...new Set(notes.flatMap((note) => note.data.topics))];
         const match =
           (card.dataset.search || '').includes(query) &&
           (topic.value === 'all' ||
-            (card.dataset.topics || '').split(',').includes(topic.value));
+            (card.dataset.topics || '').split(',').includes(topic.value)) &&
+          (format.value === 'all' || card.dataset.kind === format.value);
         card.hidden = !match;
         if (match) count++;
       });
@@ -89,6 +100,8 @@ const topics = [...new Set(notes.flatMap((note) => note.data.topics))];
         url.search = '';
         if (query) url.searchParams.set('q', search.value.trim());
         if (topic.value !== 'all') url.searchParams.set('topic', topic.value);
+        if (format.value !== 'all')
+          url.searchParams.set('format', format.value);
         window.history.replaceState(null, '', url);
       }
     };
@@ -98,6 +111,10 @@ const topics = [...new Set(notes.flatMap((note) => note.data.topics))];
       const value = params.get('topic');
       topic.value = [...topic.options].some((o) => o.value === value)
         ? value!
+        : 'all';
+      const selected = params.get('format');
+      format.value = [...format.options].some((o) => o.value === selected)
+        ? selected!
         : 'all';
       update(false);
     };
@@ -109,10 +126,12 @@ const topics = [...new Set(notes.flatMap((note) => note.data.topics))];
     });
     search.addEventListener('input', () => update());
     topic.addEventListener('change', () => update());
+    format.addEventListener('change', () => update());
     form.addEventListener('reset', (event) => {
       event.preventDefault();
       search.value = '';
       topic.value = 'all';
+      format.value = 'all';
       update();
       search.focus();
     });
