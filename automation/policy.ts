@@ -101,7 +101,17 @@ export const projectSchema = z
     problem: plain,
     alternatives: z
       .array(
-        z.object({ name: plain, url: z.url(), difference: plain }).strict(),
+        z
+          .object({
+            name: plain,
+            url: z
+              .string()
+              .regex(
+                /^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/,
+              ),
+            difference: plain,
+          })
+          .strict(),
       )
       .min(2)
       .max(5),

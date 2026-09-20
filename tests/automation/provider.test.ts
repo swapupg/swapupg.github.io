@@ -153,3 +153,9 @@ it('reports an authentication failure without exposing credential fragments', as
   }
   expect(store.state.charges[0].status).toBe('reserved');
 });
+
+it('uses provider-supported formats for the full project schema', async () => {
+  const { projectSchema } = await import('../../automation/policy');
+  const schema = JSON.stringify(z.toJSONSchema(projectSchema));
+  expect(schema).not.toContain('"format":"uri"');
+});
