@@ -128,6 +128,11 @@
       "status": "failed",
       "at": "2026-09-20T22:51:07.637Z",
       "reason": "Evidence is not present in the source"
+    },
+    "dry-build-2026-09-20": {
+      "status": "failed",
+      "at": "2026-09-20T22:54:20.337Z",
+      "reason": "Model API returned 400 (invalid_json_schema); reservation retained"
     }
   }
 }
