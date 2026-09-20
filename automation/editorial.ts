@@ -12,7 +12,7 @@ import {
   editionId,
   editionSchema,
   verificationSchema,
-  assess,
+  publicationDisposition,
   type Kind,
 } from './policy.ts';
 import { discover } from './sources.ts';
@@ -132,7 +132,16 @@ try {
     edition.topics = ['Research'];
     edition.disposition = 'review';
   }
-  let disposition = assess(edition, selected, kind, date);
+  const assessment = publicationDisposition(edition, selected, kind, date);
+  let disposition = assessment.disposition;
+  if (assessment.issue) {
+    verifications.push({
+      supported: false,
+      sensitive: false,
+      reason: assessment.issue,
+    });
+    edition.reason = `${assessment.issue}. Human source review required. ${edition.reason}`;
+  }
   if (verifications.some((v) => !v.supported || v.sensitive))
     disposition = 'review';
   await writeFile(

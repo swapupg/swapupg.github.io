@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   assess,
+  publicationDisposition,
   editionId,
   localDate,
   safeURL,
@@ -272,4 +273,21 @@ it('detects embedded source instructions and requires review', () => {
       '2026-09-20',
     ),
   ).toBe('review');
+});
+
+it('retains failed evidence as review-only and never downgrades missing sources or dates', () => {
+  const draft = edition();
+  draft.stories[0].claims[0].evidence = 'An unsupported exact quote';
+  expect(
+    publicationDisposition(draft, [source], 'daily', '2026-09-20').disposition,
+  ).toBe('review');
+  draft.stories[0].claims[0].sourceId = 'unknown';
+  expect(() =>
+    publicationDisposition(draft, [source], 'daily', '2026-09-20'),
+  ).toThrow();
+  const stale = edition();
+  stale.stories[0].eventDate = '2026-01-01';
+  expect(() =>
+    publicationDisposition(stale, [source], 'daily', '2026-09-20'),
+  ).toThrow('Stale');
 });

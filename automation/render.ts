@@ -47,6 +47,20 @@ export function renderEdition(
   return `---\n${stringify(metadata, { defaultStringType: 'QUOTE_DOUBLE', defaultKeyType: 'PLAIN' })}---\n\nThis ${kind === 'daily' ? 'briefing' : 'selection'} was generated with AI from the linked sources. Automated evidence checks are not human review. Results are source-reported unless explicitly stated otherwise. [How this works](/editorial/).\n\n${stories.join('\n')}\n`;
 }
 export function evidenceRecord(sources: Source[], edition?: Edition) {
+  const remaining = new Map(sources.map((s) => [s.id, 25]));
+  const claims = (edition?.stories.flatMap((s) => s.claims) || []).map(
+    (claim) => {
+      const words = claim.evidence.split(/\s+/);
+      const available = remaining.get(claim.sourceId) || 0;
+      const excerpt = words.slice(0, available).join(' ');
+      remaining.set(claim.sourceId, Math.max(0, available - words.length));
+      return {
+        ...claim,
+        evidence: excerpt,
+        evidenceTruncated: words.length > available,
+      };
+    },
+  );
   return {
     sources: sources.map((s) => ({
       id: s.id,
@@ -57,6 +71,6 @@ export function evidenceRecord(sources: Source[], edition?: Edition) {
       hash: s.hash,
       fullPaper: s.fullPaper,
     })),
-    claims: edition?.stories.flatMap((s) => s.claims) || [],
+    claims,
   };
 }

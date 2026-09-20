@@ -161,6 +161,7 @@ export function assess(
   )
     throw new Error('Five distinct full papers required');
   const quotes = new Map<string, number>();
+  let missingEvidence = false;
   for (const story of edition.stories) {
     const source = sources.find((s) => s.id === story.sourceId);
     if (!source || (kind === 'research' && !source.fullPaper))
@@ -178,13 +179,14 @@ export function assess(
         !evidence ||
         !normalize(evidence.text).includes(normalize(claim.evidence))
       )
-        throw new Error('Evidence is not present in the source');
+        missingEvidence = true;
       quotes.set(
         claim.sourceId,
         (quotes.get(claim.sourceId) || 0) + claim.evidence.split(/\s+/).length,
       );
     }
   }
+  if (missingEvidence) throw new Error('Evidence is not present in the source');
   if ([...quotes.values()].some((n) => n > 25))
     throw new Error('Evidence excerpts exceed 25 words per source');
   const sourceInstructions = sources.some((s) =>
@@ -252,4 +254,36 @@ export function validateProject(project: Project) {
     !license.includes('THE SOFTWARE IS PROVIDED "AS IS"')
   )
     throw new Error('Missing MIT license terms');
+}
+
+export function publicationDisposition(
+  edition: Edition,
+  sources: Source[],
+  kind: Kind,
+  date: string,
+) {
+  try {
+    return {
+      disposition: assess(edition, sources, kind, date),
+      issue: undefined,
+    };
+  } catch (error) {
+    const issue = error instanceof Error ? error.message : '';
+    if (
+      [
+        'Evidence is not present in the source',
+        'Evidence excerpts exceed 25 words per source',
+      ].includes(issue) &&
+      edition.stories.every(
+        (story) =>
+          sources.some((source) => source.id === story.sourceId) &&
+          story.claims.every((claim) =>
+            sources.some((source) => source.id === claim.sourceId),
+          ),
+      )
+    ) {
+      return { disposition: 'review' as const, issue };
+    }
+    throw error;
+  }
 }
