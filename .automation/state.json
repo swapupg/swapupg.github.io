@@ -125,6 +125,14 @@
       "reserved": 0.221518,
       "status": "settled",
       "actual": 0.051596
+    },
+    {
+      "id": "8c3b8582-4947-4d04-bd96-f4eaab9c4d3c",
+      "run": "35543043993",
+      "kind": "daily",
+      "month": "2026-09",
+      "reserved": 0.176964,
+      "status": "reserved"
     }
   ],
   "editions": {
