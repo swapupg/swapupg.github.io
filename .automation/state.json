@@ -108,6 +108,14 @@
       "reserved": 0.2068,
       "status": "settled",
       "actual": 0.050358
+    },
+    {
+      "id": "b7fd3fc7-d694-49ab-96c9-bfb2feff4c3d",
+      "run": "35542987521",
+      "kind": "build",
+      "month": "2026-09",
+      "reserved": 0.22752,
+      "status": "reserved"
     }
   ],
   "editions": {
