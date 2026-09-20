@@ -307,3 +307,19 @@ it('accepts quote wrappers but never treats omitted words as a contiguous excerp
     publicationDisposition(draft, [source], 'daily', '2026-09-20').disposition,
   ).toBe('review');
 });
+
+it('does not mistake a technical discussion of system prompts for an injected instruction', () => {
+  expect(
+    assess(
+      edition(),
+      [
+        {
+          ...source,
+          text: source.text + ' The paper evaluates a system prompt.',
+        },
+      ],
+      'daily',
+      '2026-09-20',
+    ),
+  ).toBe('publish');
+});

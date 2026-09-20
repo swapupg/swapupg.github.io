@@ -214,7 +214,7 @@ export function assess(
   if ([...quotes.values()].some((n) => n > 25))
     throw new Error('Evidence excerpts exceed 25 words per source');
   const sourceInstructions = sources.some((s) =>
-    /ignore (?:all |previous |prior )?instructions|system prompt|exfiltrat|send (?:the |your )?(?:api key|secret)/i.test(
+    /ignore (?:all |previous |prior )?instructions|reveal (?:the |your )?system prompt|exfiltrat|send (?:the |your )?(?:api key|secret)/i.test(
       s.text,
     ),
   );
