@@ -20,6 +20,7 @@ Open the URL printed by Astro. To verify and preview the production build:
 
 ```sh
 npm run check
+npm run test:publication
 npx playwright install chromium firefox webkit
 npm run test:e2e
 npm run preview
@@ -42,5 +43,7 @@ Drafts and future publications are excluded from the built website. **The reposi
 Astro static HTML, TypeScript, CSS, Markdown/MDX, self-hosted Inter and Space Grotesk, and small progressive enhancements. No reader accounts, database, email collection, analytics, or live model calls. The source screenshot is in `assets/`; build-generated optimized media and font licenses appear in `public/assets/`. Put new authored media in `public/images/`.
 
 GitHub Actions runs checks and four-browser journeys before deploying the exact build to GitHub Pages. [Deployment and rollback](docs/deployment.md) describes domain configuration, legacy links, and recovery. The deployed `/build-info.json` identifies the source commit. [Release evidence](docs/release-evidence.md) distinguishes measured checks from outstanding manual verification.
+
+[SVG wordmark](https://modelfieldnotes.com/assets/wordmark.svg) · [Social preview](https://modelfieldnotes.com/assets/social-preview.png)
 
 Code and original site content are MIT licensed. Self-hosted fonts retain their included SIL Open Font License notices. Linked papers remain their authors' work and are summarized with attribution.

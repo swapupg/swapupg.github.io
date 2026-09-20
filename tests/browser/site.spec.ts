@@ -45,23 +45,29 @@ test('discover a project and read a sourced fieldnote', async ({ page }) => {
 });
 test('search, filters, empty state, refresh, and history', async ({ page }) => {
   await page.goto('/notes/');
+  const totalNotes = await page.locator('[data-note]').count();
+  expect(totalNotes).toBeGreaterThanOrEqual(4);
   await page.getByLabel('Search fieldnotes').fill('cost');
-  await expect(page.locator('[data-note]:visible')).toHaveCount(1);
+  expect(await page.locator('[data-note]:visible').count()).toBeGreaterThan(0);
+  for (const card of await page.locator('[data-note]:visible').all())
+    await expect(card).toHaveAttribute('data-search', /cost/i);
   await page.reload();
   await expect(page.getByLabel('Search fieldnotes')).toHaveValue('cost');
-  await expect(page.locator('[data-note]:visible')).toHaveCount(1);
+  expect(await page.locator('[data-note]:visible').count()).toBeGreaterThan(0);
   await page.getByRole('button', { name: 'Clear', exact: true }).click();
   await page.getByLabel('Topic', { exact: true }).selectOption('Governance');
-  await expect(page.locator('[data-note]:visible')).toHaveCount(1);
+  expect(await page.locator('[data-note]:visible').count()).toBeGreaterThan(0);
+  for (const card of await page.locator('[data-note]:visible').all())
+    await expect(card).toHaveAttribute('data-topics', /Governance/);
   await page.getByLabel('Search fieldnotes').fill('no such topic');
   await expect(
     page.getByRole('heading', { name: 'No fieldnotes found.' }),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Clear', exact: true }).click();
-  await expect(page.locator('[data-note]:visible')).toHaveCount(4);
+  await expect(page.locator('[data-note]:visible')).toHaveCount(totalNotes);
   await page.getByRole('link', { name: 'How to compare AI models' }).click();
   await page.goBack();
-  await expect(page.locator('[data-note]:visible')).toHaveCount(4);
+  await expect(page.locator('[data-note]:visible')).toHaveCount(totalNotes);
   await page.goForward();
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
     'compare AI models',
@@ -144,7 +150,7 @@ test('no JavaScript still supports reading and navigation', async ({
   const page = await context.newPage();
   await page.goto(process.env.SITE_URL || 'http://127.0.0.1:4321');
   await page.getByRole('link', { name: 'Read the fieldnotes' }).click();
-  await expect(page.locator('[data-note]')).toHaveCount(4);
+  expect(await page.locator('[data-note]').count()).toBeGreaterThanOrEqual(4);
   await expect(page.locator('.archive-controls')).toBeHidden();
   await page.getByRole('link', { name: 'Reading AI regulation' }).click();
   await expect(page.locator('#sources')).toBeVisible();

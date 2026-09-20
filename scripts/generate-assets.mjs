@@ -34,6 +34,8 @@ for (const [pkg, file] of [
 }
 const icon = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#142f2b"/><g fill="none" stroke="#d5e8ce" stroke-width="2.5" stroke-linejoin="round"><path d="M15 49V16l17 11 17-11v33M15 16l17 25 17-25M32 27v14"/></g><circle cx="32" cy="41" r="3.5" fill="#d5e8ce"/></svg>`;
 await writeFile(new URL('favicon.svg', out), icon);
+const wordmark = `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="90" viewBox="0 0 360 90" role="img" aria-label="Model Fieldnotes"><g fill="none" stroke="#326456" stroke-width="2.5" stroke-linejoin="round"><path d="M16 68V20l24 16 24-16v48M16 20l24 36 24-36M40 36v20"/></g><circle cx="40" cy="56" r="3.5" fill="#326456"/><g fill="#1d2c28" font-family="Space Grotesk,Arial,sans-serif" font-size="29"><text x="86" y="40">Model</text><text x="86" y="72" font-weight="600">Fieldnotes</text></g></svg>`;
+await writeFile(new URL('wordmark.svg', out), wordmark);
 await sharp(new URL('../assets/agent-explainer.png', import.meta.url).pathname)
   .resize({ width: 1200 })
   .webp({ quality: 84 })

@@ -20,7 +20,7 @@ Configure the GitHub Pages domain before pointing web DNS at it. Preserve the ve
 
 ## Release
 
-Run the full check and browser suite, then publish a passing commit. The workflow retains the compiled archive and its checksum for 90 days. Deployments use that same artifact. After a deployment, verify:
+Run the full check and browser suite, then publish a passing commit. The workflow retains the compiled archive and its checksum for 90 days. Deployments use that same artifact. After a deployment, run `npm run smoke:production` (or set `EXPECTED_COMMIT` for a rollback), then verify:
 
 - The deployed `build-info.json` commit matches the workflow checkout.
 - Apex and www HTTPS, nested articles, 404 recovery, RSS, sitemap, social images, and fonts work.
