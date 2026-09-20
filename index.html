@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agent Explainer · swapupg</title>
+    <meta name="description" content="See how AI agents work—and why they fail. Open the free interactive Agent Explainer lab." />
+    <link rel="canonical" href="https://swapupg.github.io/agent-explainer/" />
+    <link rel="icon" href="/agent-explainer/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content="Agent Explainer" />
+    <meta property="og:description" content="Watch an agent fail, inspect the cause, apply a repair, and replay. Free browser simulations. No API keys." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://swapupg.github.io/agent-explainer/" />
+    <meta property="og:image" content="https://swapupg.github.io/agent-explainer/social-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      // Keep shared experiment steps on the fixed, same-origin destination.
+      // Query parameters are not part of an experiment and are not forwarded.
+      const destination = new URL('/agent-explainer/', window.location.origin);
+      destination.hash = window.location.hash;
+      window.location.replace(destination.href);
+    </script>
+    <style>
+      :root { color-scheme: light dark; font: 18px/1.6 system-ui, sans-serif; }
+      body { margin: 0; min-height: 100svh; display: grid; place-items: center; background: #f6f8f5; color: #172b25; }
+      main { max-width: 34rem; padding: 2rem 1.5rem; }
+      h1 { line-height: 1.2; font-size: clamp(2rem, 6vw, 3rem); }
+      a { display: inline-block; padding: .8rem 1.1rem; border-radius: .5rem; background: #11634d; color: #fff; font-weight: 650; text-underline-offset: .2em; }
+      a:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+      @media (prefers-color-scheme: dark) { body { background: #10221d; color: #edf5ef; } a { background: #b6edcf; color: #10221d; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Agent Explainer</h1>
+      <p>See how AI agents work—and why they fail.</p>
+      <p>Watch a failure, inspect the cause, apply one repair, and replay the same situation.</p>
+      <a href="/agent-explainer/">Open the interactive lab</a>
+      <noscript><p>The interactive experiments need JavaScript enabled.</p></noscript>
+    </main>
+  </body>
+</html>
