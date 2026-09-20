@@ -1,34 +1,46 @@
-# swapupg — Small apps. Clear ideas.
+# Model Fieldnotes
 
-The personal project homepage at [swapupg.github.io](https://swapupg.github.io/).
+**Building with AI. Sharing what holds up.** An independent lab by Swapnil.
 
-## Purpose
+[Explore Model Fieldnotes →](https://modelfieldnotes.com) · [Try Agent Explainer](https://modelfieldnotes.com/agent-explainer/) · [RSS](https://modelfieldnotes.com/rss.xml)
 
-A home for useful, open-source applications. Visitors can read a short introduction, discover a project through a screenshot and explanation, try it, view its source, and find the creator on GitHub. Agent Explainer is the first featured project.
+Open-source tools, research notes, and practical experiments for people building with AI. Launch content includes four sourced essays on agents, costs, model evaluation, and governance; a five-paper foundational research collection; and the Agent Explainer project.
 
-## Structure
+## Local setup
 
-- `index.html`: accessible introduction, project cards, About section, and GitHub links.
-- `styles.css`: responsive layout, system light/dark themes, keyboard focus, and reduced-motion support.
-- `assets/`: project screenshot, icons, and social preview. The screenshot comes from the Agent Explainer project.
-- No dependencies, build step, account requirements, forms, third-party fonts, or analytics. The homepage works without JavaScript.
+Requires **Node 24** and npm. With nvm installed:
 
-The small inline script preserves old root links beginning with `#/experiment/`, forwarding them to Agent Explainer with the same hash. Normal visits and the `#projects` and `#about` anchors stay on the homepage. If a browser incorrectly returns to the top after a section-link reload, it restores the selected section. Query parameters are not forwarded to the app. The existing [Agent Explainer site](https://swapupg.github.io/agent-explainer/) is deployed independently.
+```sh
+nvm use
+npm ci
+npm run dev
+```
 
-## Add a project
+Open the URL printed by Astro. To verify and preview the production build:
 
-Copy the `article.project-card` in the Projects section. Give the new card a unique heading ID, then replace its title, description, status, screenshot (with accurate alt text), demo link, and source link. Include only projects that visitors can actually try. Match screenshot dimensions to the image file and verify the card on mobile.
+```sh
+npm run check
+npx playwright install chromium firefox webkit
+npm run test:e2e
+npm run preview
+```
 
-## Preview and publish
+Astro can start a background server in agent environments. Use `npx astro preview stop` to stop it. Browser tests start a foreground preview automatically when one is not already running.
 
-Run `python3 -m http.server 4175` from this directory, then open `http://localhost:4175/`. The application link points to `/agent-explainer/`; it works on the public domain and requires the app to be served at that path for a complete local journey.
+Agent Explainer is deployed independently and occupies `/agent-explainer/` on the public domain. This website's local server does not include that application; use its own repository to run its simulations locally. The browser suite checks the linking contract, and the release smoke checks verify the integrated public journey.
 
-GitHub Pages publishes the root of `main`, with `.nojekyll` preserving static files. Push a commit to deploy, inspect the Pages workflow, and verify the live homepage afterward.
+## Publish and contribute
 
-## Verification and recovery
+[Publishing guide](docs/publishing.md) · [Content templates](docs/templates/) · [Editorial principles](https://modelfieldnotes.com/about/#editorial-principles)
 
-Check navigation, keyboard focus, mobile overflow, image alternatives, light/dark contrast, reduced motion, no-JavaScript behavior, the project launch, and old root experiment links. Verify both the homepage and `/agent-explainer/` after publishing. Physical devices and manual screen-reader use require separate verification.
+Write Markdown/MDX in the notes, research, and projects content collections. Typed metadata generates archive pages, article URLs, RSS, and social images. Short notes and essays share the same system. Source-backed corrections, accessible explanations, and focused code improvements are welcome through issues or pull requests.
 
-The previous redirect is preserved at commit `6759015024d79940dc5ac1734998703d2747e4ff`. Revert the homepage change and push to restore it. The app itself is maintained in a separate repository and is unaffected by a homepage rollback.
+Drafts and future publications are excluded from the built website. **The repository is public, including draft files and history.** Keep private material elsewhere. Research and drafting may be AI-assisted; claims must remain traceable to original evidence. The website does not automatically research or publish on a schedule.
 
-MIT licensed; see [LICENSE](LICENSE).
+## Architecture and delivery
+
+Astro static HTML, TypeScript, CSS, Markdown/MDX, self-hosted Inter and Space Grotesk, and small progressive enhancements. No reader accounts, database, email collection, analytics, or live model calls. The source screenshot is in `assets/`; build-generated optimized media and font licenses appear in `public/assets/`. Put new authored media in `public/images/`.
+
+GitHub Actions runs checks and four-browser journeys before deploying the exact build to GitHub Pages. [Deployment and rollback](docs/deployment.md) describes domain configuration, legacy links, and recovery. The deployed `/build-info.json` identifies the source commit. [Release evidence](docs/release-evidence.md) distinguishes measured checks from outstanding manual verification.
+
+Code and original site content are MIT licensed. Self-hosted fonts retain their included SIL Open Font License notices. Linked papers remain their authors' work and are summarized with attribution.

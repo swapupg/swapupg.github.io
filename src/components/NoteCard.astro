@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { readingTime, pad } from '../lib/content';
+interface Props {
+  note: CollectionEntry<'notes'>;
+}
+const { note } = Astro.props;
+---
+
+<article
+  class="note-card"
+  data-note
+  data-search={`${note.data.title} ${note.data.description}`.toLowerCase()}
+  data-topics={note.data.topics.join(',')}
+>
+  <div class="note-meta">
+    <span>{note.data.topics[0]}</span>
+    <span class="coordinate">FN / {pad(note.data.number)}</span>
+  </div>
+  <h3>
+    <a href={`/notes/${note.id}/`}>
+      {note.data.title}
+      <span aria-hidden="true">↗</span>
+    </a>
+  </h3>
+  <p>{note.data.description}</p>
+  <div class="note-bottom">
+    <span>{note.data.kind}</span>
+    <span>{readingTime(note.body)} min read</span>
+  </div>
+</article>

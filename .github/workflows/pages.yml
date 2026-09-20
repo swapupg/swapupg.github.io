@@ -1,0 +1,68 @@
+name: Verify and deploy Model Fieldnotes
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      deploy_ref:
+        description: Previous verified Model Fieldnotes commit for rollback
+        required: false
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: model-fieldnotes-pages
+  cancel-in-progress: false
+env:
+  ASTRO_TELEMETRY_DISABLED: 1
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.deploy_ref || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run test:publication
+      - run: npm audit --audit-level=high
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run test:e2e
+      - run: tar -czf /tmp/model-fieldnotes-site.tar.gz -C dist . && sha256sum /tmp/model-fieldnotes-site.tar.gz > /tmp/model-fieldnotes-site.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-site-${{ github.run_id }}
+          path: |
+            /tmp/model-fieldnotes-site.tar.gz
+            /tmp/model-fieldnotes-site.sha256
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-test-evidence
+          path: |
+            playwright-report/
+            test-results/
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: dist
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy verified artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

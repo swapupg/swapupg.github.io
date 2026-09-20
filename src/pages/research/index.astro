@@ -1,0 +1,50 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { visible, formatDate, pad } from '../../lib/content';
+const issues = visible(await getCollection('research'));
+---
+
+<Base
+  title="Research fieldnotes"
+  description="Five papers at a time: the ideas, evidence, and limitations behind AI research."
+>
+  <div class="shell page-content">
+    <header class="page-heading">
+      <p class="eyebrow">The reading room</p>
+      <h1>
+        Read the research.
+        <br />
+        <span>Understand the implications.</span>
+      </h1>
+      <p>
+        Five papers at a time. One in depth, four in perspective. Selected for
+        the questions they help us ask.
+      </p>
+      <a class="text-link" href="/research/rss.xml">
+        Follow the research feed ↗
+      </a>
+    </header>
+    <div class="issue-archive">
+      {issues.map((issue) => (
+        <article>
+          <div class="issue-index">{pad(issue.data.issue)}</div>
+          <div>
+            <p class="eyebrow">
+              {issue.data.collection} / {formatDate(issue.data.published)}
+            </p>
+            <h2>
+              <a href={`/research/${issue.id}/`}>{issue.data.title} ↗</a>
+            </h2>
+            <p>{issue.data.description}</p>
+            <div class="issue-paper-names">
+              {issue.data.papers.map((paper) => (
+                <span>{paper.title}</span>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</Base>

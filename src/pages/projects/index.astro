@@ -1,0 +1,52 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { visible } from '../../lib/content';
+const projects = visible(await getCollection('projects'));
+---
+
+<Base
+  title="Open-source projects"
+  description="Small, focused applications that make AI systems easier to understand. Try the tools and inspect the source."
+>
+  <div class="shell page-content">
+    <header class="page-heading">
+      <p class="eyebrow">The open lab</p>
+      <h1>
+        Less abstract.
+        <br />
+        <span>More hands-on.</span>
+      </h1>
+      <p>
+        Focused, open-source tools that turn a complicated idea into something
+        you can explore.
+      </p>
+    </header>
+    {projects.map((project) => (
+      <article class="project-list-card">
+        <div>
+          <p class="eyebrow">Interactive learning / {project.data.stage}</p>
+          <h2>
+            <a href={`/projects/${project.id}/`}>{project.data.title} ↗</a>
+          </h2>
+          <p>{project.data.description}</p>
+          <div class="project-actions">
+            <a class="button primary" href={project.data.demo}>
+              Try the lab ↗
+            </a>
+            <a class="text-link" href={project.data.repository}>
+              View source ↗
+            </a>
+          </div>
+        </div>
+        <img
+          src={project.data.image}
+          alt={project.data.imageAlt}
+          width="1200"
+          height="1282"
+          loading="lazy"
+        />
+      </article>
+    ))}
+  </div>
+</Base>

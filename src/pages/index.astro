@@ -1,0 +1,230 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import LabDiagram from '../components/LabDiagram.astro';
+import NoteCard from '../components/NoteCard.astro';
+import { visible, pad, formatDate } from '../lib/content';
+const notes = visible(await getCollection('notes'))
+  .sort(
+    (a, b) =>
+      b.data.published.getTime() - a.data.published.getTime() ||
+      a.data.number - b.data.number,
+  )
+  .slice(0, 4);
+const issue = visible(await getCollection('research'))[0];
+---
+
+<Base>
+  <section class="hero shell">
+    <div class="hero-copy">
+      <p class="eyebrow">
+        <span class="status-dot" aria-hidden="true"></span> An independent lab
+        for practical AI
+      </p>
+      <h1>
+        Building with AI.
+        <br />
+        <span>
+          Sharing what
+          <br class="desktop-break" /> holds up.
+        </span>
+      </h1>
+      <p class="hero-description">
+        Open-source tools, research notes, and practical experiments for people
+        building with AI.
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="/agent-explainer/">
+          Try the lab <span aria-hidden="true">↗</span>
+        </a>
+        <a class="text-link" href="/notes/">
+          Read the fieldnotes <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <p class="byline">
+        <span class="author-monogram" aria-hidden="true">
+          S
+        </span>{' '}
+        By <a href="/about/">Swapnil</a>
+        <span class="byline-rule" aria-hidden="true"></span> Curious. Practical.
+        Built in the open.
+      </p>
+    </div>
+    <LabDiagram />
+  </section>
+  <div class="topic-strip">
+    <div class="shell">
+      <span>Questions worth exploring</span>
+      <p>
+        Agents <i>/</i> Models <i>/</i> Economics <i>/</i> Governance
+      </p>
+    </div>
+  </div>
+  <section
+    class="section shell"
+    id="projects"
+    aria-labelledby="project-heading"
+  >
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">01 / The open lab</p>
+        <h2 id="project-heading">An idea you can get your hands on.</h2>
+      </div>
+      <a class="text-link" href="/projects/">
+        Explore projects <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+    <article class="featured-project">
+      <div class="project-copy">
+        <div class="project-label">
+          <span class="eyebrow">Interactive learning</span>
+          <span class="pill">Public beta</span>
+        </div>
+        <h3>Agent Explainer</h3>
+        <p class="project-lead">
+          See how AI agents work.
+          <br />
+          And why they fail.
+        </p>
+        <p>
+          Watch a failure. Inspect the cause. Apply one repair and replay. Three
+          browser-based simulations make the invisible parts of an agent system
+          visible.
+        </p>
+        <div class="project-actions">
+          <a class="button primary" href="/agent-explainer/">
+            Open Agent Explainer <span aria-hidden="true">↗</span>
+          </a>
+          <a class="text-link" href="/projects/agent-explainer/">
+            Inside the project →
+          </a>
+        </div>
+        <div class="project-footnotes">
+          <span>No API keys</span>
+          <span>Open source</span>
+          <span>Runs locally in your browser</span>
+        </div>
+      </div>
+      <figure class="project-visual">
+        <div class="mini-window">
+          <span class="window-dot" aria-hidden="true"></span>
+          <span>agent-explainer / duplicate-action</span>
+          <span aria-hidden="true">↗</span>
+        </div>
+        <img
+          src="/assets/agent-explainer.webp"
+          width="1200"
+          height="1282"
+          alt="Agent Explainer showing the duplicate-action experiment with agent context, activity, and world state."
+          loading="lazy"
+        />
+        <figcaption>One request. Two tickets. Find out why.</figcaption>
+      </figure>
+    </article>
+  </section>
+  <section class="section shell" aria-labelledby="notes-heading">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">02 / Observations & explanations</p>
+        <h2 id="notes-heading">Notes from the work.</h2>
+      </div>
+      <a class="text-link" href="/notes/">
+        All fieldnotes <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+    <div class="notes-grid">
+      {notes.map((note) => (
+        <NoteCard note={note} />
+      ))}
+    </div>
+  </section>
+  {issue && (
+    <section class="research-feature">
+      <div class="shell research-grid">
+        <div class="research-intro">
+          <p class="eyebrow">03 / The reading room</p>
+          <div class="issue-number" aria-hidden="true">
+            {pad(issue.data.issue)}
+            <span>
+              Research
+              <br />
+              fieldnotes
+            </span>
+          </div>
+          <h2>{issue.data.title}</h2>
+          <p>
+            One paper in depth. Four more in perspective. What the evidence
+            says, where it stops, and why it matters for builders.
+          </p>
+          <div class="research-meta">
+            {issue.data.collection} · {formatDate(issue.data.published)}
+          </div>
+          <a class="button primary" href={`/research/${issue.id}/`}>
+            Read the collection <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <ol class="paper-list">
+          {issue.data.papers.map((paper, i) => (
+            <li>
+              <span class="paper-index">0{i + 1}</span>
+              <div>
+                <h3>{paper.title}</h3>
+                <p>{paper.finding}</p>
+                <span class="paper-year">
+                  {paper.published.slice(0, 4)} ·{' '}
+                  {i === 0 ? 'In depth' : 'Research note'}
+                </span>
+              </div>
+              <a
+                href={paper.url}
+                aria-label={`Read original paper: ${paper.title}`}
+              >
+                ↗
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+  <section class="section shell author-section" id="about">
+    <div>
+      <p class="eyebrow">04 / Behind the fieldnotes</p>
+      <h2>
+        A little curiosity.
+        <br />
+        Something useful.
+      </h2>
+    </div>
+    <div>
+      <p class="author-lead">
+        I’m Swapnil. I turn questions about AI into things you can explore, use,
+        and improve.
+      </p>
+      <p>
+        This is a space for making complex systems clearer: through open-source
+        projects, careful reading, and explanations grounded in evidence.
+      </p>
+      <a class="text-link" href="/about/">
+        More about the work <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+  <section class="follow-strip shell">
+    <div>
+      <p class="eyebrow">Keep a thread of curiosity open</p>
+      <h2>Follow the next fieldnote.</h2>
+      <p>
+        Get new writing in your feed reader, or follow the projects on GitHub.
+      </p>
+    </div>
+    <div>
+      <a class="button primary" href="/rss.xml">
+        Follow via RSS <span aria-hidden="true">↗</span>
+      </a>
+      <a class="text-link" href="https://github.com/swapupg">
+        Follow on GitHub ↗
+      </a>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,34 @@
+---
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<div class="share-block">
+  <button class="button secondary share-button" type="button" hidden>
+    Copy link <span aria-hidden="true">↗</span>
+  </button>
+  <span class="share-status" role="status"></span>
+  <div class="share-fallback" hidden>
+    <label for="share-url">Select and copy this link</label>
+    <input id="share-url" readonly value={canonical} />
+  </div>
+</div>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.share-button');
+  const field = document.querySelector<HTMLInputElement>('#share-url');
+  if (button && field) {
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(field.value);
+        document.querySelector('.share-status')!.textContent = 'Link copied.';
+      } catch {
+        const fallback = document.querySelector<HTMLElement>('.share-fallback');
+        if (fallback) fallback.hidden = false;
+        field.focus();
+        field.select();
+        document.querySelector('.share-status')!.textContent =
+          'Copy the selected link.';
+      }
+    });
+  }
+</script>

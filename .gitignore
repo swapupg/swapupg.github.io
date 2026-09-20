@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+playwright-report/
+test-results/
+.DS_Store
+.env*
+!.env.example
+
+# Generated from scripts/generate-assets.mjs; custom editorial media belongs in public/images/.
+/public/assets/
