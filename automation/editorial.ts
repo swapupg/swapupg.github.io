@@ -49,9 +49,7 @@ const latest = Object.entries(store.state.editions)
 const since = new Date(
   Math.max(
     Date.parse(now) - 7 * 86400000,
-    latest
-      ? Date.parse(latest)
-      : Date.parse(now) - 86400000 * (kind === 'daily' ? 2 : 7),
+    latest ? Date.parse(latest) : Date.parse(now) - 7 * 86400000,
   ),
 ).toISOString();
 const used = new Set<string>(

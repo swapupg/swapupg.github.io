@@ -54,10 +54,18 @@ export async function generate<T>(
     body: serialized,
     signal: AbortSignal.timeout(180000),
   });
-  if (!response.ok)
+  if (!response.ok) {
+    const failure = await response.json().catch(() => ({}));
+    const code = failure.error?.code || failure.error?.type;
+    const safeCode =
+      typeof code === 'string' && /^[a-zA-Z0-9._-]{1,80}$/.test(code)
+        ? ` (${code})`
+        : '';
+    // Never log provider messages: authentication errors can contain credential fragments.
     throw new Error(
-      `Model API returned ${response.status}; reservation retained`,
+      `Model API returned ${response.status}${safeCode}; reservation retained`,
     );
+  }
   const result = await response.json();
   if (
     !result.usage ||

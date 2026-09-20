@@ -118,3 +118,38 @@ it('rejects incomplete responses even with known billing', async () => {
   ).rejects.toThrow('Incomplete');
   expect(store.state.charges[0].status).toBe('settled');
 });
+
+it('reports an authentication failure without exposing credential fragments', async () => {
+  const store = setup();
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(
+      async () =>
+        new Response(
+          JSON.stringify({
+            error: {
+              code: 'invalid_api_key',
+              message: 'secret-fragment-must-not-appear',
+            },
+          }),
+          { status: 401 },
+        ),
+    ),
+  );
+  try {
+    await generate(
+      store,
+      'daily',
+      localDate(),
+      z.object({ ok: z.boolean() }),
+      'Check',
+      {},
+      100,
+    );
+    throw new Error('Expected authentication failure');
+  } catch (error) {
+    expect(String(error)).toContain('401 (invalid_api_key)');
+    expect(String(error)).not.toContain('secret-fragment');
+  }
+  expect(store.state.charges[0].status).toBe('reserved');
+});

@@ -95,6 +95,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - run: npm ci
       - name: Report candidate or failure
         run: node --input-type=module -e 'import {report,repo} from "./automation/github.ts"; await report("Weekly build needs review", `Result ${process.env.RESULT}. Review source and tests at https://github.com/${repo}/actions/runs/${process.env.GITHUB_RUN_ID}. No repository was released.`)'
         env:
