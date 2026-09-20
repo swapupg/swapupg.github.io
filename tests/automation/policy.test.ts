@@ -291,3 +291,13 @@ it('retains failed evidence as review-only and never downgrades missing sources 
     publicationDisposition(stale, [source], 'daily', '2026-09-20'),
   ).toThrow('Stale');
 });
+
+it('accepts quote wrappers but never treats omitted words as a contiguous excerpt', () => {
+  const draft = edition();
+  draft.stories[0].claims[0].evidence = '“supports structured outputs”';
+  expect(assess(draft, [source], 'daily', '2026-09-20')).toBe('publish');
+  draft.stories[0].claims[0].evidence = 'supports ... outputs';
+  expect(
+    publicationDisposition(draft, [source], 'daily', '2026-09-20').disposition,
+  ).toBe('review');
+});

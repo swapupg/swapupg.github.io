@@ -76,8 +76,8 @@ const storySchema = z
   .strict();
 export const editionSchema = z
   .object({
-    title: plain,
-    summary: plain,
+    title: plain.max(140),
+    summary: plain.max(280),
     disposition: z.enum(['publish', 'review', 'skip']),
     reason: plain,
     topics: z
@@ -95,8 +95,8 @@ export const verificationSchema = z
 export const projectSchema = z
   .object({
     name: z.string().regex(/^[a-z][a-z0-9-]{2,45}$/),
-    title: plain,
-    description: plain,
+    title: plain.max(140),
+    description: plain.max(300),
     format: z.enum(['CLI', 'Library', 'Browser app']),
     problem: plain,
     alternatives: z
@@ -155,7 +155,21 @@ export function editionId(kind: Kind, date: string): string {
     throw new Error('Invalid edition date');
   return `${kind}-${date}`;
 }
-const normalize = (s: string) => s.replace(/\s+/g, ' ').trim().toLowerCase();
+const normalize = (s: string) => {
+  let text = s.replace(/\s+/g, ' ').trim();
+  for (const [open, close] of [
+    ['“', '”'],
+    ['‘', '’'],
+    ['"', '"'],
+    ["'", "'"],
+  ]) {
+    if (text.startsWith(open) && text.endsWith(close)) {
+      text = text.slice(1, -1).trim();
+      break;
+    }
+  }
+  return text.toLowerCase();
+};
 export function assess(
   edition: Edition,
   sources: Source[],
