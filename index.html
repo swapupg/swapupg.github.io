@@ -38,6 +38,27 @@
         destination.hash = window.location.hash;
         window.location.replace(destination.href);
       }
+      // Some browsers restore scroll to the top on a cached fragment reload.
+      // Correct only that case; leave normal history navigation alone.
+      window.addEventListener("pageshow", () => {
+        const navigation = performance.getEntriesByType("navigation")[0];
+        if (
+          navigation?.type === "reload" &&
+          ["#projects", "#about"].includes(window.location.hash)
+        ) {
+          requestAnimationFrame(() => {
+            const section = document.getElementById(
+              window.location.hash.slice(1),
+            );
+            if (
+              window.scrollY === 0 &&
+              section?.getBoundingClientRect().top >= window.innerHeight
+            ) {
+              section.scrollIntoView({ behavior: "instant", block: "start" });
+            }
+          });
+        }
+      });
     </script>
   </head>
   <body>

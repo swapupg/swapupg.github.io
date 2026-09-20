@@ -13,7 +13,7 @@ A home for useful, open-source applications. Visitors can read a short introduct
 - `assets/`: project screenshot, icons, and social preview. The screenshot comes from the Agent Explainer project.
 - No dependencies, build step, account requirements, forms, third-party fonts, or analytics. The homepage works without JavaScript.
 
-The small inline script only preserves old root links beginning with `#/experiment/`, forwarding them to Agent Explainer with the same hash. Normal visits and the `#projects` and `#about` anchors stay on the homepage. Query parameters are not forwarded. The existing [Agent Explainer site](https://swapupg.github.io/agent-explainer/) is deployed independently.
+The small inline script preserves old root links beginning with `#/experiment/`, forwarding them to Agent Explainer with the same hash. Normal visits and the `#projects` and `#about` anchors stay on the homepage. If a browser incorrectly returns to the top after a section-link reload, it restores the selected section. Query parameters are not forwarded to the app. The existing [Agent Explainer site](https://swapupg.github.io/agent-explainer/) is deployed independently.
 
 ## Add a project
 
