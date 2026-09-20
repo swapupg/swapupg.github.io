@@ -259,8 +259,8 @@
     },
     "dry-build-2026-09-20": {
       "status": "failed",
-      "at": "2026-09-20T22:54:20.337Z",
-      "reason": "Model API returned 400 (invalid_json_schema); reservation retained"
+      "at": "2026-09-20T23:02:54.272Z",
+      "reason": "Disallowed project path: bin/prompt-sutures.js"
     }
   }
 }
