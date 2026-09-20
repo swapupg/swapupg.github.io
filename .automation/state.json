@@ -258,7 +258,8 @@
       "kind": "build",
       "month": "2026-09",
       "reserved": 0.227814,
-      "status": "reserved"
+      "status": "settled",
+      "actual": 0.077404
     }
   ],
   "editions": {
