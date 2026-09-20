@@ -237,8 +237,16 @@
       "reason": "Paid dry run; not published"
     },
     "dry-research-2026-09-20": {
-      "status": "running",
-      "at": "2026-09-20T22:57:50.286Z"
+      "status": "candidate",
+      "at": "2026-09-20T22:57:50.286Z",
+      "sourceIds": [
+        "https://arxiv.org/abs/2609.20822v1",
+        "https://arxiv.org/abs/2609.20821v1",
+        "https://arxiv.org/abs/2609.20820v1",
+        "https://arxiv.org/abs/2609.20817v1",
+        "https://arxiv.org/abs/2609.20812v1"
+      ],
+      "reason": "Paid dry run; not published"
     },
     "dry-build-2026-09-20": {
       "status": "failed",
