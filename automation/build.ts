@@ -48,7 +48,7 @@ try {
     'build',
     date,
     projectSchema,
-    'Propose and implement one small, useful, original local-first AI developer tool. Compare at least two of the supplied existing projects honestly. If an existing project already solves it, narrow the problem; do not clone for novelty. Pick browser app, CLI or library based on usefulness. Use dependency-free Node 24 JavaScript with package.json script test exactly "node --test", meaningful node:test tests under test/, README with install/use examples and honest limitations, complete MIT LICENSE and THIRD_PARTY_NOTICES.md. No network, model API, telemetry, credentials, package lifecycle scripts, shell scripts or workflows. No made-up test results. Output only the source candidate; it will run in an isolated container. Avoid names already owned by Swapnil.',
+    'Propose and implement one small, useful, original local-first AI developer tool. Compare at least two of the supplied existing projects honestly. If an existing project already solves it, narrow the problem; do not clone for novelty. Pick browser app, CLI or library based on usefulness. Use dependency-free Node 24 JavaScript with package.json script test exactly "node --test", meaningful node:test tests under test/, README with install/use examples and honest limitations, complete MIT LICENSE and THIRD_PARTY_NOTICES.md. Place files only at the repository root or directly under src/, test/, public/, or bin/. No network, model API, telemetry, credentials, package lifecycle scripts, shell scripts or workflows. No made-up test results. Output only the source candidate; it will run in an isolated container. Avoid names already owned by Swapnil.',
     {
       own: own.map((r: { name: string; description: string }) => ({
         name: r.name,
@@ -57,6 +57,11 @@ try {
       alternatives: comparisons,
     },
     12000,
+  );
+  // Preserve incomplete source as inert JSON even when a contract check rejects it.
+  await writeFile(
+    '.automation-output/project.json',
+    JSON.stringify(project, null, 2),
   );
   validateProject(project);
   // Reference only alternatives actually discovered; invented comparisons require another run/review.

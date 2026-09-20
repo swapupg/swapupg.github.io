@@ -234,7 +234,7 @@ export function validateProject(project: Project) {
   const paths = new Set<string>();
   for (const file of project.files) {
     if (
-      !/^(?:src\/|test\/|public\/)?[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.(?:js|mjs|html|css|json|md)$/.test(
+      !/^(?:src\/|test\/|public\/|bin\/)?[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.(?:js|mjs|html|css|json|md)$/.test(
         file.path,
       ) &&
       !['README.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md'].includes(file.path)

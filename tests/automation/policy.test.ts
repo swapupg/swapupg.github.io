@@ -232,6 +232,12 @@ describe('source intake and project execution boundaries', () => {
       ],
     };
     expect(() => validateProject(base)).not.toThrow();
+    expect(() =>
+      validateProject({
+        ...base,
+        files: [...base.files, { path: 'bin/tool.js', content: 'CLI' }],
+      }),
+    ).not.toThrow();
     for (const path of [
       '../escape',
       '.github/workflows/main.yml',
