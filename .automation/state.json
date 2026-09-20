@@ -147,9 +147,8 @@
       "reason": "Paid dry run; not published"
     },
     "dry-research-2026-09-20": {
-      "status": "failed",
-      "at": "2026-09-20T22:51:07.637Z",
-      "reason": "Evidence is not present in the source"
+      "status": "running",
+      "at": "2026-09-20T22:57:50.286Z"
     },
     "dry-build-2026-09-20": {
       "status": "failed",
