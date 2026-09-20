@@ -17,6 +17,9 @@ concurrency:
   cancel-in-progress: false
 jobs:
   provenance:
+    permissions:
+      actions: read
+      contents: read
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
