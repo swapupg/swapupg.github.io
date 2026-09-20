@@ -116,6 +116,14 @@
       "month": "2026-09",
       "reserved": 0.22752,
       "status": "reserved"
+    },
+    {
+      "id": "8449b552-c43d-4f44-8283-29633c30f2a0",
+      "run": "35543043993",
+      "kind": "daily",
+      "month": "2026-09",
+      "reserved": 0.221518,
+      "status": "reserved"
     }
   ],
   "editions": {
