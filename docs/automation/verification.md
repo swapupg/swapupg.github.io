@@ -1,30 +1,47 @@
 # Automation verification — 2026-09-20
 
-## Verified locally
+## Active configuration
 
-- Node 24 type checking and ESLint: passed with zero errors/warnings.
-- 23 unit/contract tests: passed. Includes reservation-before-call, failed persistence, unknown billing/no retries, category/month/run stops, pricing expiry, date boundaries, source evidence, source redirects/size limits, prompt-injection review routing, candidate mutations, path restrictions, and workflow isolation contracts.
-- Production build: 14 real HTML pages; internal links, canonical/social metadata, feeds and 100 KB compressed JavaScript ceiling passed.
-- Draft/future publication exclusion: passed for all three collections.
-- Temporary growing-content contract: daily briefing author/JSON-LD, homepage balance, feed separation, weekly issue labeling and CLI project pages passed. Fixtures removed and real site rebuilt.
-- 40 browser tests with the temporary growing archive: passed in Chromium, Firefox, WebKit and mobile. Includes keyboard/contrast checks, responsive layouts, no JavaScript, clipboard/storage failure, filters/history, and root experiment forwarding.
-- Dependency audit: zero vulnerabilities.
-- Live source discovery: accessed the Hugging Face feed/article and full arXiv HTML papers; unavailable OpenAI articles were recorded and skipped. No paid model request made during these checks.
+- `OPENAI_API_KEY` is installed in GitHub Secrets with the owner's confirmation. A read-only model lookup and real Responses calls succeeded. No key value was printed or committed.
+- `AUTOMATION_ENABLED=true`: daily generation at 08:17 New York time; research Friday at 09:17; project candidates Saturday at 09:17. GitHub schedules are best effort. The next scheduled daily run is September 21, 2026.
+- Daily briefs publish automatically only when all evidence and site checks pass. Uncertain/sensitive drafts go to review. Weekly research and projects always require review.
+- **Public repository creation is not activated:** environment `project-release` requires `swapupg` review, allows only `main`, and disallows administrator bypass. Its separate `PROJECT_PUBLISH_TOKEN` is still missing. Candidate generation/testing works without that token.
 
-## GitHub configuration verified
+## Successful live dry runs
 
-- `AUTOMATION_ENABLED=false`: schedules installed but paid generation/publication paused.
-- `project-release` environment requires `swapupg` review, disallows administrator bypass, and allows only the `main` branch. Self-review is allowed because the sole owner must be able to dispatch and approve after inspection.
-- GitHub Actions may create PRs; default token permission remains read-only and workflow write permissions are job-specific. The workflows do not approve or merge PRs.
-- Previous production commit `3c2cd012c8d22a551d43231f3a3a1c8d921fa6a1` preserved in a local Git bundle. Its passing Pages run is `35530878809`, with the previous verified site artifact retained by GitHub.
+| Workflow              | Evidence                                                                                 | Result                                                                                                                                                                            |
+| --------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Daily briefing        | [Run 35543488483](https://github.com/swapupg/swapupg.github.io/actions/runs/35543488483) | Actual source reading, two paid generation/verification calls, candidate rendering, full build and browser gates passed. Draft remained review-only; nothing published.           |
+| Five-paper research   | [Run 35543149840](https://github.com/swapupg/swapupg.github.io/actions/runs/35543149840) | Five accessible full arXiv papers read; generation, independent automated checks, rendering and site gates passed. Nothing published.                                             |
+| Open-source candidate | [Run 35543523423](https://github.com/swapupg/swapupg.github.io/actions/runs/35543523423) | `context-sieve` source generated and verified; four Node tests passed in the non-root, read-only, resource-limited Docker container with no network or secrets. Nothing released. |
 
-## Unverified / activation gates
+Source/evidence, static editorial previews, candidate code and test output are in the runs' 30-day artifacts. Dry-run candidates cannot be published through the release workflow. The prototype needs human product/code review, including fixing its incomplete description and adding CLI integration coverage; passing its generated tests does not make it release-ready.
 
-- Ownership/permission to upload the existing workspace OpenAI key is awaiting confirmation. No key value was printed or committed.
-- No repository `OPENAI_API_KEY` or protected-environment `PROJECT_PUBLISH_TOKEN` had been installed at verification time.
-- Paid end-to-end daily, research, and project dry runs have **not** run. Provider structured-output compatibility and real generation quality therefore remain unverified.
-- Actual Docker execution of an AI-generated project, protected approval/release, new-repository creation, partial-release recovery, real model spend reconciliation, and first automatic daily publication remain unverified. Unit/workflow checks do not substitute for these live gates.
-- Scheduled execution timing is best effort, not an SLA. The live schedule has not yet fired.
-- Improving an existing project uses a manual PR; the current automated generator creates bounded dependency-free candidates and refuses name collisions. It does not automatically modify existing projects.
+Confirmed API usage during activation was **$1.361300**. An additional **$0.227520** reservation remains unreconciled after a rejected schema request; it continues to count against the budget rather than being silently refunded. The `automation-state` branch is the authoritative ledger for subsequent spending.
 
-The website deployment's exact commit and remote test result are available in [Pages Actions](https://github.com/swapupg/swapupg.github.io/actions/workflows/pages.yml) and the live `/build-info.json`. Do not enable the schedules until the three paid dry runs succeed. No fixture article or dummy public repository is an acceptable substitute.
+## Problems found and corrected during activation
+
+- A first-run two-day window missed weekday sources on Sunday. Startup now uses the planned seven-day catch-up window.
+- Unmatched evidence stopped the run rather than producing the intended review-only candidate. It now blocks automatic publication and records the reason for review. Missing sources, stale/future dates and malformed content still fail validation.
+- Quote wrappers are normalized, but ellipses/paraphrased excerpts never count as exact evidence. Prompts explicitly require contiguous copied source text.
+- Ordinary discussion of a system prompt no longer trips the source-instruction alarm. Actual requests to ignore instructions or reveal secrets still require review.
+- Generated titles/descriptions have compact limits and summary instructions, preventing oversized homepage cards.
+- The project's `uri` JSON Schema format was rejected by the provider. Project links now use a supported GitHub URL pattern and retain independent allowlist checks.
+- Conventional CLI `bin/` files are allowed; traversal, workflows and hidden paths remain forbidden. Rejected source is retained as inert JSON for inspection.
+- The weekly notification job installs its dependencies before posting its operational report.
+
+## Other verified checks
+
+- 28 unit/contract tests pass locally, including source evidence, failed reservation persistence, uncertain billing, spending stops, source fetch boundaries, candidate mutation checks, quote formatting, and workflow credential isolation.
+- Type checking and ESLint pass. Production build, internal links, social/canonical metadata, RSS, draft/future exclusion, and the JavaScript budget pass.
+- 40 browser tests pass across Chromium, Firefox, WebKit and mobile, including temporary growing archives and actual generated editorial content in cloud runs.
+- Production HTTPS, deployed commit, assets, feeds, old-domain redirects and Agent Explainer shared-link compatibility were checked during the website deployment. Subsequent successful Pages runs are available in Actions.
+- Operational failure and review notifications were exercised. Default workflow token permissions remain read-only; write permissions are limited to the relevant jobs. Jobs do not approve or merge their own PRs.
+
+## Still unverified
+
+- The first scheduled run has not fired. No automatic daily article has yet been published; no real editorial PR has yet been opened by a non-dry run.
+- Protected release approval, public repository creation, version tagging, project-page PR creation and partial-release recovery have not been exercised end to end. They require the separate publishing credential and approval of an exact candidate.
+- Generated content/code remains fallible. The successful dry runs establish workflow operation, not factual infallibility, production-grade generated software, or guaranteed posting frequency.
+
+Previous production commit `3c2cd012c8d22a551d43231f3a3a1c8d921fa6a1` and its verified artifact remain available for rollback. See the [operator guide](README.md) for pause, credential setup, review and recovery instructions.
