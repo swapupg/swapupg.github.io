@@ -3,9 +3,8 @@
   "charges": [],
   "editions": {
     "dry-daily-2026-09-20": {
-      "status": "skipped",
-      "at": "2026-09-20T22:47:41.083Z",
-      "reason": "No readable fresh sources"
+      "status": "running",
+      "at": "2026-09-20T22:49:54.682Z"
     }
   }
 }
