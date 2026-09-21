@@ -308,8 +308,8 @@
       "reason": "Awaiting isolated tests and explicit release approval: b598034a592b6cc5eb543f177f6e00d957f046d21dae52a68f4815435aa37417"
     },
     "daily-2026-09-21": {
-      "status": "candidate",
-      "at": "2026-09-21T18:16:16.177Z",
+      "status": "review",
+      "at": "2026-09-21T18:16:19.871Z",
       "sourceIds": [
         "https://huggingface.co/blog/tokenizers-v1",
         "https://huggingface.co/blog/ibm-research/altk-evolve-consistency",
@@ -318,7 +318,7 @@
       ],
       "url": "https://github.com/swapupg/swapupg.github.io/pull/5",
       "commit": "05082a6cb6db7d6a07a3f45ac30698a96ca0d95e",
-      "reason": "Content committed; awaiting validation dispatch"
+      "reason": "Human review required"
     }
   }
 }
