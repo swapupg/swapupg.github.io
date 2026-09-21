@@ -309,14 +309,16 @@
     },
     "daily-2026-09-21": {
       "status": "candidate",
-      "at": "2026-09-21T18:12:52.978Z",
+      "at": "2026-09-21T18:16:16.177Z",
       "sourceIds": [
         "https://huggingface.co/blog/tokenizers-v1",
         "https://huggingface.co/blog/ibm-research/altk-evolve-consistency",
         "https://www.microsoft.com/en-us/research/blog/improving-synthesis-prediction-of-small-molecules-at-scale-with-retrochimera/",
         "https://arxiv.org/abs/2609.22068v1"
       ],
-      "reason": "review"
+      "url": "https://github.com/swapupg/swapupg.github.io/pull/5",
+      "commit": "05082a6cb6db7d6a07a3f45ac30698a96ca0d95e",
+      "reason": "Content committed; awaiting validation dispatch"
     }
   }
 }
