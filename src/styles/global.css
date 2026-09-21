@@ -354,15 +354,11 @@ main:focus {
   color: var(--ink);
   text-decoration: none;
 }
-.author-monogram {
-  width: 25px;
-  height: 25px;
-  display: grid;
-  place-items: center;
-  background: var(--accent-soft);
-  color: var(--accent);
+.author-avatar {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
   border: 1px solid var(--line);
-  font-family: var(--display);
   margin-right: 3px;
   border-radius: 50%;
 }
@@ -758,7 +754,29 @@ main:focus {
   gap: 60px;
 }
 .author-section h2 {
-  margin-top: 14px;
+  margin-top: 0;
+}
+.author-identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  margin-top: 28px;
+}
+.author-identity img {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+.author-section .author-identity .author-role {
+  margin-top: 10px;
+}
+.author-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 28px;
 }
 .author-section > div:last-child {
   max-width: 490px;
@@ -1225,26 +1243,40 @@ main:focus {
 .about-layout {
   display: grid;
   grid-template-columns: 260px minmax(0, 710px);
+  align-items: start;
   gap: 80px;
   padding-top: 20px;
 }
-.about-monogram {
+.about-profile {
   background: var(--diagram);
   border: 1px solid var(--line);
-  aspect-ratio: 1;
-  font: 140px var(--display);
-  color: var(--accent);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  margin: 0;
   position: sticky;
   top: 30px;
 }
-.about-monogram span {
+.about-profile img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.about-profile figcaption {
+  padding: 20px;
+}
+.about-profile strong {
+  display: block;
+  font: 500 20px var(--display);
+  letter-spacing: -0.025em;
+}
+.about-profile figcaption > span {
+  display: block;
   font: 10px var(--mono);
   letter-spacing: 0.08em;
-  margin-top: 5px;
+  margin-top: 10px;
+  color: var(--muted);
+}
+.about-profile .text-link {
+  margin-top: 14px;
 }
 .not-found h1 {
   margin: 20px 0;
@@ -1500,13 +1532,9 @@ main:focus {
     grid-template-columns: 1fr;
     gap: 30px;
   }
-  .about-monogram {
+  .about-profile {
     position: static;
-    max-width: 180px;
-    font-size: 90px;
-  }
-  .about-monogram span {
-    font-size: 8px;
+    max-width: 280px;
   }
   .issue-archive > article {
     grid-template-columns: 80px 1fr;
