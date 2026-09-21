@@ -22,3 +22,9 @@ export const formatDate = (date: Date) =>
 export const readingTime = (body = '') =>
   Math.max(1, Math.ceil(body.split(/\s+/).length / 210));
 export const pad = (n: number) => String(n).padStart(3, '0');
+
+export function signed<T extends { data: { authorship: string } }>(
+  entries: T[],
+): T[] {
+  return entries.filter((entry) => entry.data.authorship === 'human');
+}

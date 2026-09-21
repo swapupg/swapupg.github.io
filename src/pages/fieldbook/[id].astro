@@ -1,0 +1,17 @@
+---
+import { getCollection, render } from 'astro:content';
+import Article from '../../layouts/Article.astro';
+import { visible } from '../../lib/content';
+export async function getStaticPaths() {
+  return visible(await getCollection('fieldbook')).map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+---
+
+<Article entry={entry} headings={headings}>
+  <Content />
+</Article>

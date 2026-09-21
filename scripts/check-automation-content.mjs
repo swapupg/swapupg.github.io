@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFile, writeFile, unlink } from 'node:fs/promises';
 import { load } from 'cheerio';
+import { socialCardPath } from '../src/lib/identity.ts';
 import { stringify } from 'yaml';
 const paths = [];
 const prefix = 'automation-contract-fixture';
@@ -29,6 +30,12 @@ try {
     ...common,
     kind: 'Daily brief',
     number: 9001,
+    reviewed: '2026-01-01',
+  });
+  const essayId = await fixture('notes', 'automated-essay', {
+    ...common,
+    kind: 'Essay',
+    number: 9004,
     reviewed: '2026-01-01',
   });
   for (let i = 0; i < 2; i++)
@@ -71,6 +78,50 @@ try {
     home('.note-card[data-kind="Daily brief"]').length
   )
     throw new Error('Brief displaced original writing');
+  if (home('#signed-notes').text().includes('Fixture briefing'))
+    throw new Error('Automated essay displaced signed writing');
+  const signedFeed = await readFile('dist/writing/rss.xml', 'utf8');
+  for (const excluded of [id, essayId, `${prefix}-weekly`])
+    if (signedFeed.includes(excluded))
+      throw new Error('Automated entry leaked into signed feed');
+  for (const included of [
+    'fieldbook/duplicate-action/',
+    'notes/cost-of-a-completed-task/',
+    'research/five-foundations-for-ai-agents/',
+  ])
+    if (!signedFeed.includes(included))
+      throw new Error(`Signed content missing: ${included}`);
+  for (const [collection, slug] of [
+    ['notes', id],
+    ['notes', essayId],
+    ['research', `${prefix}-weekly`],
+  ]) {
+    const svg = await readFile(
+      `dist${socialCardPath(collection, slug).replace(/\.png$/, '.svg')}`,
+      'utf8',
+    );
+    if (
+      !svg.includes('Model Fieldnotes · Automated briefing') ||
+      svg.includes('By Swapnil')
+    )
+      throw new Error('Automated social card has personal attribution');
+    if (!(await readFile('dist/rss.xml', 'utf8')).includes(slug))
+      throw new Error('Automated content missing from combined feed');
+  }
+  const guide = load(
+    await readFile('dist/fieldbook/duplicate-action/index.html', 'utf8'),
+  );
+  if (!guide('.article-byline').text().includes('By Swapnil Upganlawar'))
+    throw new Error('Full signed author missing');
+  const guideCard = await readFile(
+    `dist${socialCardPath('fieldbook', 'duplicate-action').replace(/\.png$/, '.svg')}`,
+    'utf8',
+  );
+  if (
+    !guideCard.includes('By Swapnil Upganlawar') ||
+    !guideCard.includes('SIMULATION-BASED GUIDE')
+  )
+    throw new Error('Fieldbook social attribution or evidence label missing');
   if (!(await readFile('dist/rss.xml', 'utf8')).includes(id))
     throw new Error('Brief missing from writing feed');
   if ((await readFile('dist/research/rss.xml', 'utf8')).includes(id))

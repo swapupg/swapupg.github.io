@@ -2,6 +2,7 @@
 title: 'Reading AI regulation as a builder'
 description: 'Start with jurisdiction, your role, and the intended use. Learn to separate binding rules, proposals, and voluntary guidance.'
 published: 2026-09-20
+updated: 2026-09-21
 reviewed: 2026-09-20
 status: published
 author: Swapnil
@@ -59,3 +60,7 @@ This is a practical preparation exercise. It makes discussions with legal and po
 Here is the editorial takeaway: the most useful question for a builder is often, “Which product decision does this source affect?” A transparency rule may affect how an interaction is presented. A documentation requirement may affect what evidence the team needs to retain.
 
 Record the reasoning and revisit it when the law, guidance, or product changes. Avoid a permanent “compliant” badge based on a one-time article. A dated explanation with clear scope is more useful than a broad promise.
+
+## Explore the Fieldbook
+
+[Keeping constraints through compaction](/fieldbook/forgotten-instruction/) separates instruction retention from the permissions that enforce an action boundary.

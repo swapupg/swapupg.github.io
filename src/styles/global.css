@@ -1817,3 +1817,227 @@ main:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* Fieldbook and positioning: use the same quiet lab vocabulary as the articles. */
+.focus-strip {
+  border-block: 1px solid var(--line);
+  background: var(--diagram);
+}
+.focus-grid,
+.start-grid,
+.fieldbook-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.focus-grid > a {
+  padding: 28px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+}
+.focus-grid > a:first-child {
+  padding-left: 0;
+}
+.focus-grid > a + a {
+  border-left: 1px solid var(--line);
+}
+.focus-grid strong {
+  font: 500 19px/1.45 var(--display);
+  max-width: 300px;
+}
+.focus-more {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: auto;
+}
+.focus-grid a:hover .focus-more {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.start-grid,
+.fieldbook-grid {
+  gap: 20px;
+}
+.start-card,
+.fieldbook-card {
+  padding: 30px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  position: relative;
+  min-width: 0;
+}
+.start-featured {
+  background: var(--diagram);
+  border-color: var(--accent);
+}
+.start-card h3,
+.fieldbook-card h2 {
+  font-size: 26px;
+  line-height: 1.3;
+  margin-block: 20px 14px;
+}
+.start-card a,
+.fieldbook-card h2 a {
+  text-decoration: none;
+}
+.start-card a::after,
+.fieldbook-card h2 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.start-card:hover h3,
+.fieldbook-card:hover h2 {
+  color: var(--accent);
+}
+.start-card > p,
+.fieldbook-card > p {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.start-kind,
+.guide-revision {
+  font: 10px/1.7 var(--mono);
+  color: var(--muted);
+  margin-top: auto;
+}
+.fieldbook-card .note-meta {
+  width: 100%;
+  gap: 12px;
+  margin: 0;
+}
+.fieldbook-card .note-meta > span:first-child {
+  font-size: 10px;
+}
+.fieldbook-method {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 40px;
+  border-block: 1px solid var(--line);
+  padding: 22px 0;
+  margin-bottom: 32px;
+  font-size: 13px;
+}
+.fieldbook-method b {
+  color: var(--accent);
+  font: 11px var(--mono);
+  margin-right: 9px;
+}
+.fieldbook-limits {
+  margin-top: 48px;
+}
+.evidence-label {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.guide-launch {
+  margin-top: 26px;
+  padding: 22px 26px;
+  background: var(--diagram);
+  border: 1px solid var(--line);
+}
+.guide-launch > p {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 750px;
+}
+.guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+.guide-pagination {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 35px;
+}
+.guide-pagination a {
+  padding: 20px;
+  border: 1px solid var(--line);
+  text-decoration: none;
+}
+.guide-pagination span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 9px;
+}
+.guide-pagination strong {
+  font: 500 18px/1.45 var(--display);
+}
+.note-card > .note-attribution {
+  font-size: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.follow-strip > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+}
+@media (max-width: 1100px) {
+  .start-card,
+  .fieldbook-card {
+    padding: 23px;
+  }
+  .start-card h3,
+  .fieldbook-card h2 {
+    font-size: 23px;
+  }
+  .focus-grid > a {
+    padding-inline: 22px;
+  }
+}
+@media (max-width: 800px) {
+  .start-grid,
+  .fieldbook-grid,
+  .focus-grid {
+    grid-template-columns: 1fr;
+  }
+  .focus-grid > a,
+  .focus-grid > a:first-child {
+    padding: 22px 0;
+  }
+  .focus-grid > a + a {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .focus-grid strong {
+    max-width: none;
+  }
+  .fieldbook-method {
+    gap: 16px;
+    flex-direction: column;
+  }
+  .guide-launch {
+    padding: 20px;
+  }
+}
+@media (max-width: 540px) {
+  .site-header nav {
+    gap: 4px;
+    justify-content: space-between;
+  }
+  .site-header nav a {
+    font-size: 12px;
+  }
+  .guide-pagination {
+    grid-template-columns: 1fr;
+  }
+  .guide-actions .button {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .byline {
+    line-height: 1.8;
+  }
+}

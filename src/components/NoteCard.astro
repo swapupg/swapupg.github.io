@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { readingTime, pad } from '../lib/content';
+import { attribution } from '../lib/identity';
 interface Props {
   note: CollectionEntry<'notes'>;
 }
@@ -29,4 +30,7 @@ const { note } = Astro.props;
     <span>{note.data.kind}</span>
     <span>{readingTime(note.body)} min read</span>
   </div>
+  <p class="note-attribution">
+    {attribution(note.data.authorship === 'automated')}
+  </p>
 </article>

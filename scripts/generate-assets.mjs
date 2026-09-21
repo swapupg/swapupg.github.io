@@ -9,6 +9,7 @@ import {
   readdir,
 } from 'node:fs/promises';
 import sharp from 'sharp';
+import { identity, attribution, socialCardPath } from '../src/lib/identity.ts';
 const out = new URL('../public/assets/', import.meta.url);
 await mkdir(out, { recursive: true });
 for (const file of await readdir(out))
@@ -56,20 +57,20 @@ const lines = (text, max) => {
   }
   return result;
 };
-async function makeCard(title, label, name) {
+async function makeCard(title, label, name, automated = false) {
   const titleLines = lines(title, 29);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#d5e8ce" stroke-opacity=".08"/></pattern></defs><rect width="1200" height="630" fill="#142f2b"/><rect x="860" width="340" height="630" fill="url(#grid)"/><path d="M920 440V190l95 61 95-61v250M920 190l95 145 95-145M1015 251v84" fill="none" stroke="#a6cfad" stroke-width="4"/><circle cx="1015" cy="335" r="14" fill="#a6cfad"/><text x="70" y="82" fill="#b8d6bf" font-family="Arial,sans-serif" font-size="25">MODEL FIELDNOTES</text><text x="70" y="153" fill="#b8d6bf" font-family="monospace" font-size="16">${escape(label.toUpperCase())}</text>${titleLines.map((line, i) => `<text x="67" y="${235 + i * 66}" fill="#f4f7ed" font-family="Arial,sans-serif" font-size="56" font-weight="500">${escape(line)}</text>`).join('')}<path d="M70 510h1060" stroke="#456254"/><text x="70" y="562" fill="#b8d6bf" font-family="Arial,sans-serif" font-size="21">By Swapnil</text><text x="1130" y="562" text-anchor="end" fill="#b8d6bf" font-family="monospace" font-size="18">modelfieldnotes.com</text></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#d5e8ce" stroke-opacity=".08"/></pattern></defs><rect width="1200" height="630" fill="#142f2b"/><rect x="860" width="340" height="630" fill="url(#grid)"/><path d="M920 440V190l95 61 95-61v250M920 190l95 145 95-145M1015 251v84" fill="none" stroke="#a6cfad" stroke-width="4"/><circle cx="1015" cy="335" r="14" fill="#a6cfad"/><text x="70" y="82" fill="#b8d6bf" font-family="Arial,sans-serif" font-size="25">MODEL FIELDNOTES</text><text x="70" y="153" fill="#b8d6bf" font-family="monospace" font-size="16">${escape(label.toUpperCase())}</text>${titleLines.map((line, i) => `<text x="67" y="${235 + i * 66}" fill="#f4f7ed" font-family="Arial,sans-serif" font-size="56" font-weight="500">${escape(line)}</text>`).join('')}<path d="M70 510h1060" stroke="#456254"/><text x="70" y="562" fill="#b8d6bf" font-family="Arial,sans-serif" font-size="21">${escape(attribution(automated))}</text><text x="1130" y="562" text-anchor="end" fill="#b8d6bf" font-family="monospace" font-size="18">modelfieldnotes.com</text></svg>`;
   await writeFile(new URL(`${name}.svg`, out), svg);
   await sharp(Buffer.from(svg))
     .png()
     .toFile(new URL(`${name}.png`, out).pathname);
 }
 await makeCard(
-  'Building with AI. Sharing what holds up.',
-  'Tools / Research / Practical experiments',
+  identity.headline,
+  'Reliability / Economics / Engineering judgment',
   'social-preview',
 );
-for (const collection of ['notes', 'research']) {
+for (const collection of ['notes', 'research', 'fieldbook']) {
   const dir = new URL(`../src/content/${collection}/`, import.meta.url);
   for (const file of await readdir(dir)) {
     if (!file.endsWith('.md') && !file.endsWith('.mdx')) continue;
@@ -83,11 +84,29 @@ for (const collection of ['notes', 'research']) {
     const title = metadata.title;
     await makeCard(
       title,
-      collection === 'notes'
-        ? 'A fieldnote by Swapnil'
-        : `Research / Issue ${String(metadata.issue || '').padStart(3, '0')}`,
-      `social-${file.replace(/\.mdx?$/, '')}`,
+      metadata.authorship === 'automated'
+        ? 'Automated briefing / Source-backed summary'
+        : collection === 'fieldbook'
+          ? 'Fieldbook / Simulation-based guide'
+          : collection === 'notes'
+            ? 'Signed notes / Practical analysis'
+            : `Research / Issue ${String(metadata.issue || '').padStart(3, '0')}`,
+      socialCardPath(collection, file.replace(/\.mdx?$/, ''))
+        .split('/')
+        .at(-1)
+        .replace(/\.png$/, ''),
+      metadata.authorship === 'automated',
     );
+    // Keep previously published image URLs working after namespacing new cards.
+    if (collection !== 'fieldbook') {
+      const id = file.replace(/\.mdx?$/, '');
+      for (const extension of ['svg', 'png']) {
+        await copyFile(
+          new URL(`social-${collection}-${id}.${extension}`, out),
+          new URL(`social-${id}.${extension}`, out),
+        );
+      }
+    }
   }
 }
 console.log('Generated project image, identity, and social cards.');

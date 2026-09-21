@@ -2,6 +2,7 @@
 title: 'When an agent retries a successful action'
 description: 'A missing response does not mean an action failed. Follow one request all the way to two tickets—and the repair that prevents it.'
 published: 2026-09-20
+updated: 2026-09-21
 reviewed: 2026-09-20
 status: published
 author: Swapnil
@@ -55,3 +56,7 @@ This still does not establish that the requested action was authorized or correc
 Run the baseline, select the lost-response event, and inspect the world state. Then apply the repair and replay. The request is still retried. The observable difference is that **one intended action produces one ticket in this simulated world**.
 
 [Open the experiment →](/agent-explainer/#/experiment/duplicate-action/1/baseline/0)
+
+## Explore the Fieldbook
+
+[Retrying without duplicate actions](/fieldbook/duplicate-action/) connects the simulation to production questions and repair limits.

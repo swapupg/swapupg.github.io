@@ -4,10 +4,10 @@ import AxeBuilder from '@axe-core/playwright';
 test('discover a project and read a sourced fieldnote', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Sharing what',
+    'AI agents,',
   );
   await expect(
-    page.getByRole('link', { name: 'Try the lab', exact: true }),
+    page.getByRole('link', { name: 'Try Agent Explainer', exact: true }),
   ).toHaveAttribute('href', '/agent-explainer/');
   await page.getByRole('link', { name: 'Inside the project' }).click();
   await expect(
@@ -95,7 +95,12 @@ test('research issue has five papers, working feeds, and related reading', async
       { exact: true },
     ),
   ).toBeVisible();
-  for (const path of ['/rss.xml', '/research/rss.xml', '/sitemap-index.xml']) {
+  for (const path of [
+    '/rss.xml',
+    '/writing/rss.xml',
+    '/research/rss.xml',
+    '/sitemap-index.xml',
+  ]) {
     const response = await request.get(path);
     expect(response.ok()).toBeTruthy();
     expect(await response.text()).toContain('https://modelfieldnotes.com');
@@ -149,7 +154,7 @@ test('no JavaScript still supports reading and navigation', async ({
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto(process.env.SITE_URL || 'http://127.0.0.1:4321');
-  await page.getByRole('link', { name: 'Read the fieldnotes' }).click();
+  await page.getByRole('link', { name: 'Notes', exact: true }).click();
   expect(await page.locator('[data-note]').count()).toBeGreaterThanOrEqual(4);
   await expect(page.locator('.archive-controls')).toBeHidden();
   await page.getByRole('link', { name: 'Reading AI regulation' }).click();
@@ -162,7 +167,7 @@ test('404 recovery and root experiment link compatibility', async ({
   await page.goto('/404.html');
   await page.getByRole('link', { name: 'Back to the lab' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Building with AI',
+    'AI agents,',
   );
   await page.goto('/#/experiment/duplicate-action/1/repaired/3');
   await expect(page).toHaveURL(
@@ -212,6 +217,10 @@ test('article and archive accessibility', async ({ page }) => {
     '/notes/cost-of-a-completed-task/',
     '/research/five-foundations-for-ai-agents/',
     '/about/',
+    '/fieldbook/',
+    '/fieldbook/duplicate-action/',
+    '/fieldbook/forgotten-instruction/',
+    '/fieldbook/premature-done/',
   ]) {
     await page.goto(path);
     expect(

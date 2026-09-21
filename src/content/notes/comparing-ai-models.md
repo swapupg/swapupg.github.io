@@ -2,6 +2,7 @@
 title: 'How to compare AI models for your application'
 description: 'Start with a real task and a clear definition of success. A useful comparison ends with a decision you can explain.'
 published: 2026-09-20
+updated: 2026-09-21
 reviewed: 2026-09-20
 status: published
 author: Swapnil
@@ -60,3 +61,7 @@ A practical result might be: “Configuration B meets our acceptance threshold f
 NIST’s [AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework) offers a broader, voluntary structure for considering context and managing risks throughout a system’s lifecycle. A model comparison is one input to that work.
 
 Pair quality with [cost per completed task](/notes/cost-of-a-completed-task/), latency, and the consequences of failure. Publish enough context that someone can understand where your conclusion applies—and where it does not.
+
+## Explore the Fieldbook
+
+Use the [Agent Reliability Fieldbook](/fieldbook/) to identify failure criteria worth adding to your own evaluation. Its simulations are teaching tools, not model measurements.

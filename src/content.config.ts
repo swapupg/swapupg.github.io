@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { scenarioIds } from './lib/fieldbook';
 
 const stableId = ({ entry }: { entry: string }) => {
   const id = entry.replace(/\.mdx?$/, '');
@@ -75,4 +76,20 @@ const projects = defineCollection({
     imageCaption: z.string().optional(),
   }),
 });
-export const collections = { notes, research, projects };
+const fieldbook = defineCollection({
+  loader: glob({
+    pattern: '**/*.{md,mdx}',
+    base: './src/content/fieldbook',
+    generateId: stableId,
+  }),
+  schema: z.object({
+    ...shared,
+    author: z.literal('Swapnil'),
+    authorship: z.literal('human').default('human'),
+    order: z.number().int().positive(),
+    reviewed: z.coerce.date(),
+    evidence: z.literal('Simulation-based guide'),
+    scenario: z.object({ id: z.enum(scenarioIds), revision: z.literal(1) }),
+  }),
+});
+export const collections = { notes, research, projects, fieldbook };

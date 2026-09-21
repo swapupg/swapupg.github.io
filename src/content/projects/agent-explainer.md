@@ -21,6 +21,8 @@ sources:
 - **[The forgotten instruction](/agent-explainer/#/experiment/forgotten-instruction/1/baseline/0).** Lossy compaction drops a “draft only” restriction. Retaining the constraint outside the compressed conversation changes the simulation’s outcome.
 - **[The premature “done”](/agent-explainer/#/experiment/premature-done/1/baseline/0).** A tool accepts a report request while the report remains pending. Checking the authoritative job status prevents the simulated agent from announcing completion too early.
 
+For the engineering context around each repair, read the [Agent Reliability Fieldbook](/fieldbook/). Each guide links back to the exact scenario revision.
+
 ## Inspect the difference
 
 Run an experiment at your own pace. Select a timeline event to inspect its inputs, result, and state change. Apply one repair and replay from the same initial conditions. The comparison makes the mechanism behind the changed outcome visible.

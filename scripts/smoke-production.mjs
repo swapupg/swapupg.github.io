@@ -34,6 +34,7 @@ for (const url of pages) {
 }
 for (const path of [
   '/rss.xml',
+  '/writing/rss.xml',
   '/research/rss.xml',
   '/assets/inter-latin.woff2',
   '/assets/space-grotesk-latin.woff2',
@@ -46,15 +47,96 @@ for (const url of assets) {
 }
 if ((await fetch(`${origin}/a-path-that-does-not-exist/`)).status !== 404)
   throw new Error('Missing HTTP 404 response');
-for (const [name, engine] of Object.entries({ chromium, firefox, webkit })) {
+for (const [name, engine] of Object.entries({
+  chromium,
+  firefox,
+  webkit,
+  mobile: webkit,
+})) {
   const browser = await engine.launch();
   try {
-    const page = await browser.newPage();
+    const page = await browser.newPage(
+      name === 'mobile'
+        ? {
+            viewport: { width: 390, height: 844 },
+            isMobile: true,
+            hasTouch: true,
+          }
+        : {},
+    );
     for (const scenario of [
       'duplicate-action',
       'forgotten-instruction',
       'premature-done',
     ]) {
+      await page.goto(`${origin}/fieldbook/${scenario}/`);
+      await expect(page.locator('.evidence-label')).toHaveText(
+        'Simulation-based guide',
+      );
+      await page
+        .getByRole('link', { name: 'Explore the repair', exact: true })
+        .click();
+      await expect(page).toHaveURL(
+        `${origin}/agent-explainer/#/experiment/${scenario}/1/repaired/0`,
+      );
+      await expect(
+        page.getByRole('button', { name: 'Run experiment', exact: true }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole('button', { name: 'Previous step' }),
+      ).toBeDisabled();
+      await page.goto(`${origin}/fieldbook/${scenario}/`);
+      await page
+        .getByRole('link', { name: 'Run the failure', exact: true })
+        .click();
+      await expect(page).toHaveURL(
+        `${origin}/agent-explainer/#/experiment/${scenario}/1/baseline/0`,
+      );
+      await expect(
+        page.getByRole('button', { name: 'Previous step' }),
+      ).toBeDisabled();
+      await page
+        .getByRole('button', { name: 'Run experiment', exact: true })
+        .click();
+      await page
+        .getByRole('button', { name: 'Pause experiment', exact: true })
+        .click();
+      await page.locator('.timeline button').last().click();
+      const outcomes = {
+        'duplicate-action': [
+          'One request. Two tickets.',
+          'One request. One ticket.',
+        ],
+        'forgotten-instruction': [
+          'The draft went public.',
+          'The draft stays a draft.',
+        ],
+        'premature-done': ['The report is not ready.', '“Done” means done.'],
+      };
+      await expect(page.locator('#outcome-title')).toHaveText(
+        outcomes[scenario][0],
+      );
+      await page
+        .getByRole('button', { name: 'Apply repair and replay', exact: true })
+        .click();
+      await page
+        .getByRole('button', { name: 'Pause experiment', exact: true })
+        .click();
+      await page.locator('.timeline button').last().click();
+      await expect(page.locator('#outcome-title')).toHaveText(
+        outcomes[scenario][1],
+      );
+      await expect(page.locator('.comparison')).toBeVisible();
+      await page
+        .getByRole('button', { name: 'Share experiment', exact: true })
+        .click();
+      const shared = await page.getByLabel('Experiment link').inputValue();
+      await page.keyboard.press('Escape');
+      await page.goto(shared);
+      await page.reload();
+      await expect(page.locator('#outcome-title')).toHaveText(
+        outcomes[scenario][1],
+      );
       const fragment = `#/experiment/${scenario}/1/repaired/3`;
       for (const route of [
         'https://swapupg.github.io/agent-explainer/',
@@ -82,7 +164,7 @@ for (const [name, engine] of Object.entries({ chromium, firefox, webkit })) {
       'The cost of a completed task',
     );
     console.log(
-      `${name}: legacy root/project hashes, www and nested article redirects verified.`,
+      `${name}: three Fieldbook-to-lab failure/repair/share journeys, legacy hashes, www and nested article redirects verified.`,
     );
   } finally {
     await browser.close();

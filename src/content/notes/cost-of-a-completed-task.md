@@ -2,6 +2,7 @@
 title: 'The cost of a completed task'
 description: 'Token prices are only the beginning. Count the tools, retries, and failed attempts behind a useful result.'
 published: 2026-09-20
+updated: 2026-09-21
 reviewed: 2026-09-20
 status: published
 author: Swapnil
@@ -59,3 +60,7 @@ A retry policy is part of both reliability and economics. A loop can consume add
 Track a task’s total spend, number of attempts, wall-clock duration, and final outcome together. Set explicit attempt and spend limits. Test whether a better stopping rule improves the result.
 
 For a useful comparison, publish the task set, date, acceptance rule, included costs, exclusions, and failure rate. The next question then becomes concrete: **which part of this workflow is spending money without producing a better result?**
+
+## Explore the Fieldbook
+
+The [Agent Reliability Fieldbook](/fieldbook/) illustrates why retries and completion checks belong in a task-level cost model.

@@ -1,27 +1,12 @@
 import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import { visible } from '../lib/content';
+import { writingItems } from '../lib/feeds';
+import { identity } from '../lib/identity';
 export async function GET() {
-  const notes = visible(await getCollection('notes')).map((e) => ({
-    title: e.data.title,
-    description: e.data.description,
-    pubDate: e.data.published,
-    link: `/notes/${e.id}/`,
-  }));
-  const research = visible(await getCollection('research')).map((e) => ({
-    title: e.data.title,
-    description: e.data.description,
-    pubDate: e.data.published,
-    link: `/research/${e.id}/`,
-  }));
   return rss({
-    title: 'Model Fieldnotes — By Swapnil',
-    description:
-      'Open-source tools, research notes, and practical experiments for people building with AI.',
+    title: 'Model Fieldnotes — all writing and briefings',
+    description: identity.description,
     site: 'https://modelfieldnotes.com',
-    items: [...notes, ...research].sort(
-      (a, b) => b.pubDate.getTime() - a.pubDate.getTime(),
-    ),
+    items: await writingItems(),
     customData: '<language>en</language>',
   });
 }

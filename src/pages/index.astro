@@ -3,13 +3,13 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import LabDiagram from '../components/LabDiagram.astro';
 import NoteCard from '../components/NoteCard.astro';
-import { visible, pad, formatDate } from '../lib/content';
+import { visible, signed, pad, formatDate } from '../lib/content';
+import { identity } from '../lib/identity';
 const allNotes = visible(await getCollection('notes'));
 const latestBrief = allNotes
   .filter((n) => n.data.kind === 'Daily brief')
   .sort((a, b) => b.data.published.getTime() - a.data.published.getTime())[0];
-const notes = allNotes
-  .filter((n) => n.data.kind !== 'Daily brief')
+const notes = signed(allNotes)
   .sort(
     (a, b) =>
       b.data.published.getTime() - a.data.published.getTime() ||
@@ -25,27 +25,21 @@ const issue = visible(await getCollection('research')).sort(
   <section class="hero shell">
     <div class="hero-copy">
       <p class="eyebrow">
-        <span class="status-dot" aria-hidden="true"></span> An independent lab
-        for practical AI
+        <span class="status-dot" aria-hidden="true"></span> Model Fieldnotes —
+        by Swapnil Upganlawar
       </p>
       <h1>
-        Building with AI.
+        AI agents,
         <br />
-        <span>
-          Sharing what
-          <br class="desktop-break" /> holds up.
-        </span>
+        <span>beyond the demo.</span>
       </h1>
-      <p class="hero-description">
-        Open-source tools, research notes, and practical experiments for people
-        building with AI.
-      </p>
+      <p class="hero-description">{identity.description}</p>
       <div class="hero-actions">
-        <a class="button primary" href="/agent-explainer/">
-          Try the lab <span aria-hidden="true">↗</span>
+        <a class="button primary" href="/fieldbook/">
+          Explore the Fieldbook <span aria-hidden="true">↗</span>
         </a>
-        <a class="text-link" href="/notes/">
-          Read the fieldnotes <span aria-hidden="true">→</span>
+        <a class="text-link" href="/agent-explainer/">
+          Try Agent Explainer <span aria-hidden="true">→</span>
         </a>
       </div>
       <p class="byline">
@@ -56,37 +50,82 @@ const issue = visible(await getCollection('research')).sort(
           height="800"
           alt=""
         />{' '}
-        By <a href="/about/">Swapnil</a>
-        <span class="byline-rule" aria-hidden="true"></span> Curious. Practical.
-        Built in the open.
+        By <a href="/about/">{identity.name}</a>
+        <span class="byline-rule" aria-hidden="true"></span>{' '}
+        {identity.philosophy}
       </p>
     </div>
     <LabDiagram />
   </section>
-  <div class="topic-strip">
-    <div class="shell">
-      <span>Questions worth exploring</span>
-      <p>
-        Agents <i>/</i> Models <i>/</i> Economics <i>/</i> Governance
-      </p>
-    </div>
-  </div>
-  {latestBrief && (
-    <section class="shell latest-brief" aria-labelledby="brief-heading">
-      <div>
-        <p class="eyebrow">
-          Daily brief · {formatDate(latestBrief.data.published)}
-        </p>
-        <h2 id="brief-heading">
-          <a href={`/notes/${latestBrief.id}/`}>{latestBrief.data.title} ↗</a>
-        </h2>
-        <p>{latestBrief.data.description}</p>
-      </div>
-      <a class="text-link" href="/notes/?format=Daily+brief">
-        All briefings →
+  <section class="focus-strip" aria-label="Questions this lab explores">
+    <div class="shell focus-grid">
+      <a href="/fieldbook/">
+        <span class="eyebrow">Reliability</span>
+        <strong>Will the agent complete the task correctly?</strong>
+        <span class="focus-more">Inspect the failures ↗</span>
       </a>
-    </section>
-  )}
+      <a href="/notes/cost-of-a-completed-task/">
+        <span class="eyebrow">Economics</span>
+        <strong>What does a useful outcome actually cost?</strong>
+        <span class="focus-more">Count the whole task ↗</span>
+      </a>
+      <a href="/notes/comparing-ai-models/">
+        <span class="eyebrow">Engineering judgment</span>
+        <strong>What should we automate, and under what controls?</strong>
+        <span class="focus-more">Define the evaluation ↗</span>
+      </a>
+    </div>
+  </section>
+  <section class="section shell" aria-labelledby="start-heading">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">01 / Start here</p>
+        <h2 id="start-heading">Three ways into the work.</h2>
+      </div>
+    </div>
+    <div class="start-grid">
+      <article class="start-card start-featured">
+        <span class="eyebrow">Understand the failure</span>
+        <h3>
+          <a href="/fieldbook/">
+            Agent Reliability Fieldbook <span aria-hidden="true">↗</span>
+          </a>
+        </h3>
+        <p>
+          Three simulation-based guides. Follow the failure, inspect the repair,
+          and understand its limits.
+        </p>
+        <span class="start-kind">Interactive learning + practical guides</span>
+      </article>
+      <article class="start-card">
+        <span class="eyebrow">Count the outcome</span>
+        <h3>
+          <a href="/notes/cost-of-a-completed-task/">
+            The cost of a completed task <span aria-hidden="true">↗</span>
+          </a>
+        </h3>
+        <p>
+          Tokens, tools, retries, and failures belong in the same calculation.
+          Work through an illustrative example.
+        </p>
+        <span class="start-kind">Economics / Essay</span>
+      </article>
+      <article class="start-card">
+        <span class="eyebrow">Make the decision</span>
+        <h3>
+          <a href="/notes/comparing-ai-models/">
+            How to compare AI models for your application{' '}
+            <span aria-hidden="true">↗</span>
+          </a>
+        </h3>
+        <p>
+          Define success for your task, build a useful evaluation, and make a
+          choice you can explain.
+        </p>
+        <span class="start-kind">Engineering judgment / Essay</span>
+      </article>
+    </div>
+  </section>
   <section
     class="section shell"
     id="projects"
@@ -94,7 +133,7 @@ const issue = visible(await getCollection('research')).sort(
   >
     <div class="section-heading">
       <div>
-        <p class="eyebrow">01 / The open lab</p>
+        <p class="eyebrow">02 / The open lab</p>
         <h2 id="project-heading">An idea you can get your hands on.</h2>
       </div>
       <a class="text-link" href="/projects/">
@@ -104,7 +143,7 @@ const issue = visible(await getCollection('research')).sort(
     <article class="featured-project">
       <div class="project-copy">
         <div class="project-label">
-          <span class="eyebrow">Interactive learning</span>
+          <span class="eyebrow">Deterministic simulations</span>
           <span class="pill">Public beta</span>
         </div>
         <h3>Agent Explainer</h3>
@@ -149,10 +188,14 @@ const issue = visible(await getCollection('research')).sort(
       </figure>
     </article>
   </section>
-  <section class="section shell" aria-labelledby="notes-heading">
+  <section
+    class="section shell"
+    id="signed-notes"
+    aria-labelledby="notes-heading"
+  >
     <div class="section-heading">
       <div>
-        <p class="eyebrow">02 / Observations & explanations</p>
+        <p class="eyebrow">03 / Signed notes & explanations</p>
         <h2 id="notes-heading">Notes from the work.</h2>
       </div>
       <a class="text-link" href="/notes/">
@@ -169,7 +212,7 @@ const issue = visible(await getCollection('research')).sort(
     <section class="research-feature">
       <div class="shell research-grid">
         <div class="research-intro">
-          <p class="eyebrow">03 / The reading room</p>
+          <p class="eyebrow">04 / The reading room</p>
           <div class="issue-number" aria-hidden="true">
             {pad(issue.data.issue)}
             <span>
@@ -214,9 +257,26 @@ const issue = visible(await getCollection('research')).sort(
       </div>
     </section>
   )}
+  {latestBrief && (
+    <section class="shell latest-brief" aria-labelledby="brief-heading">
+      <div>
+        <p class="eyebrow">
+          Model Fieldnotes · Automated briefing ·{' '}
+          {formatDate(latestBrief.data.published)}
+        </p>
+        <h2 id="brief-heading">
+          <a href={`/notes/${latestBrief.id}/`}>{latestBrief.data.title} ↗</a>
+        </h2>
+        <p>{latestBrief.data.description}</p>
+      </div>
+      <a class="text-link" href="/notes/?format=Daily+brief">
+        All briefings →
+      </a>
+    </section>
+  )}
   <section class="section shell author-section" id="about">
     <div>
-      <p class="eyebrow">04 / Behind the fieldnotes</p>
+      <p class="eyebrow">05 / Behind the fieldnotes</p>
       <div class="author-identity">
         <img
           src="/images/swapnil-upganlawar.jpg"
@@ -226,21 +286,24 @@ const issue = visible(await getCollection('research')).sort(
           loading="lazy"
         />
         <div>
-          <h2>Hi, I’m Swapnil.</h2>
-          <p class="author-role">AI & engineering leader. Curious builder.</p>
+          <h2>Hi, I’m Swapnil Upganlawar.</h2>
+          <p class="author-role">
+            AI & engineering leader. Builder of Model Fieldnotes.
+          </p>
         </div>
       </div>
     </div>
     <div>
       <p class="author-lead">
-        I build AI products and lead engineering teams. Here, I turn questions
-        about AI into things you can explore, use, and improve.
+        I connect engineering depth with product judgment: how agents fail, how
+        to evaluate them, and what useful outcomes cost.
       </p>
       <p>
         My background spans generative AI, enterprise search, and machine
         learning platforms, with an MBA from Wharton and an MS from Carnegie
-        Mellon. Model Fieldnotes brings that perspective to open-source
-        projects, research, and the practical decisions behind useful AI.
+        Mellon. I build AI products and lead engineering teams. Model Fieldnotes
+        brings that perspective to practical decisions for engineering leaders
+        and senior builders.
       </p>
       <div class="author-links">
         <a class="text-link" href="/about/">
@@ -261,12 +324,16 @@ const issue = visible(await getCollection('research')).sort(
       <p class="eyebrow">Keep a thread of curiosity open</p>
       <h2>Follow the next fieldnote.</h2>
       <p>
-        Get new writing in your feed reader, or follow the projects on GitHub.
+        Follow signed notes, guides, and research in your feed reader. Automated
+        briefings are available in the combined feed.
       </p>
     </div>
     <div>
-      <a class="button primary" href="/rss.xml">
-        Follow via RSS <span aria-hidden="true">↗</span>
+      <a class="button primary" href="/writing/rss.xml">
+        Follow my writing <span aria-hidden="true">↗</span>
+      </a>
+      <a class="text-link" href="/rss.xml">
+        All writing & briefings ↗
       </a>
       <a class="text-link" href="https://github.com/swapupg">
         Follow on GitHub ↗
