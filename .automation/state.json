@@ -308,8 +308,15 @@
       "reason": "Awaiting isolated tests and explicit release approval: b598034a592b6cc5eb543f177f6e00d957f046d21dae52a68f4815435aa37417"
     },
     "daily-2026-09-21": {
-      "status": "running",
-      "at": "2026-09-21T18:12:52.978Z"
+      "status": "candidate",
+      "at": "2026-09-21T18:12:52.978Z",
+      "sourceIds": [
+        "https://huggingface.co/blog/tokenizers-v1",
+        "https://huggingface.co/blog/ibm-research/altk-evolve-consistency",
+        "https://www.microsoft.com/en-us/research/blog/improving-synthesis-prediction-of-small-molecules-at-scale-with-retrochimera/",
+        "https://arxiv.org/abs/2609.22068v1"
+      ],
+      "reason": "review"
     }
   }
 }
