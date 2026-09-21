@@ -291,6 +291,15 @@ main:focus {
   line-height: 1.85;
   color: var(--muted);
 }
+.hero-thesis {
+  max-width: 480px;
+  font: 400 21px/1.55 var(--display);
+  margin-bottom: 18px;
+}
+.hero-thesis strong {
+  color: var(--accent);
+  font-weight: 500;
+}
 .hero-actions {
   display: flex;
   align-items: center;
@@ -1819,6 +1828,106 @@ main:focus {
 }
 
 /* Fieldbook and positioning: use the same quiet lab vocabulary as the articles. */
+.perspectives-section {
+  border-block: 1px solid var(--line);
+  background: var(--diagram);
+}
+.section-intro,
+.perspective-note {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.section-intro {
+  margin-top: 14px;
+}
+.perspectives-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.perspective-card {
+  min-width: 0;
+  padding: 8px 28px;
+  display: flex;
+  flex-direction: column;
+}
+.perspective-card:first-child {
+  padding-left: 0;
+}
+.perspective-card:last-child {
+  padding-right: 0;
+}
+.perspective-card + .perspective-card {
+  border-left: 1px solid var(--line);
+}
+.perspective-card h3 {
+  font-size: 26px;
+  line-height: 1.35;
+  margin-block: 20px 16px;
+}
+.perspective-card h3 a {
+  text-decoration: none;
+}
+.perspective-card h3 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.perspective-card p {
+  font-size: 14px;
+  line-height: 1.85;
+}
+.perspective-implication {
+  color: var(--muted);
+  margin-block: 20px 24px;
+}
+.perspective-implication strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 500;
+}
+.perspective-reading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+  padding-block: 12px;
+  min-height: 44px;
+  font-size: 13px;
+  text-decoration: none;
+}
+.perspective-reading:hover > span:last-child {
+  text-decoration: underline;
+}
+.perspective-reading .eyebrow {
+  color: var(--muted);
+}
+.perspective-note {
+  max-width: 760px;
+  margin: 28px 0 0;
+  font-size: 12px;
+}
+.project-guide-link {
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 24px;
+}
+@media (max-width: 800px) {
+  .perspectives-grid {
+    grid-template-columns: 1fr;
+  }
+  .perspective-card,
+  .perspective-card:first-child,
+  .perspective-card:last-child {
+    padding: 26px 0;
+  }
+  .perspective-card + .perspective-card {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .perspective-implication {
+    margin-block: 14px;
+  }
+}
 .focus-strip {
   border-block: 1px solid var(--line);
   background: var(--diagram);

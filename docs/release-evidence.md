@@ -1,5 +1,20 @@
 # Release evidence
 
+## Perspective release — September 21, 2026
+
+Local evidence for the homepage thesis, three perspective pathways, and “What changes when AI can do the work?”:
+
+- Type checking (59 files), lint, 36 unit tests, production build, internal pages/section links, feeds, and the 100 KB compressed JavaScript budget pass.
+- All 60 browser journeys pass across Chromium, Firefox, WebKit, and mobile emulation. Coverage includes the new essay, section fragments, history, canonical sharing fallback, signed feeds, no-JavaScript reading, and accessibility/reflow checks.
+- Draft/future exclusion and automation-content attribution checks pass. npm audit reports zero vulnerabilities.
+- Desktop homepage and perspective cards, mobile essay, mobile dark-theme homepage, and the essay social image were visually inspected. The existing portrait and diagram are preserved.
+- The new source claims were checked against the primary materials recorded in `docs/product/brand-fieldbook.md`. Predictions and illustrations are labeled; no new measured model results are claimed.
+- Production verification is performed after the passing Pages workflow using `npm run smoke:production`, which checks the exact live commit, homepage → essay → guide, all three lab failure/repair/share journeys, redirects, sitemap pages, assets, and feeds. The workflow retains the verified artifact and checksum for 90 days.
+
+Rollback baseline: `4fe6a08f939859f9df53360413af92553c01888d` (previous successful Pages run `35634226622`). Dispatch that exact `deploy_ref` and revert the release if needed. Physical-device testing, manual screen-reader usability, and a production rollback drill remain unverified. The performance figures below belong to the earlier release; no new Lighthouse score is claimed here.
+
+## Initial site release
+
 Verified 20 September 2026 against **https://modelfieldnotes.com**.
 
 ## Production
@@ -44,4 +59,4 @@ A preliminary HTTP-based Agent Explainer check correctly encountered the HTTPS r
 - Human comprehension pilot, manual screen-reader usability, native browser zoom, physical iOS/Android devices, and long-term field performance. Automated reflow checks do not establish these outcomes.
 - A production rollback drill has not been performed. Previous source/build artifacts and deployment/domain rollback instructions are preserved.
 - Research findings are author-reported and have not been independently reproduced.
-- Recurring writing and automatic publication are intentionally outside this release.
+- Recurring writing and automatic publication were outside the initial September 20 release. Later releases added the behavior documented in the current publishing and automation guides.

@@ -14,6 +14,12 @@ Dates in the future are excluded at build time. They become eligible on their pu
 
 Short daily notes use `kind: Fieldnote`; longer pieces use `kind: Essay`. Both appear in Notes. RSS readers receive a summary and permanent article link. The combined feed at `/rss.xml` includes signed content and automated briefings; `/writing/rss.xml` includes only signed notes, research, and Fieldbook entries; `/research/rss.xml` remains research-only. New content does not require editing a page template.
 
+## Featured perspectives
+
+The homepage thesis lives in `src/lib/identity.ts`; its featured essay and three reading pathways live in `src/lib/perspectives.ts`. A perspective uses the existing signed Essay format. Separate sourced evidence, interpretation, predictions, and illustrations. Give predictions a publication date, horizon, observable signals, and conditions that would weaken them. Simulations must not be presented as proof of a market forecast.
+
+Publish the destination with the homepage change. Builds reject featured notes that are missing, drafts, future-dated, or automated; generated section links are also checked. The featured essay is excluded from the latest signed-note cards to avoid duplicate promotion, but remains in Notes, search, the combined feed, and the signed-writing feed. Review the author’s first-person conclusions and preserve the AI-assistance disclosure. Scheduled generation does not select the homepage perspective or edit its configuration.
+
 ## Corrections
 
 Preserve published slugs. For substantial corrections set `updated`, refresh `reviewed` if sources were rechecked, and add a visible correction paragraph explaining the change. Keep source history. Never silently relabel a research summary as a reproduced experiment.

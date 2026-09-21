@@ -5,11 +5,24 @@ import LabDiagram from '../components/LabDiagram.astro';
 import NoteCard from '../components/NoteCard.astro';
 import { visible, signed, pad, formatDate } from '../lib/content';
 import { identity } from '../lib/identity';
+import {
+  featuredEssay,
+  perspectives,
+  requireSignedNote,
+} from '../lib/perspectives';
 const allNotes = visible(await getCollection('notes'));
+const featured = requireSignedNote(allNotes, featuredEssay.id);
+for (const perspective of perspectives) {
+  if (perspective.reading.noteId)
+    requireSignedNote(allNotes, perspective.reading.noteId);
+}
 const latestBrief = allNotes
-  .filter((n) => n.data.kind === 'Daily brief')
+  .filter(
+    (n) => n.data.kind === 'Daily brief' && n.data.authorship === 'automated',
+  )
   .sort((a, b) => b.data.published.getTime() - a.data.published.getTime())[0];
 const notes = signed(allNotes)
+  .filter((note) => note.id !== featured.id)
   .sort(
     (a, b) =>
       b.data.published.getTime() - a.data.published.getTime() ||
@@ -33,13 +46,16 @@ const issue = visible(await getCollection('research')).sort(
         <br />
         <span>beyond the demo.</span>
       </h1>
-      <p class="hero-description">{identity.description}</p>
+      <p class="hero-thesis">
+        <strong>My view:</strong> {identity.thesis}
+      </p>
+      <p class="hero-description">{identity.introduction}</p>
       <div class="hero-actions">
-        <a class="button primary" href="/fieldbook/">
-          Explore the Fieldbook <span aria-hidden="true">↗</span>
+        <a class="button primary" href={featuredEssay.href}>
+          Read my perspective <span aria-hidden="true">↗</span>
         </a>
-        <a class="text-link" href="/agent-explainer/">
-          Try Agent Explainer <span aria-hidden="true">→</span>
+        <a class="text-link" href="/fieldbook/">
+          Explore the Fieldbook <span aria-hidden="true">→</span>
         </a>
       </div>
       <p class="byline">
@@ -57,73 +73,44 @@ const issue = visible(await getCollection('research')).sort(
     </div>
     <LabDiagram />
   </section>
-  <section class="focus-strip" aria-label="Questions this lab explores">
-    <div class="shell focus-grid">
-      <a href="/fieldbook/">
-        <span class="eyebrow">Reliability</span>
-        <strong>Will the agent complete the task correctly?</strong>
-        <span class="focus-more">Inspect the failures ↗</span>
-      </a>
-      <a href="/notes/cost-of-a-completed-task/">
-        <span class="eyebrow">Economics</span>
-        <strong>What does a useful outcome actually cost?</strong>
-        <span class="focus-more">Count the whole task ↗</span>
-      </a>
-      <a href="/notes/comparing-ai-models/">
-        <span class="eyebrow">Engineering judgment</span>
-        <strong>What should we automate, and under what controls?</strong>
-        <span class="focus-more">Define the evaluation ↗</span>
-      </a>
-    </div>
-  </section>
-  <section class="section shell" aria-labelledby="start-heading">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">01 / Start here</p>
-        <h2 id="start-heading">Three ways into the work.</h2>
+  <section class="perspectives-section" aria-labelledby="perspectives-heading">
+    <div class="shell section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">01 / My perspective</p>
+          <h2 id="perspectives-heading">Where I think AI is heading.</h2>
+          <p class="section-intro">
+            Three shifts shaping the decisions I explore here.
+          </p>
+        </div>
       </div>
-    </div>
-    <div class="start-grid">
-      <article class="start-card start-featured">
-        <span class="eyebrow">Understand the failure</span>
-        <h3>
-          <a href="/fieldbook/">
-            Agent Reliability Fieldbook <span aria-hidden="true">↗</span>
-          </a>
-        </h3>
-        <p>
-          Three simulation-based guides. Follow the failure, inspect the repair,
-          and understand its limits.
-        </p>
-        <span class="start-kind">Interactive learning + practical guides</span>
-      </article>
-      <article class="start-card">
-        <span class="eyebrow">Count the outcome</span>
-        <h3>
-          <a href="/notes/cost-of-a-completed-task/">
-            The cost of a completed task <span aria-hidden="true">↗</span>
-          </a>
-        </h3>
-        <p>
-          Tokens, tools, retries, and failures belong in the same calculation.
-          Work through an illustrative example.
-        </p>
-        <span class="start-kind">Economics / Essay</span>
-      </article>
-      <article class="start-card">
-        <span class="eyebrow">Make the decision</span>
-        <h3>
-          <a href="/notes/comparing-ai-models/">
-            How to compare AI models for your application{' '}
-            <span aria-hidden="true">↗</span>
-          </a>
-        </h3>
-        <p>
-          Define success for your task, build a useful evaluation, and make a
-          choice you can explain.
-        </p>
-        <span class="start-kind">Engineering judgment / Essay</span>
-      </article>
+      <div class="perspectives-grid">
+        {perspectives.map((perspective, index) => (
+          <article class="perspective-card">
+            <span class="eyebrow">0{index + 1} / A shift to watch</span>
+            <h3>
+              <a href={`${featuredEssay.href}#${perspective.section}`}>
+                {perspective.title} <span aria-hidden="true">↗</span>
+              </a>
+            </h3>
+            <p>{perspective.thesis}</p>
+            <p class="perspective-implication">
+              <strong>For leaders</strong>
+              {perspective.implication}
+            </p>
+            <a class="perspective-reading" href={perspective.reading.href}>
+              <span class="eyebrow">Explore the work</span>
+              <span>
+                {perspective.reading.label} <span aria-hidden="true">→</span>
+              </span>
+            </a>
+          </article>
+        ))}
+      </div>
+      <p class="perspective-note">
+        These are personal perspectives. The Fieldbook’s simulations explain
+        specific mechanisms; they do not establish these forecasts.
+      </p>
     </div>
   </section>
   <section
@@ -159,12 +146,16 @@ const issue = visible(await getCollection('research')).sort(
         </p>
         <div class="project-actions">
           <a class="button primary" href="/agent-explainer/">
-            Open Agent Explainer <span aria-hidden="true">↗</span>
+            Try Agent Explainer <span aria-hidden="true">↗</span>
           </a>
           <a class="text-link" href="/projects/agent-explainer/">
             Inside the project →
           </a>
         </div>
+        <p class="project-guide-link">
+          Read the <a href="/fieldbook/">Agent Reliability Fieldbook</a> for
+          each repair’s mechanism and production limits.
+        </p>
         <div class="project-footnotes">
           <span>No API keys</span>
           <span>Open source</span>

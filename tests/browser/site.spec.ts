@@ -115,10 +115,10 @@ test('clipboard failure offers a selectable canonical URL', async ({
       value: { writeText: () => Promise.reject(new Error('blocked')) },
     });
   });
-  await page.goto('/notes/cost-of-a-completed-task/');
+  await page.goto('/notes/what-changes-when-ai-can-do-the-work/');
   await page.getByRole('button', { name: 'Copy link' }).click();
   await expect(page.getByLabel('Select and copy this link')).toHaveValue(
-    'https://modelfieldnotes.com/notes/cost-of-a-completed-task/',
+    'https://modelfieldnotes.com/notes/what-changes-when-ai-can-do-the-work/',
   );
   await expect(page.getByLabel('Select and copy this link')).toBeFocused();
 });
@@ -215,6 +215,7 @@ test('article and archive accessibility', async ({ page }) => {
   for (const path of [
     '/notes/',
     '/notes/cost-of-a-completed-task/',
+    '/notes/what-changes-when-ai-can-do-the-work/',
     '/research/five-foundations-for-ai-agents/',
     '/about/',
     '/fieldbook/',

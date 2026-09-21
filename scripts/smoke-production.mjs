@@ -64,6 +64,24 @@ for (const [name, engine] of Object.entries({
           }
         : {},
     );
+    await page.goto(origin);
+    await page
+      .getByRole('link', { name: 'Read my perspective', exact: true })
+      .click();
+    await expect(page).toHaveURL(
+      `${origin}/notes/what-changes-when-ai-can-do-the-work/`,
+    );
+    await expect(page.locator('.article-byline')).toContainText(
+      'By Swapnil Upganlawar',
+    );
+    await page
+      .locator('.prose')
+      .getByRole('link', {
+        name: 'retrying without duplicate actions',
+        exact: true,
+      })
+      .click();
+    await expect(page).toHaveURL(`${origin}/fieldbook/duplicate-action/`);
     for (const scenario of [
       'duplicate-action',
       'forgotten-instruction',

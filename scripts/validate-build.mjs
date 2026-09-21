@@ -54,6 +54,35 @@ for (const file of files.filter((f) => f.endsWith('.html'))) {
       errors.push(`Missing ${value} from ${file}`);
     }
   }
+  // Validate both article navigation and links into sections on other pages.
+  for (const el of $('a[href]').toArray()) {
+    const url = new URL($(el).attr('href'), canonical);
+    if (
+      url.origin !== 'https://modelfieldnotes.com' ||
+      !url.hash ||
+      url.pathname.startsWith('/agent-explainer/')
+    )
+      continue;
+    const path = url.pathname.endsWith('/')
+      ? url.pathname + 'index.html'
+      : url.pathname;
+    try {
+      const targetFile =
+        url.pathname === new URL(canonical).pathname ? file : join(root, path);
+      const target = load(await readFile(targetFile, 'utf8'));
+      const fragment = decodeURIComponent(url.hash.slice(1));
+      if (
+        !target('[id]')
+          .toArray()
+          .some((node) => target(node).attr('id') === fragment)
+      )
+        errors.push(`Missing section ${url.pathname}${url.hash} from ${file}`);
+    } catch {
+      errors.push(
+        `Unreadable section destination ${url.pathname}${url.hash} from ${file}`,
+      );
+    }
+  }
   let js = 0;
   for (const el of $('script[src]').toArray()) {
     const src = $(el).attr('src');
