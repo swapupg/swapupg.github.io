@@ -1,0 +1,167 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import NoteCard from './NoteCard.astro';
+import { focusAreas } from '../lib/editorial-sections';
+interface Props {
+  notes: (CollectionEntry<'notes'> | CollectionEntry<'developments'>)[];
+  label: 'perspectives' | 'developments';
+  showFocus?: boolean;
+}
+const { notes, label, showFocus = false } = Astro.props;
+const topics = [...new Set(notes.flatMap((note) => note.data.topics))];
+const formats =
+  label === 'perspectives'
+    ? ['Essay', 'Fieldnote']
+    : [
+        'Release analysis',
+        'Daily brief',
+        ...new Set(
+          notes
+            .map((note) => note.data.kind)
+            .filter(
+              (kind) => !['Release analysis', 'Daily brief'].includes(kind),
+            ),
+        ),
+      ];
+---
+
+<form
+  class:list={['archive-controls', { 'with-focus': showFocus }]}
+  role="search"
+  data-label={label}
+  hidden
+>
+  <div>
+    <label for="search">Search {label}</label>
+    <input
+      type="search"
+      id="search"
+      name="q"
+      placeholder="A question, a topic, an idea…"
+      autocomplete="off"
+    />
+  </div>
+  <div>
+    <label for="topic">Topic</label>
+    <select id="topic" name="topic">
+      <option value="all">All topics</option>
+      {topics.map((topic) => (
+        <option value={topic}>{topic}</option>
+      ))}
+    </select>
+  </div>
+  <div>
+    <label for="format">Format</label>
+    <select id="format" name="format">
+      <option value="all">All formats</option>
+      {formats.map((kind) => (
+        <option>{kind}</option>
+      ))}
+    </select>
+  </div>
+  {showFocus && (
+    <div>
+      <label for="focus">Focus area</label>
+      <select id="focus" name="focus">
+        <option value="all">All focus areas</option>
+        {focusAreas.map((area) => (
+          <option value={area.id}>{area.label}</option>
+        ))}
+      </select>
+    </div>
+  )}
+  <button type="reset" class="button secondary">
+    Clear
+  </button>
+</form>
+<p class="archive-status" role="status" aria-live="polite"></p>
+<div class="notes-grid" aria-label={`${label} entries`}>
+  {notes.map((note) => (
+    <NoteCard note={note} />
+  ))}
+</div>
+<div class="empty-state" hidden>
+  <h2>No {label} found.</h2>
+  <p>Try a different phrase or clear your filters.</p>
+</div>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.archive-controls');
+  const search = document.querySelector<HTMLInputElement>('#search');
+  const topic = document.querySelector<HTMLSelectElement>('#topic');
+  const format = document.querySelector<HTMLSelectElement>('#format');
+  const focus = document.querySelector<HTMLSelectElement>('#focus');
+  if (form && search && topic && format) {
+    const cards = [...document.querySelectorAll<HTMLElement>('[data-note]')];
+    const update = (push = true) => {
+      const query = search.value.trim().toLowerCase();
+      let count = 0;
+      cards.forEach((card) => {
+        const match =
+          (card.dataset.search || '').includes(query) &&
+          (topic.value === 'all' ||
+            (card.dataset.topics || '').split(',').includes(topic.value)) &&
+          (format.value === 'all' || card.dataset.kind === format.value) &&
+          (!focus ||
+            focus.value === 'all' ||
+            (card.dataset.focus || '').split(',').includes(focus.value));
+        card.hidden = !match;
+        if (match) count++;
+      });
+      document.querySelector('.archive-status')!.textContent =
+        `${count} ${form.dataset.label === 'perspectives' ? (count === 1 ? 'perspective' : 'perspectives') : count === 1 ? 'development' : 'developments'}`;
+      document.querySelector<HTMLElement>('.empty-state')!.hidden = count !== 0;
+      if (push) {
+        const url = new URL(window.location.href);
+        url.search = '';
+        if (query) url.searchParams.set('q', search.value.trim());
+        if (topic.value !== 'all') url.searchParams.set('topic', topic.value);
+        if (format.value !== 'all')
+          url.searchParams.set('format', format.value);
+        if (focus && focus.value !== 'all')
+          url.searchParams.set('focus', focus.value);
+        window.history.replaceState(null, '', url);
+      }
+    };
+    const restore = () => {
+      const params = new URLSearchParams(window.location.search);
+      search.value = params.get('q') || '';
+      const value = params.get('topic');
+      topic.value = [...topic.options].some((o) => o.value === value)
+        ? value!
+        : 'all';
+      const selected = params.get('format');
+      format.value = [...format.options].some((o) => o.value === selected)
+        ? selected!
+        : 'all';
+      if (focus) {
+        const selectedFocus = params.get('focus');
+        focus.value = [...focus.options].some((o) => o.value === selectedFocus)
+          ? selectedFocus!
+          : 'all';
+      }
+      update(false);
+    };
+    form.hidden = false;
+    restore();
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      update();
+    });
+    search.addEventListener('input', () => update());
+    topic.addEventListener('change', () => update());
+    format.addEventListener('change', () => update());
+    focus?.addEventListener('change', () => update());
+    form.addEventListener('reset', (event) => {
+      event.preventDefault();
+      search.value = '';
+      topic.value = 'all';
+      format.value = 'all';
+      if (focus) focus.value = 'all';
+      update();
+      search.focus();
+    });
+    window.addEventListener('popstate', restore);
+    window.addEventListener('pageshow', restore);
+  }
+</script>

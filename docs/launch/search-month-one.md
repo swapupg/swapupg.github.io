@@ -7,8 +7,9 @@ Started September 21, 2026. Submission helps discovery; it does not guarantee in
 - GitHub profile website: updated to `https://modelfieldnotes.com` and read back.
 - LinkedIn contact website: added `https://modelfieldnotes.com` as a Blog.
 - Both relevant GitHub repositories already link to the canonical domain.
-- Search Console Domain property: verification initiated. Namecheap sign-in and owner-account confirmation remain pending. Do not claim it is verified or that the sitemap has been submitted yet.
-- Once verified, submit `https://modelfieldnotes.com/sitemap-index.xml` and inspect the homepage, `/notes/what-changes-when-ai-can-do-the-work/`, `/fieldbook/`, and `/projects/agent-explainer/`. Record Google's actual responses; avoid repeated requests for the same URL.
+- Search Console Domain property: ownership verified on September 22, 2026 using an apex TXT record in Namecheap. Website, email, and GitHub verification DNS records were preserved.
+- Sitemap `https://modelfieldnotes.com/sitemap-index.xml`: submitted once; Google reported Success and “Sitemap index processed successfully” on September 22.
+- Google accepted one indexing request for the homepage, `/notes/what-changes-when-ai-can-do-the-work/`, `/fieldbook/`, and `/projects/agent-explainer/`. Before the requests, the first three were unknown to Google; the project was discovered but not indexed. Acceptance is not confirmation of indexing. Do not resubmit solely to increase priority. Check actual status during the scheduled October 12 review.
 
 ## Week 2: a concrete demonstration
 

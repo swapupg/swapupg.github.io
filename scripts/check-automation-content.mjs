@@ -82,6 +82,23 @@ try {
   if (home('#signed-notes').text().includes('Fixture briefing'))
     throw new Error('Automated essay displaced signed writing');
   const signedFeed = await readFile('dist/writing/rss.xml', 'utf8');
+  const perspectives = load(await readFile('dist/notes/index.html', 'utf8'));
+  const developments = load(
+    await readFile('dist/developments/index.html', 'utf8'),
+  );
+  const developmentsFeed = await readFile('dist/developments/rss.xml', 'utf8');
+  for (const excluded of [id, essayId]) {
+    if (perspectives('[data-note]').toString().includes(excluded))
+      throw new Error('Automated writing leaked into Perspectives');
+    if (
+      !developments('[data-note]').toString().includes(excluded) ||
+      !developmentsFeed.includes(excluded)
+    )
+      throw new Error('Automated writing missing from Developments');
+  }
+  if (developmentsFeed.includes('/notes/cost-of-a-completed-task/'))
+    throw new Error('Perspective leaked into Developments feed');
+
   const leadership = await readFile('dist/leadership/index.html', 'utf8');
   if (
     leadership.includes(essayId) ||

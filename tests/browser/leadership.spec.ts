@@ -64,7 +64,7 @@ test('leadership discovery, evidence, authorship, feeds, and archive filter', as
   }
   await page
     .getByRole('navigation', { name: 'Main navigation' })
-    .getByRole('link', { name: 'Notes', exact: true })
+    .getByRole('link', { name: 'Perspectives', exact: true })
     .click();
   await page.getByLabel('Topic', { exact: true }).selectOption('Leadership');
   await expect(page.locator('[data-note]:visible')).toHaveCount(3);

@@ -101,4 +101,32 @@ const fieldbook = defineCollection({
     scenario: z.object({ id: z.enum(scenarioIds), revision: z.literal(1) }),
   }),
 });
-export const collections = { notes, research, projects, fieldbook };
+const developments = defineCollection({
+  loader: glob({
+    pattern: '**/*.{md,mdx}',
+    base: './src/content/developments',
+    generateId: stableId,
+  }),
+  schema: z
+    .object({
+      ...shared,
+      kind: z.literal('Release analysis'),
+      eventDate: z.coerce.date(),
+      reviewed: z.coerce.date(),
+      evidence: z.literal('Source-based analysis'),
+    })
+    .refine(
+      (entry) =>
+        entry.eventDate <= entry.published && entry.reviewed >= entry.eventDate,
+      {
+        message: 'The event date must not follow publication or source review.',
+      },
+    ),
+});
+export const collections = {
+  notes,
+  research,
+  projects,
+  fieldbook,
+  developments,
+};

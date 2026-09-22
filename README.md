@@ -12,6 +12,10 @@ The opening perspective: **the next phase of AI will be judged by the useful wor
 
 The Agent Reliability Fieldbook contains three simulation-based guides to duplicate actions, lost constraints, and premature completion. Each connects a reproducible teaching simulation with the mechanism, repair, production considerations, and limits. These are not live-model measurements. The site also includes seven sourced essays, a five-paper foundational research collection, and Agent Explainer in public beta.
 
+[Perspectives](https://modelfieldnotes.com/notes/) organizes signed writing around Leadership & Organizations, AI Strategy & Economics, and Engineering Judgment. Existing `/notes/` article URLs are preserved.
+
+[Developments](https://modelfieldnotes.com/developments/) covers noteworthy releases and research, starting with a source-based analysis of TypeSafe’s Jev. Event dates, vendor claims, and evidence limits are explicit. Existing automated briefings appear here under organizational attribution; the [Developments feed](https://modelfieldnotes.com/developments/rss.xml) combines both types of coverage.
+
 [Leadership & Organizations](https://modelfieldnotes.com/leadership/) connects original analysis of management, team design, and architecture with curated readings from HBR, Gartner, and published workplace research. Each reading identifies its evidence type and the material actually reviewed. The section is maintained separately from automated briefings.
 
 ## Local setup

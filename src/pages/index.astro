@@ -12,6 +12,7 @@ import {
   requireSignedNote,
 } from '../lib/perspectives';
 const allNotes = visible(await getCollection('notes'));
+const latestDevelopment = visible(await getCollection('developments'))[0];
 const featured = requireSignedNote(allNotes, featuredEssay.id);
 const leadership = leadershipNotes(allNotes)
   .filter((note) => note.id !== featured.id)
@@ -215,11 +216,11 @@ const issue = visible(await getCollection('research')).sort(
   >
     <div class="section-heading">
       <div>
-        <p class="eyebrow">03 / Signed notes & explanations</p>
-        <h2 id="notes-heading">Notes from the work.</h2>
+        <p class="eyebrow">03 / Perspectives</p>
+        <h2 id="notes-heading">Ideas for the decisions ahead.</h2>
       </div>
       <a class="text-link" href="/notes/">
-        All fieldnotes <span aria-hidden="true">↗</span>
+        All perspectives <span aria-hidden="true">↗</span>
       </a>
     </div>
     <div class="notes-grid">
@@ -277,6 +278,37 @@ const issue = visible(await getCollection('research')).sort(
       </div>
     </section>
   )}
+  {latestDevelopment && (
+    <section class="section shell" aria-labelledby="developments-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Developments / Beyond the headline</p>
+          <h2 id="developments-heading">What’s changing in AI.</h2>
+          <p class="section-intro">
+            New releases, the evidence behind them, and the decisions they could
+            change.
+          </p>
+        </div>
+        <a class="text-link" href="/developments/">
+          Explore Developments <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <div class="notes-grid development-feature">
+        <NoteCard note={latestDevelopment} />
+        <aside>
+          <h3>A release is a starting point.</h3>
+          <p>
+            Understand what changed, inspect the original evidence, and decide
+            what is worth testing. Vendor-reported results and our own
+            interpretation are labeled separately.
+          </p>
+          <a class="text-link" href="/developments/rss.xml">
+            Follow developments via RSS ↗
+          </a>
+        </aside>
+      </div>
+    </section>
+  )}
   {latestBrief && (
     <section class="shell latest-brief" aria-labelledby="brief-heading">
       <div>
@@ -289,7 +321,7 @@ const issue = visible(await getCollection('research')).sort(
         </h2>
         <p>{latestBrief.data.description}</p>
       </div>
-      <a class="text-link" href="/notes/?format=Daily+brief">
+      <a class="text-link" href="/developments/?format=Daily+brief">
         All briefings →
       </a>
     </section>
@@ -345,8 +377,8 @@ const issue = visible(await getCollection('research')).sort(
       <p class="eyebrow">Keep a thread of curiosity open</p>
       <h2>Follow the next fieldnote.</h2>
       <p>
-        Follow signed notes, guides, and research in your feed reader. Automated
-        briefings are available in the combined feed.
+        Follow signed perspectives, guides, and research in your feed reader.
+        Automated briefings are available in the combined feed.
       </p>
     </div>
     <div>

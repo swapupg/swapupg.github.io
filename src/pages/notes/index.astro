@@ -1,144 +1,75 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import NoteCard from '../../components/NoteCard.astro';
-import { visible } from '../../lib/content';
-const notes = visible(await getCollection('notes')).sort(
-  (a, b) =>
-    b.data.published.getTime() - a.data.published.getTime() ||
-    a.data.number - b.data.number,
-);
-const topics = [...new Set(notes.flatMap((note) => note.data.topics))];
+import WritingArchive from '../../components/WritingArchive.astro';
+import { perspectiveNotes } from '../../lib/editorial-sections';
+const notes = perspectiveNotes(await getCollection('notes'));
 ---
 
 <Base
-  title="Fieldnotes"
-  description="Analysis and practical explanations on AI leadership, agents, model evaluation, costs, and governance."
+  title="Perspectives"
+  description="How AI changes what we build, how we lead, and how organizations work. Analysis by Swapnil Upganlawar on leadership, strategy, economics, and engineering judgment."
 >
   <div class="shell page-content">
     <header class="page-heading">
-      <p class="eyebrow">The fieldnotes / Model Fieldnotes</p>
+      <p class="eyebrow">Perspectives / By Swapnil Upganlawar</p>
       <h1>
-        Questions, explored.
+        How AI changes
         <br />
-        <span>Lessons, shared.</span>
+        <span>the decisions we make.</span>
       </h1>
       <p>
-        Working notes on the decisions behind useful AI systems. With sources,
-        limitations, and something you can take away.
+        How AI changes what we build, how we lead, and how organizations work.
       </p>
     </header>
-    <p class="archive-pathway">
-      Explore <a href="/leadership/">Leadership & Organizations</a> for analysis
-      on management, team design, and the changing work of leading with AI.
-    </p>
-    <form class="archive-controls" role="search" hidden>
-      <div>
-        <label for="search">Search fieldnotes</label>
-        <input
-          type="search"
-          id="search"
-          name="q"
-          placeholder="A question, a topic, an idea…"
-          autocomplete="off"
-        />
-      </div>
-      <div>
-        <label for="topic">Topic</label>
-        <select id="topic" name="topic">
-          <option value="all">All topics</option>
-          {topics.map((topic) => (
-            <option value={topic}>{topic}</option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label for="format">Format</label>
-        <select id="format" name="format">
-          <option value="all">All formats</option>
-          <option>Essay</option>
-          <option>Fieldnote</option>
-          <option>Daily brief</option>
-        </select>
-      </div>
-      <button type="reset" class="button secondary">
-        Clear
-      </button>
-    </form>
-    <p class="archive-status" role="status" aria-live="polite"></p>
-    <div class="notes-grid">
-      {notes.map((note) => (
-        <NoteCard note={note} />
-      ))}
-    </div>
-    <div class="empty-state" hidden>
-      <h2>No fieldnotes found.</h2>
-      <p>Try a different phrase or clear your filters.</p>
-    </div>
+    <section class="perspective-topics" aria-label="Three areas of focus">
+      <article>
+        <p class="eyebrow">01 / Leadership & Organizations</p>
+        <h2>How should we lead?</h2>
+        <p>
+          Changing management roles, team design, accountability, and adoption.
+        </p>
+        <a class="text-link" href="/leadership/">
+          Explore leadership →
+        </a>
+      </article>
+      <article>
+        <p class="eyebrow">02 / AI Strategy & Economics</p>
+        <h2>What makes AI worth doing?</h2>
+        <p>
+          Investment decisions, costs, and the difference between activity and
+          useful outcomes.
+        </p>
+        <a class="text-link" href="/notes/cost-of-a-completed-task/">
+          Read about the economics →
+        </a>
+      </article>
+      <article>
+        <p class="eyebrow">03 / Engineering Judgment</p>
+        <h2>What should we trust?</h2>
+        <p>
+          Reliability, evaluation, and the tradeoffs behind putting AI into
+          production.
+        </p>
+        <a class="text-link" href="/notes/comparing-ai-models/">
+          Explore model evaluation →
+        </a>
+      </article>
+    </section>
+    <aside class="archive-pathway">
+      Looking for releases and research updates?{' '}
+      <a href="/developments/">
+        Explore Developments <span aria-hidden="true">→</span>
+      </a>{' '}
+      for source-based release analysis and clearly labeled automated briefings.
+    </aside>
+    <h2 class="archive-heading">All perspectives</h2>
+    <WritingArchive notes={notes} label="perspectives" showFocus />
   </div>
 </Base>
-<script>
-  const form = document.querySelector<HTMLFormElement>('.archive-controls');
-  const search = document.querySelector<HTMLInputElement>('#search');
-  const topic = document.querySelector<HTMLSelectElement>('#topic');
-  const format = document.querySelector<HTMLSelectElement>('#format');
-  if (form && search && topic && format) {
-    const cards = [...document.querySelectorAll<HTMLElement>('[data-note]')];
-    const update = (push = true) => {
-      const query = search.value.trim().toLowerCase();
-      let count = 0;
-      cards.forEach((card) => {
-        const match =
-          (card.dataset.search || '').includes(query) &&
-          (topic.value === 'all' ||
-            (card.dataset.topics || '').split(',').includes(topic.value)) &&
-          (format.value === 'all' || card.dataset.kind === format.value);
-        card.hidden = !match;
-        if (match) count++;
-      });
-      document.querySelector('.archive-status')!.textContent =
-        `${count} fieldnote${count === 1 ? '' : 's'}`;
-      document.querySelector<HTMLElement>('.empty-state')!.hidden = count !== 0;
-      if (push) {
-        const url = new URL(window.location.href);
-        url.search = '';
-        if (query) url.searchParams.set('q', search.value.trim());
-        if (topic.value !== 'all') url.searchParams.set('topic', topic.value);
-        if (format.value !== 'all')
-          url.searchParams.set('format', format.value);
-        window.history.replaceState(null, '', url);
-      }
-    };
-    const restore = () => {
-      const params = new URLSearchParams(window.location.search);
-      search.value = params.get('q') || '';
-      const value = params.get('topic');
-      topic.value = [...topic.options].some((o) => o.value === value)
-        ? value!
-        : 'all';
-      const selected = params.get('format');
-      format.value = [...format.options].some((o) => o.value === selected)
-        ? selected!
-        : 'all';
-      update(false);
-    };
-    form.hidden = false;
-    restore();
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      update();
-    });
-    search.addEventListener('input', () => update());
-    topic.addEventListener('change', () => update());
-    format.addEventListener('change', () => update());
-    form.addEventListener('reset', (event) => {
-      event.preventDefault();
-      search.value = '';
-      topic.value = 'all';
-      format.value = 'all';
-      update();
-      search.focus();
-    });
-    window.addEventListener('popstate', restore);
+<script is:inline>
+  // Preserve previously shared briefing filters after separating the archives.
+  if (new URLSearchParams(location.search).get('format') === 'Daily brief') {
+    location.replace('/developments/' + location.search + location.hash);
   }
 </script>

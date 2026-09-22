@@ -4,7 +4,13 @@ import { join } from 'node:path';
 const fixtures = [];
 const marker = 'unpublished-contract-fixture';
 try {
-  for (const collection of ['notes', 'research', 'projects', 'fieldbook']) {
+  for (const collection of [
+    'notes',
+    'research',
+    'projects',
+    'fieldbook',
+    'developments',
+  ]) {
     const dir = `src/content/${collection}`;
     const original = (await readdir(dir)).find((name) => name.endsWith('.md'));
     const body = await readFile(join(dir, original), 'utf8');
@@ -20,6 +26,8 @@ try {
           /^published: .*$/m,
           `published: ${variant === 'future' ? '2999-01-01' : '2020-01-01'}`,
         );
+      if (collection === 'developments')
+        fixture = fixture.replace(/^eventDate: .*$/m, 'eventDate: 2020-01-01');
       if (collection === 'notes')
         fixture = fixture.replace(/^topics: .*$/m, 'topics: [Leadership]');
       await writeFile(file, fixture, { flag: 'wx' });
@@ -38,7 +46,7 @@ try {
       throw new Error(`Unpublished content leaked: ${file}`);
   }
   console.log(
-    'Draft and future entries excluded from pages, archives, search, feeds, sitemap and social assets in all four collections.',
+    'Draft and future entries excluded from pages, archives, search, feeds, sitemap and social assets in all five collections.',
   );
 } finally {
   for (const file of fixtures) await unlink(file);

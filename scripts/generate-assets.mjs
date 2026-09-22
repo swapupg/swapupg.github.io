@@ -70,7 +70,7 @@ await makeCard(
   'Reliability / Economics / Engineering judgment',
   'social-preview',
 );
-for (const collection of ['notes', 'research', 'fieldbook']) {
+for (const collection of ['notes', 'research', 'fieldbook', 'developments']) {
   const dir = new URL(`../src/content/${collection}/`, import.meta.url);
   for (const file of await readdir(dir)) {
     if (!file.endsWith('.md') && !file.endsWith('.mdx')) continue;
@@ -89,8 +89,10 @@ for (const collection of ['notes', 'research', 'fieldbook']) {
         : collection === 'fieldbook'
           ? 'Fieldbook / Simulation-based guide'
           : collection === 'notes'
-            ? 'Signed notes / Practical analysis'
-            : `Research / Issue ${String(metadata.issue || '').padStart(3, '0')}`,
+            ? 'Perspectives / Practical analysis'
+            : collection === 'developments'
+              ? 'Developments / Source-based analysis'
+              : `Research / Issue ${String(metadata.issue || '').padStart(3, '0')}`,
       socialCardPath(collection, file.replace(/\.mdx?$/, ''))
         .split('/')
         .at(-1)
@@ -98,7 +100,7 @@ for (const collection of ['notes', 'research', 'fieldbook']) {
       metadata.authorship === 'automated',
     );
     // Keep previously published image URLs working after namespacing new cards.
-    if (collection !== 'fieldbook') {
+    if (collection === 'notes' || collection === 'research') {
       const id = file.replace(/\.mdx?$/, '');
       for (const extension of ['svg', 'png']) {
         await copyFile(

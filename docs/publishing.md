@@ -2,7 +2,7 @@
 
 Use Node 24 (`nvm use` if you use nvm), then `npm ci`. Start with `npm run dev`. For a production preview use `npm run build` and `npm run preview`.
 
-1. Copy the corresponding template from `docs/templates/` into `src/content/notes/`, `src/content/research/`, `src/content/projects/`, or `src/content/fieldbook/`. Use a stable lowercase, hyphenated filename; it becomes the public URL.
+1. Copy the corresponding template from `docs/templates/` into `src/content/notes/`, `src/content/research/`, `src/content/projects/`, `src/content/fieldbook/`, or `src/content/developments/`. Use a stable lowercase, hyphenated filename; it becomes the public URL.
 2. Write a concise description. Cite original papers or official documents near the relevant claims. Include limitations. Record the source review date for notes. Use actual publication dates; never fabricate a publishing history.
 3. For each five-paper issue, include original paper dates and source versions. Select one deeper treatment and four shorter ones. Say whether results are authors’ findings or independently reproduced. “Foundations” is different from newly published research.
 4. Distinguish illustrations, simulations, recommendations, and measurements. Model evaluations need exact models, prompts, tools, dates, tasks, sample counts, cost definitions, and outcome checks. Regulatory writing needs jurisdiction and current official sources. Review any first-person claims for accuracy.
@@ -12,17 +12,17 @@ npm run test:publication` and `npm run test:e2e`.
 
 Dates in the future are excluded at build time. They become eligible on their publication date during the next build, including a build triggered by automated content. Keep unfinished work in draft status; use a reviewed release when ready. Drafts do not appear in generated pages, feeds, or search, but **all committed source files remain public**. Keep confidential drafts outside this repository.
 
-Short daily notes use `kind: Fieldnote`; longer pieces use `kind: Essay`. Both appear in Notes. RSS readers receive a summary and permanent article link. The combined feed at `/rss.xml` includes signed content and automated briefings; `/writing/rss.xml` includes only signed notes, research, and Fieldbook entries; `/research/rss.xml` remains research-only. New content does not require editing a page template.
+Short daily notes use `kind: Fieldnote`; longer pieces use `kind: Essay`. Both appear in Perspectives at the existing `/notes/` path when personally authored. Automated notes appear in Developments instead. RSS readers receive a summary and permanent article link. The combined feed at `/rss.xml` includes signed content and automated briefings; `/writing/rss.xml` includes signed perspectives, release analysis, research, and Fieldbook entries; `/research/rss.xml` remains research-only. New content does not require editing a page template.
 
 ## Featured perspectives
 
 The homepage thesis lives in `src/lib/identity.ts`; its featured essay and three reading pathways live in `src/lib/perspectives.ts`. A perspective uses the existing signed Essay format. Separate sourced evidence, interpretation, predictions, and illustrations. Give predictions a publication date, horizon, observable signals, and conditions that would weaken them. Simulations must not be presented as proof of a market forecast.
 
-Publish the destination with the homepage change. Builds reject featured notes that are missing, drafts, future-dated, or automated; generated section links are also checked. The featured essay is excluded from the latest signed-note cards to avoid duplicate promotion, but remains in Notes, search, the combined feed, and the signed-writing feed. Review the author’s first-person conclusions and preserve the AI-assistance disclosure. Scheduled generation does not select the homepage perspective or edit its configuration.
+Publish the destination with the homepage change. Builds reject featured notes that are missing, drafts, future-dated, or automated; generated section links are also checked. The featured essay is excluded from the latest signed-note cards to avoid duplicate promotion, but remains in Perspectives, search, the combined feed, and the signed-writing feed. Review the author’s first-person conclusions and preserve the AI-assistance disclosure. Scheduled generation does not select the homepage perspective or edit its configuration.
 
 ## Leadership & Organizations
 
-Use `docs/templates/leadership.md` for an essay or short note in `src/content/notes/`. Add `Leadership` to its topics and use personal authorship. Eligible signed entries automatically appear at `/leadership/`, in Notes, and in the signed and combined feeds. The hub excludes automated, draft, and future entries. Its curated reading list lives in `src/lib/leadership.ts`; update the checked date in the hub when rechecking it.
+Use `docs/templates/leadership.md` for an essay or short note in `src/content/notes/`. Add `Leadership` to its topics and use personal authorship. Eligible signed entries automatically appear at `/leadership/`, in Perspectives, and in the signed and combined feeds. The hub excludes automated, draft, and future entries. Its curated reading list lives in `src/lib/leadership.ts`; update the checked date in the hub when rechecking it.
 
 Start with an organizational decision and develop an original interpretation. Cite primary studies and reputable editorial analysis where they support a claim. Record the publication/version, study design, population, and limits of generalization when relevant. Separate survey responses from causal evidence, and forecasts from observed changes. Do not infer universal headcount or role changes from gains on one task. Clearly label hypothetical examples and recommendations.
 
@@ -49,3 +49,12 @@ Use the common structure: question, initial conditions, baseline versus repair, 
 Keep stored `author: Swapnil` values compatible; shared presentation maps them to Swapnil Upganlawar. Automated briefings use organization attribution on pages, metadata, and social images. A personal byline does not imply independent experimental reproduction or human source verification; preserve the AI-assistance disclosure.
 
 Daily briefings may publish automatically after evidence and release checks. Weekly research requires review. Weekly prototypes are candidates, with separate protected approval for repository publication; there is no weekly public-release quota. Scheduled generation does not modify Fieldbook entries. Current schedules and recovery instructions live in [automation operations](automation/README.md). There is no email newsletter service or reader-data collection.
+
+
+## Developments
+
+Copy `docs/templates/development.md` into `src/content/developments/`. Cover one release or research development through what changed, practical implications, evidence limits, and a useful next test. Read and cite primary sources. Distinguish the original `eventDate` from your publication and source-review dates. Never turn a vendor headline into an independent result. Keep the AI-assistance disclosure and do not imply hands-on testing.
+
+Published entries appear in Developments, the combined feed, and—when personally authored—the signed feed. `/developments/rss.xml` includes release analysis and automated notes, while the research feed remains research-only. Existing daily automation continues writing its current `notes` files; archive membership uses authorship, so no schedule or generator changes are required. Scheduled jobs do not create release-analysis entries. Draft and future entries stay out of pages, feeds, search, sitemap, and generated social assets; committed source files remain public.
+
+The old `/notes/?format=Daily+brief` link forwards to Developments with JavaScript. Without JavaScript, the archive provides a normal link to Developments. All existing article routes remain unchanged.

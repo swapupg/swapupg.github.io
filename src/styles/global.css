@@ -213,6 +213,7 @@ main:focus {
 }
 .site-header nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 29px;
   margin-left: auto;
 }
@@ -2427,5 +2428,99 @@ main:focus {
   }
   .byline {
     line-height: 1.8;
+  }
+}
+
+/* Signed perspectives and release coverage use the same reading surfaces. */
+.perspective-topics,
+.development-method {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-block: 1px solid var(--line);
+  margin-bottom: 30px;
+}
+.perspective-topics > article,
+.development-method > div {
+  padding: 28px 24px;
+}
+.perspective-topics > article + article,
+.development-method > div + div {
+  border-left: 1px solid var(--line);
+}
+.perspective-topics h2,
+.development-method h2 {
+  font-size: 22px;
+  margin: 12px 0;
+}
+.perspective-topics p:not(.eyebrow),
+.development-method p,
+.development-feature > aside p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.archive-heading {
+  margin-block: 32px 24px;
+  font-size: 28px;
+}
+.archive-controls.with-focus {
+  max-width: none;
+  grid-template-columns: minmax(160px, 2fr) minmax(100px, 1fr) minmax(
+      120px,
+      1fr
+    ) minmax(205px, 1.3fr) auto;
+}
+.development-feature > aside {
+  padding: 32px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--diagram);
+}
+.development-feature > aside h3 {
+  font-size: 26px;
+  margin-bottom: 18px;
+}
+.release-disclosure {
+  border-left: 3px solid var(--accent);
+  padding-left: 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 20px 0;
+  max-width: 65ch;
+}
+.note-meta {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media (max-width: 1000px) {
+  .archive-controls.with-focus {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .archive-controls.with-focus > div:first-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 640px) {
+  .perspective-topics,
+  .development-method,
+  .archive-controls.with-focus {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .perspective-topics > article + article,
+  .development-method > div + div {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .perspective-topics > article,
+  .development-method > div {
+    padding-inline: 0;
+  }
+}
+@media (max-width: 540px) {
+  .site-header nav {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

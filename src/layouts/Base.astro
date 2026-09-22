@@ -29,7 +29,8 @@ const socialImage = article
   : '/assets/social-preview.png';
 const nav = [
   ['Fieldbook', '/fieldbook/'],
-  ['Notes', '/notes/'],
+  ['Perspectives', '/notes/'],
+  ['Developments', '/developments/'],
   ['Research', '/research/'],
   ['Projects', '/projects/'],
   ['About', '/about/'],
@@ -86,6 +87,12 @@ const structured = article
       type="application/rss+xml"
       title="Model Fieldnotes — research"
       href="/research/rss.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Model Fieldnotes — Developments"
+      href="/developments/rss.xml"
     />
     <meta property="og:title" content={`${title} — Model Fieldnotes`} />
     <meta property="og:description" content={description} />
@@ -169,7 +176,13 @@ const structured = article
           <a
             href={href}
             aria-current={
-              Astro.url.pathname.startsWith(href) ? 'page' : undefined
+              (href === '/developments/' &&
+                collection === 'notes' &&
+                automated) ||
+              (Astro.url.pathname.startsWith(href) &&
+                !(href === '/notes/' && automated))
+                ? 'page'
+                : undefined
             }
           >
             {label}
@@ -242,6 +255,7 @@ const structured = article
         </p>
       </div>
       <div class="footer-links">
+        <a href="/developments/">Developments</a>
         <a href="/leadership/">Leadership & Organizations</a>
         <a href="/writing/rss.xml">Follow my writing ↗</a>
         <a href="/rss.xml">All writing & briefings ↗</a>

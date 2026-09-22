@@ -36,6 +36,7 @@ for (const path of [
   '/rss.xml',
   '/writing/rss.xml',
   '/research/rss.xml',
+  '/developments/rss.xml',
   '/media/agent-explainer-retry-demo.mp4',
   '/media/agent-explainer-retry-demo.txt',
   '/assets/inter-latin.woff2',
@@ -66,6 +67,34 @@ for (const [name, engine] of Object.entries({
           }
         : {},
     );
+    await page.goto(origin);
+    await page
+      .getByRole('navigation', { name: 'Main navigation' })
+      .getByRole('link', { name: 'Perspectives', exact: true })
+      .click();
+    await page
+      .getByLabel('Focus area', { exact: true })
+      .selectOption('leadership');
+    await page.reload();
+    await expect(page.getByLabel('Focus area', { exact: true })).toHaveValue(
+      'leadership',
+    );
+    await page
+      .getByRole('link', { name: 'Explore Developments', exact: true })
+      .click();
+    await page
+      .getByRole('link', {
+        name: 'Jev: a different interface for AI decisions',
+        exact: true,
+      })
+      .click();
+    await expect(page).toHaveURL(
+      `${origin}/developments/jev-structured-decisions/`,
+    );
+    await expect(page.locator('.release-disclosure')).toContainText(
+      'not independently tested',
+    );
+    await expect(page.locator('#sources li')).toHaveCount(4);
     await page.goto(`${origin}/notes/cost-of-a-completed-task/`);
     await page
       .getByRole('link', { name: 'Try the task cost calculator', exact: true })

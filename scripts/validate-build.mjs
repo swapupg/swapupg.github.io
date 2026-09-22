@@ -98,6 +98,7 @@ for (const path of [
   'rss.xml',
   'writing/rss.xml',
   'research/rss.xml',
+  'developments/rss.xml',
   'sitemap-index.xml',
 ]) {
   const text = await readFile(join(root, path), 'utf8');

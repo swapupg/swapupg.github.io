@@ -6,6 +6,7 @@ export async function writingItems(signedOnly = false) {
     ...visible(await getCollection('notes')),
     ...visible(await getCollection('research')),
     ...visible(await getCollection('fieldbook')),
+    ...visible(await getCollection('developments')),
   ];
   return (signedOnly ? signed(entries) : entries)
     .map((entry) => ({

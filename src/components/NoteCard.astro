@@ -1,9 +1,10 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { readingTime, pad } from '../lib/content';
+import { readingTime, pad, formatDate } from '../lib/content';
 import { attribution } from '../lib/identity';
+import { focusFor } from '../lib/editorial-sections';
 interface Props {
-  note: CollectionEntry<'notes'>;
+  note: CollectionEntry<'notes'> | CollectionEntry<'developments'>;
 }
 const { note } = Astro.props;
 ---
@@ -14,18 +15,33 @@ const { note } = Astro.props;
   data-kind={note.data.kind}
   data-search={`${note.data.title} ${note.data.description}`.toLowerCase()}
   data-topics={note.data.topics.join(',')}
+  data-focus={focusFor(note.data.topics).join(',')}
 >
   <div class="note-meta">
     <span>{note.data.topics[0]}</span>
-    <span class="coordinate">FN / {pad(note.data.number)}</span>
+    <span class="coordinate">
+      {note.collection === 'notes'
+        ? `FN / ${pad(note.data.number)}`
+        : 'Development'}
+    </span>
   </div>
   <h3>
-    <a href={`/notes/${note.id}/`}>
+    <a href={`/${note.collection}/${note.id}/`}>
       {note.data.title}
       <span aria-hidden="true">↗</span>
     </a>
   </h3>
   <p>{note.data.description}</p>
+  {note.collection === 'developments' && (
+    <p class="release-evidence">
+      {note.data.evidence} · Not independently tested
+      <br />
+      Announced{' '}
+      <time datetime={note.data.eventDate.toISOString()}>
+        {formatDate(note.data.eventDate)}
+      </time>
+    </p>
+  )}
   <div class="note-bottom">
     <span>{note.data.kind}</span>
     <span>{readingTime(note.body)} min read</span>

@@ -1,3 +1,21 @@
+## Perspectives and Developments — September 22, 2026
+
+| Capability | Status before deployment | Evidence | Remaining boundary |
+| --- | --- | --- | --- |
+| Notes renamed to Perspectives; three focus areas; preserved URLs | Tested locally | Full 96-test browser matrix on Chromium, Firefox, WebKit, and mobile emulation | Physical-device and manual screen-reader checks unverified |
+| Developments archive, Jev analysis, sources, sharing, and dedicated RSS | Tested locally | New source-backed collection; 16 new browser cases included in the matrix; generated links and canonicals validated | Jev itself and vendor performance claims not independently tested |
+| Signed/automated separation and publication boundaries | Tested locally | 53 unit tests; real-build draft/future exclusion across five collections; automated essay and briefing fixtures excluded from Perspectives and included in Developments/feed | Existing automation schedules and generators unchanged |
+| Build and release checks | Tested locally | Type check (75 files), ESLint, production build, all internal links/fragments, feeds, sitemap, 100 KB compressed JS budget; npm audit reports zero vulnerabilities | No new Lighthouse score claimed |
+| Visual composition | Verified locally | Desktop Perspectives/Developments, mobile navigation, mobile dark-theme Jev article, and generated social card inspected | Viewport emulation is not physical-device testing |
+
+The initial new browser tests exposed decorative arrows in accessible link names and a locale-specific date expectation. Decorative arrows are now hidden from accessibility names, and the event date has a semantic time element tested against its exact ISO date. All 96 final local browser cases pass. No underlying source content or user-facing assertion was removed to pass the tests.
+
+The Jev entry is grounded in TypeSafe's September 15 announcement and its introduction, confidence, and intent-routing documentation, checked September 22. Vendor results, personal interpretation, and proposed tests are explicitly distinguished. The primary article source is linked from the entry; the user-supplied news report was used for discovery, not as independent benchmark evidence.
+
+The Search Console launch checklist was brought up to date with the verified September 22 ownership, successful sitemap submission, and accepted indexing requests from the prior task. This release does not claim the site is already indexed.
+
+Rollback baseline: `272a9cb98ecbd3a2af02a4b4c23aa792350a9d54`, verified production run `35682403224`; both its verified-site and Pages artifacts were confirmed present and unexpired. Deployment must use the passing Pages workflow; afterward verify the exact live commit and run `npm run smoke:production` plus the new browser journeys against HTTPS. CI and production results are recorded with the release task once completed. No production rollback drill was performed.
+
 # Release evidence
 
 ## Task cost calculator — September 21, 2026

@@ -18,7 +18,7 @@ test('discover a project and read a sourced fieldnote', async ({ page }) => {
   ).toHaveAttribute('href', '/agent-explainer/');
   await page
     .getByRole('navigation', { name: 'Main navigation' })
-    .getByRole('link', { name: 'Notes', exact: true })
+    .getByRole('link', { name: 'Perspectives', exact: true })
     .click();
   await page
     .getByRole('link', { name: 'When an agent retries a successful action' })
@@ -47,21 +47,21 @@ test('search, filters, empty state, refresh, and history', async ({ page }) => {
   await page.goto('/notes/');
   const totalNotes = await page.locator('[data-note]').count();
   expect(totalNotes).toBeGreaterThanOrEqual(4);
-  await page.getByLabel('Search fieldnotes').fill('cost');
+  await page.getByLabel('Search perspectives').fill('cost');
   expect(await page.locator('[data-note]:visible').count()).toBeGreaterThan(0);
   for (const card of await page.locator('[data-note]:visible').all())
     await expect(card).toHaveAttribute('data-search', /cost/i);
   await page.reload();
-  await expect(page.getByLabel('Search fieldnotes')).toHaveValue('cost');
+  await expect(page.getByLabel('Search perspectives')).toHaveValue('cost');
   expect(await page.locator('[data-note]:visible').count()).toBeGreaterThan(0);
   await page.getByRole('button', { name: 'Clear', exact: true }).click();
   await page.getByLabel('Topic', { exact: true }).selectOption('Governance');
   expect(await page.locator('[data-note]:visible').count()).toBeGreaterThan(0);
   for (const card of await page.locator('[data-note]:visible').all())
     await expect(card).toHaveAttribute('data-topics', /Governance/);
-  await page.getByLabel('Search fieldnotes').fill('no such topic');
+  await page.getByLabel('Search perspectives').fill('no such topic');
   await expect(
-    page.getByRole('heading', { name: 'No fieldnotes found.' }),
+    page.getByRole('heading', { name: 'No perspectives found.' }),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Clear', exact: true }).click();
   await expect(page.locator('[data-note]:visible')).toHaveCount(totalNotes);
@@ -154,7 +154,7 @@ test('no JavaScript still supports reading and navigation', async ({
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto(process.env.SITE_URL || 'http://127.0.0.1:4321');
-  await page.getByRole('link', { name: 'Notes', exact: true }).click();
+  await page.getByRole('link', { name: 'Perspectives', exact: true }).click();
   expect(await page.locator('[data-note]').count()).toBeGreaterThanOrEqual(4);
   await expect(page.locator('.archive-controls')).toBeHidden();
   await page.getByRole('link', { name: 'Reading AI regulation' }).click();
@@ -238,6 +238,7 @@ test('format filter is bookmarkable and automation policy is transparent', async
   page,
 }) => {
   await page.goto('/notes/?format=Daily+brief');
+  await expect(page).toHaveURL(/\/developments\/\?format=Daily\+brief$/);
   await expect(page.getByLabel('Format', { exact: true })).toHaveValue(
     'Daily brief',
   );
@@ -248,12 +249,15 @@ test('format filter is bookmarkable and automation policy is transparent', async
     'Daily brief',
   );
   await page.getByRole('button', { name: 'Clear', exact: true }).click();
-  expect(
-    await page.locator('[data-note]:visible').count(),
-  ).toBeGreaterThanOrEqual(4);
+  await expect(
+    page.getByRole('link', {
+      name: 'Jev: a different interface for AI decisions',
+      exact: true,
+    }),
+  ).toBeVisible();
   await page.getByRole('link', { name: 'Automation policy' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'How the notes get made.',
+    'How the publication gets made.',
   );
   await expect(page.locator('main')).toContainText('not human review');
   await expect(

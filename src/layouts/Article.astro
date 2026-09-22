@@ -11,6 +11,7 @@ interface Props {
   entry:
     | CollectionEntry<'notes'>
     | CollectionEntry<'research'>
+    | CollectionEntry<'developments'>
     | CollectionEntry<'fieldbook'>;
   headings: MarkdownHeading[];
 }
@@ -24,6 +25,12 @@ const related = visible(await getCollection('notes'))
   )
   .slice(0, 2);
 const isResearch = entry.collection === 'research';
+const isDevelopment = entry.collection === 'developments';
+const archiveHref =
+  isDevelopment ||
+  (entry.collection === 'notes' && entry.data.authorship === 'automated')
+    ? '/developments/'
+    : `/${entry.collection}/`;
 const guides =
   entry.collection === 'fieldbook'
     ? visible(await getCollection('fieldbook')).sort(
@@ -46,15 +53,20 @@ const next = guides[guideIndex + 1];
 >
   <article class="shell article-page">
     <header class="article-heading">
-      <a class="eyebrow back-link" href={`/${entry.collection}/`}>
-        ←{' '}
+      <a class="eyebrow back-link" href={archiveHref}>
+        <span aria-hidden="true">←</span>{' '}
         {entry.collection === 'fieldbook'
           ? 'Agent Reliability Fieldbook'
           : isResearch
             ? 'Research fieldnotes'
-            : 'All fieldnotes'}
+            : archiveHref === '/developments/'
+              ? 'All developments'
+              : 'All perspectives'}
       </a>
       <div class="article-topics">
+        {isDevelopment && (
+          <span class="pill evidence-label">{entry.data.evidence}</span>
+        )}
         {entry.data.authorship === 'human' &&
           entry.data.topics.includes('Leadership') && (
             <a class="pill evidence-label" href="/leadership/">
@@ -75,6 +87,16 @@ const next = guides[guideIndex + 1];
       </div>
       <h1>{entry.data.title}</h1>
       <p class="article-deck">{entry.data.description}</p>
+      {isDevelopment && (
+        <p class="release-disclosure">
+          Announced{' '}
+          <time datetime={entry.data.eventDate.toISOString()}>
+            {formatDate(entry.data.eventDate)}
+          </time>{' '}
+          · Vendor claims are attributed; Model Fieldnotes has not independently
+          tested this release.
+        </p>
+      )}
       <div class="article-byline">
         {entry.data.authorship === 'automated' ? (
           <a href="/editorial/">{attribution(true)}</a>
