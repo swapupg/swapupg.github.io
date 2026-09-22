@@ -1,0 +1,19 @@
+Agent Explainer: a timeout can hide a successful action
+
+A 30-second screen recording of the duplicate-action experiment. There is no audio. Captions are burned into the video.
+
+0–7 seconds: The simulated agent requests one support ticket. The tool creates it, but its response gets lost. The agent sees a timeout while the actual world contains one ticket.
+
+7–15 seconds: The agent retries without an idempotency key. A second ticket is created. The world-state check reveals two tickets for one intended operation.
+
+15–24 seconds: Apply the repair and restart from the same initial conditions. The request now carries a stable idempotency key. The ticket is created; again, the response is lost. The retry reuses the same key.
+
+24–30 seconds: The server returns the stored result without another write. Only one ticket exists. Baseline and repaired outcomes are compared.
+
+This is a deterministic teaching simulation, not a live-model benchmark. Idempotency requires server-side support and an appropriate key lifecycle; a key in a prompt alone is not sufficient.
+
+Explore the explanation and production limitations:
+https://modelfieldnotes.com/fieldbook/duplicate-action/
+
+Source recording: https://github.com/swapupg/agent-explainer/blob/main/docs/media/duplicate-action.webm
+Model Fieldnotes — by Swapnil Upganlawar

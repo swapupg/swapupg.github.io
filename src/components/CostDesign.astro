@@ -1,0 +1,65 @@
+---
+import { exampleA, exampleB } from '../lib/task-cost';
+interface Props {
+  design: 'a' | 'b';
+}
+const { design } = Astro.props;
+const values = design === 'a' ? exampleA : exampleB;
+const fields = [
+  { key: 'attempted', label: 'Attempted tasks', step: '1', min: '1' },
+  { key: 'succeeded', label: 'Successful tasks', step: '1', min: '0' },
+  {
+    key: 'model',
+    label: 'Model cost for the batch ($)',
+    step: 'any',
+    min: '0',
+  },
+  { key: 'tools', label: 'Tool cost for the batch ($)', step: 'any', min: '0' },
+  {
+    key: 'infrastructure',
+    label: 'Infrastructure cost for the batch ($)',
+    step: 'any',
+    min: '0',
+  },
+  {
+    key: 'reviewMinutes',
+    label: 'Total human review time (minutes)',
+    step: 'any',
+    min: '0',
+  },
+  {
+    key: 'hourlyCost',
+    label: 'Human cost per hour ($)',
+    step: 'any',
+    min: '0',
+  },
+] as const;
+---
+
+<fieldset
+  data-design={design}
+  class="cost-design"
+  hidden={design === 'b'}
+  disabled={design === 'b'}
+>
+  <legend>Design {design.toUpperCase()}</legend>
+  <div class="cost-inputs">
+    {fields.map((field) => (
+      <div>
+        <label for={`${design}-${field.key}`}>{field.label}</label>
+        <input
+          id={`${design}-${field.key}`}
+          name={`${design}-${field.key}`}
+          data-cost-field={field.key}
+          type="number"
+          inputmode={field.step === '1' ? 'numeric' : 'decimal'}
+          min={field.min}
+          max="1000000000000"
+          step={field.step}
+          value={values[field.key]}
+          required
+        />
+      </div>
+    ))}
+  </div>
+</fieldset>

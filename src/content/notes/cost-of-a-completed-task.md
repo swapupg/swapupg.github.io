@@ -20,6 +20,8 @@ A model’s price per million tokens is a useful input. A team usually needs a d
 
 The denominator changes the decision. An inexpensive attempt is less useful when it repeatedly fails, invokes costly tools, or sends most of its work to a human for repair.
 
+**[Try the task cost calculator](/tools/task-cost/)** to work through your own batch costs or compare the illustrative designs below. Inputs stay in your browser.
+
 ## Define what completed means
 
 Choose the acceptance check before measuring cost. For a ticket workflow, it might mean exactly one correct ticket with the required fields. For a report, it might mean a generated file with verified totals and cited inputs. A fluent message saying “done” is not sufficient evidence.

@@ -16,6 +16,8 @@ The Agent Reliability Fieldbook contains three simulation-based guides to duplic
 
 ## Local setup
 
+The [Task Cost Calculator](https://modelfieldnotes.com/tools/task-cost/) turns batch costs and successful completions into cost per useful outcome. Compare designs, include human review, and copy a summary. Inputs stay in the browser; examples are illustrative, not model rankings.
+
 Requires **Node 24** and npm. With nvm installed:
 
 ```sh

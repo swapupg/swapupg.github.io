@@ -1,0 +1,338 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CostDesign from '../../../components/CostDesign.astro';
+---
+
+<Base
+  title="Cost per successful AI task calculator"
+  description="Calculate what acceptable AI outcomes cost, including failed attempts, retries, tools, infrastructure, and human review. A free browser-only tool."
+>
+  <article class="shell page-content cost-page">
+    <header class="page-heading">
+      <a class="eyebrow back-link" href="/projects/">
+        ← The open lab
+      </a>
+      <h1>
+        What does a useful
+        <br />
+        <span>AI outcome cost?</span>
+      </h1>
+      <p>
+        Put the whole batch in the numerator. Put acceptable outcomes in the
+        denominator.
+      </p>
+      <p class="pill">Illustrative planning tool · No model rankings</p>
+    </header>
+    <div class="cost-intro prose">
+      <p>
+        Use totals for one evaluation window. Include{' '}
+        <strong>every attempt and retry</strong>, including those that failed.
+        Define success before comparing designs; an agent saying “done” is not
+        an acceptance check.
+      </p>
+      <p>
+        The starting numbers are <strong>invented examples</strong> from{' '}
+        <a href="/notes/cost-of-a-completed-task/">
+          The cost of a completed task
+        </a>
+        . Replace them with your own measurements. All amounts are USD; convert
+        other currencies before entering them.
+      </p>
+    </div>
+    <noscript>
+      <p class="cost-notice">
+        Enable JavaScript to use the interactive calculator. The formula and
+        worked example below remain available.
+      </p>
+    </noscript>
+    <form id="cost-form" hidden novalidate>
+      <div class="cost-mode">
+        <label>
+          <input type="checkbox" id="compare-designs" /> Compare two designs
+        </label>
+        <p>
+          Use the same attempted tasks, acceptance rule, and cost categories for
+          both.
+        </p>
+      </div>
+      <div class="cost-designs">
+        <CostDesign design="a" />
+        <CostDesign design="b" />
+      </div>
+      <p id="cost-error" role="alert" hidden></p>
+      <div class="cost-actions">
+        <button class="button primary" type="submit">
+          Calculate outcome cost
+        </button>
+        <button class="button secondary" type="reset">
+          Reset example
+        </button>
+      </div>
+      <p class="cost-privacy">
+        Calculated in your browser. Values are not saved, uploaded, or included
+        in links; refresh restores the example. Zeros exclude a cost category
+        unless your measured cost was actually zero.
+      </p>
+    </form>
+    <section
+      id="cost-results"
+      class="cost-results"
+      aria-labelledby="cost-results-heading"
+      tabindex="-1"
+      hidden
+    >
+      <p class="eyebrow">From your inputs</p>
+      <h2 id="cost-results-heading">Cost and completion, together.</h2>
+      <div class="cost-result-grid"></div>
+      <p id="cost-comparison"></p>
+      <p class="cost-result-note">
+        A lower cost per success does not establish equivalent quality, safety,
+        latency, or suitability. Review the acceptance rule and excluded costs.
+      </p>
+      <button class="button secondary" type="button" id="copy-cost">
+        Copy results
+      </button>
+      <p id="copy-cost-status" role="status"></p>
+      <div id="cost-copy-fallback" hidden>
+        <label for="cost-summary">Select and copy these results</label>
+        <textarea id="cost-summary" readonly rows="12"></textarea>
+      </div>
+    </section>
+    <div class="prose cost-method">
+      <h2 id="method">The method</h2>
+      <p>
+        <strong>Total included cost</strong> = model + tools + infrastructure +
+        (review minutes × hourly human cost ÷ 60).
+      </p>
+      <p>
+        <strong>Cost per successful task</strong> = total included cost ÷
+        successful tasks. If no tasks succeed, this value is undefined: report
+        “no successful completions.”
+      </p>
+      <p>
+        Use actual batch totals where possible. Review includes remediation and
+        verification if you choose to include them. Shared overhead, acquisition
+        costs, setup work, and other categories are excluded unless you allocate
+        them explicitly. Avoid double-counting costs already bundled in another
+        charge.
+      </p>
+      <h2>A worked example</h2>
+      <p>
+        Two invented designs attempt the same 100 tasks under the same
+        acceptance rule. Human review and infrastructure are excluded.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Design A</th>
+            <th>Design B</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Total cost</th>
+            <td>$3.00</td>
+            <td>$5.00</td>
+          </tr>
+          <tr>
+            <th>Successful tasks</th>
+            <td>40</td>
+            <td>90</td>
+          </tr>
+          <tr>
+            <th>Cost per success</th>
+            <td>$0.075</td>
+            <td>About $0.0556</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Design A spends less overall; Design B costs less per acceptable result.
+        Neither is a universal winner. Use this calculation alongside{' '}
+        <a href="/notes/comparing-ai-models/">
+          an evaluation of your application's requirements
+        </a>
+        .
+      </p>
+      <h2>Inspect the assumptions</h2>
+      <p>
+        This is arithmetic on supplied values, not a price forecast or a
+        measured model evaluation. Success rates are inputs. The calculator does
+        not assume independent retries or estimate how reliability changes with
+        more attempts. Read the{' '}
+        <a href="/notes/cost-of-a-completed-task/">source-backed cost guide</a>{' '}
+        and inspect{' '}
+        <a href="https://github.com/swapupg/swapupg.github.io/blob/main/src/lib/task-cost.ts">
+          the calculation source
+        </a>
+        .
+      </p>
+      <p>
+        <a href="https://github.com/swapupg/swapupg.github.io/issues/new?title=Task%20cost%20calculator">
+          Suggest a correction or improvement ↗
+        </a>
+      </p>
+    </div>
+  </article>
+</Base>
+<script>
+  import {
+    assessTaskCost,
+    parseCostValue,
+    formatCost,
+    type TaskCostInput,
+  } from '../../../lib/task-cost';
+  const form = document.querySelector<HTMLFormElement>('#cost-form')!;
+  const compare = document.querySelector<HTMLInputElement>('#compare-designs')!;
+  const second =
+    document.querySelector<HTMLFieldSetElement>('[data-design="b"]')!;
+  const results = document.querySelector<HTMLElement>('#cost-results')!;
+  const error = document.querySelector<HTMLElement>('#cost-error')!;
+  const fallback = document.querySelector<HTMLElement>('#cost-copy-fallback')!;
+  const summary = document.querySelector<HTMLTextAreaElement>('#cost-summary')!;
+  const status = document.querySelector<HTMLElement>('#copy-cost-status')!;
+  let plainSummary = '';
+  const hideResults = () => {
+    results.hidden = true;
+    fallback.hidden = true;
+    status.textContent = '';
+  };
+  const syncComparison = () => {
+    second.hidden = !compare.checked;
+    second.disabled = !compare.checked;
+    hideResults();
+  };
+  form.hidden = false;
+  form.addEventListener('input', hideResults);
+  compare.addEventListener('change', syncComparison);
+  form.addEventListener('reset', (event) => {
+    event.preventDefault();
+    for (const input of form.querySelectorAll('input')) {
+      input.value = input.defaultValue;
+      input.checked = input.defaultChecked;
+    }
+    syncComparison();
+    error.hidden = true;
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    hideResults();
+    error.hidden = true;
+    const grid = document.querySelector<HTMLElement>('.cost-result-grid')!;
+    grid.replaceChildren();
+    const evaluated: {
+      id: string;
+      input: TaskCostInput;
+      result: ReturnType<typeof assessTaskCost>;
+    }[] = [];
+    try {
+      for (const id of compare.checked ? ['a', 'b'] : ['a']) {
+        const input = {} as TaskCostInput;
+        const fields = form.querySelectorAll<HTMLInputElement>(
+          `[data-design="${id}"] input`,
+        );
+        for (const field of fields) {
+          if (!field.checkValidity()) {
+            field.reportValidity();
+            field.focus();
+            throw new Error(
+              `Design ${id.toUpperCase()}: check ${field.labels?.[0]?.textContent || 'this field'}.`,
+            );
+          }
+          input[field.dataset.costField as keyof TaskCostInput] =
+            parseCostValue(field.value);
+        }
+        evaluated.push({ id, input, result: assessTaskCost(input) });
+      }
+      if (
+        evaluated.length === 2 &&
+        evaluated[0].input.attempted !== evaluated[1].input.attempted
+      )
+        throw new Error(
+          'Use the same number of attempted tasks for a comparison.',
+        );
+      const text: string[] = [
+        'Model Fieldnotes — task cost calculation',
+        'Inputs supplied by the reader; not a model benchmark. Currency: USD.',
+      ];
+      for (const { id, input, result } of evaluated) {
+        const card = document.createElement('div');
+        card.className = 'cost-result-card';
+        const heading = document.createElement('h3');
+        heading.textContent = `Design ${id.toUpperCase()}`;
+        card.append(heading);
+        const primary = document.createElement('p');
+        primary.className = 'cost-primary';
+        primary.textContent =
+          result.perSuccess === null
+            ? 'No successful completions'
+            : formatCost(result.perSuccess);
+        card.append(primary);
+        const subtitle = document.createElement('p');
+        subtitle.textContent = 'Per successful task';
+        card.append(subtitle);
+        const dl = document.createElement('dl');
+        const rows = [
+          ['Total included cost', formatCost(result.total)],
+          [
+            'Completion rate',
+            `${(result.completionRate * 100).toFixed(1)}% (${input.succeeded} / ${input.attempted})`,
+          ],
+          ['Cost per attempted task', formatCost(result.perAttempt)],
+          [
+            'Model / tools / infrastructure',
+            `${formatCost(input.model)} / ${formatCost(input.tools)} / ${formatCost(input.infrastructure)}`,
+          ],
+          [
+            'Human review cost',
+            `${formatCost(result.human)} (${input.reviewMinutes} min at ${formatCost(input.hourlyCost)}/hour)`,
+          ],
+        ];
+        for (const [label, value] of rows) {
+          const dt = document.createElement('dt');
+          dt.textContent = label;
+          const dd = document.createElement('dd');
+          dd.textContent = value;
+          dl.append(dt, dd);
+        }
+        card.append(dl);
+        grid.append(card);
+        text.push(
+          '',
+          `Design ${id.toUpperCase()}: ${primary.textContent} per successful task`,
+          ...rows.map(([label, value]) => `${label}: ${value}`),
+        );
+      }
+      document.querySelector<HTMLElement>('#cost-comparison')!.textContent =
+        compare.checked
+          ? 'Compare total spend, completion, and cost per success together. Use the same acceptance criteria for both designs.'
+          : '';
+      text.push(
+        '',
+        'Includes only entered costs across the full batch, including failures and retries. Check exclusions and acceptance criteria.',
+        'https://modelfieldnotes.com/tools/task-cost/',
+      );
+      plainSummary = text.join('\n');
+      results.hidden = false;
+      results.focus();
+    } catch (err) {
+      error.textContent =
+        err instanceof Error ? err.message : 'Check your inputs and try again.';
+      error.hidden = false;
+    }
+  });
+  document.querySelector('#copy-cost')!.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(plainSummary);
+      status.textContent = 'Results copied.';
+    } catch {
+      summary.value = plainSummary;
+      fallback.hidden = false;
+      summary.focus();
+      summary.select();
+      status.textContent =
+        'Copy is unavailable. Select and copy the results below.';
+    }
+  });
+</script>

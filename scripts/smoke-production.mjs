@@ -36,6 +36,8 @@ for (const path of [
   '/rss.xml',
   '/writing/rss.xml',
   '/research/rss.xml',
+  '/media/agent-explainer-retry-demo.mp4',
+  '/media/agent-explainer-retry-demo.txt',
   '/assets/inter-latin.woff2',
   '/assets/space-grotesk-latin.woff2',
 ])
@@ -64,6 +66,20 @@ for (const [name, engine] of Object.entries({
           }
         : {},
     );
+    await page.goto(`${origin}/notes/cost-of-a-completed-task/`);
+    await page
+      .getByRole('link', { name: 'Try the task cost calculator', exact: true })
+      .click();
+    await expect(page).toHaveURL(`${origin}/tools/task-cost/`);
+    await page.getByLabel('Compare two designs').check();
+    await page.getByRole('button', { name: 'Calculate outcome cost' }).click();
+    await expect(page.locator('.cost-primary')).toHaveText([
+      '$0.075',
+      '$0.0556',
+    ]);
+    await page.getByRole('button', { name: 'Reset example' }).click();
+    await expect(page.locator('#cost-results')).toBeHidden();
+    await expect(page.locator('[data-design="b"]')).toBeHidden();
     await page.goto(origin);
     await page
       .getByRole('link', {
