@@ -124,17 +124,20 @@ const structured = article
       }
       forwardExperiment();
       window.addEventListener('hashchange', forwardExperiment);
+      const restoreFragment =
+        performance.getEntriesByType('navigation')[0]?.type === 'reload' &&
+        location.hash &&
+        !location.hash.startsWith('#/');
+      // A reload's saved scroll position can otherwise overwrite the fragment
+      // after load, especially when a section link was followed immediately.
+      if (restoreFragment) history.scrollRestoration = 'manual';
       window.addEventListener('pageshow', () => {
-        if (
-          performance.getEntriesByType('navigation')[0]?.type !== 'reload' ||
-          !location.hash ||
-          location.hash.startsWith('#/')
-        )
-          return;
+        if (!restoreFragment) return;
         let id;
         try {
           id = decodeURIComponent(location.hash.slice(1));
         } catch {
+          history.scrollRestoration = 'auto';
           return;
         }
         document.fonts.ready.then(() =>
@@ -142,6 +145,7 @@ const structured = article
             document
               .getElementById(id)
               ?.scrollIntoView({ behavior: 'instant', block: 'start' });
+            history.scrollRestoration = 'auto';
           }),
         );
       });
