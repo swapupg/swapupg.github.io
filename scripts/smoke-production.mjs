@@ -66,6 +66,32 @@ for (const [name, engine] of Object.entries({
     );
     await page.goto(origin);
     await page
+      .getByRole('link', {
+        name: 'Explore Leadership & Organizations',
+        exact: true,
+      })
+      .click();
+    await expect(page).toHaveURL(`${origin}/leadership/`);
+    await expect(page.locator('.leadership-readings li')).toHaveCount(7);
+    for (const title of [
+      'What changes when managers lead teams using AI?',
+      'When faster AI work meets the organization',
+    ]) {
+      await page
+        .locator('#analysis')
+        .getByRole('link', { name: title, exact: true })
+        .click();
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
+      await expect(page.locator('.article-byline')).toContainText(
+        'By Swapnil Upganlawar',
+      );
+      await page
+        .locator('.article-topics')
+        .getByRole('link', { name: 'Leadership & Organizations' })
+        .click();
+    }
+    await page.goto(origin);
+    await page
       .getByRole('link', { name: 'Read my perspective', exact: true })
       .click();
     await expect(page).toHaveURL(

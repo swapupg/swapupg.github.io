@@ -34,6 +34,7 @@ try {
   });
   const essayId = await fixture('notes', 'automated-essay', {
     ...common,
+    topics: ['Leadership'],
     kind: 'Essay',
     number: 9004,
     reviewed: '2026-01-01',
@@ -81,6 +82,12 @@ try {
   if (home('#signed-notes').text().includes('Fixture briefing'))
     throw new Error('Automated essay displaced signed writing');
   const signedFeed = await readFile('dist/writing/rss.xml', 'utf8');
+  const leadership = await readFile('dist/leadership/index.html', 'utf8');
+  if (
+    leadership.includes(essayId) ||
+    home('.leadership-feature').text().includes('Fixture briefing')
+  )
+    throw new Error('Automated essay leaked into leadership analysis');
   for (const excluded of [id, essayId, `${prefix}-weekly`])
     if (signedFeed.includes(excluded))
       throw new Error('Automated entry leaked into signed feed');

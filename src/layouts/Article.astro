@@ -55,12 +55,23 @@ const next = guides[guideIndex + 1];
             : 'All fieldnotes'}
       </a>
       <div class="article-topics">
+        {entry.data.authorship === 'human' &&
+          entry.data.topics.includes('Leadership') && (
+            <a class="pill evidence-label" href="/leadership/">
+              Leadership & Organizations →
+            </a>
+          )}
         {entry.collection === 'fieldbook' && (
           <span class="pill evidence-label">{entry.data.evidence}</span>
         )}
-        {entry.data.topics.map((topic) => (
-          <span class="pill">{topic}</span>
-        ))}
+        {entry.data.topics
+          .filter(
+            (topic) =>
+              topic !== 'Leadership' || entry.data.authorship !== 'human',
+          )
+          .map((topic) => (
+            <span class="pill">{topic}</span>
+          ))}
       </div>
       <h1>{entry.data.title}</h1>
       <p class="article-deck">{entry.data.description}</p>

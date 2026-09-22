@@ -6,7 +6,7 @@ reviewed: 2026-09-21
 status: published
 author: Swapnil
 authorship: human
-topics: [Agents, Economics, Governance]
+topics: [Agents, Economics, Governance, Leadership]
 kind: Essay
 number: 5
 sources:

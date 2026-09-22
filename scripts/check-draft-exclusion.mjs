@@ -10,7 +10,7 @@ try {
     const body = await readFile(join(dir, original), 'utf8');
     for (const variant of ['draft', 'future']) {
       const file = join(dir, `${marker}-${variant}.md`);
-      const fixture = body
+      let fixture = body
         .replace(/^title: .*$/m, `title: ${marker}`)
         .replace(
           /^status: .*$/m,
@@ -20,6 +20,8 @@ try {
           /^published: .*$/m,
           `published: ${variant === 'future' ? '2999-01-01' : '2020-01-01'}`,
         );
+      if (collection === 'notes')
+        fixture = fixture.replace(/^topics: .*$/m, 'topics: [Leadership]');
       await writeFile(file, fixture, { flag: 'wx' });
       fixtures.push(file);
     }

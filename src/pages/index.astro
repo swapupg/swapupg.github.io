@@ -5,6 +5,7 @@ import LabDiagram from '../components/LabDiagram.astro';
 import NoteCard from '../components/NoteCard.astro';
 import { visible, signed, pad, formatDate } from '../lib/content';
 import { identity } from '../lib/identity';
+import { leadershipNotes } from '../lib/leadership';
 import {
   featuredEssay,
   perspectives,
@@ -12,6 +13,9 @@ import {
 } from '../lib/perspectives';
 const allNotes = visible(await getCollection('notes'));
 const featured = requireSignedNote(allNotes, featuredEssay.id);
+const leadership = leadershipNotes(allNotes)
+  .filter((note) => note.id !== featured.id)
+  .slice(0, 2);
 for (const perspective of perspectives) {
   if (perspective.reading.noteId)
     requireSignedNote(allNotes, perspective.reading.noteId);
@@ -111,6 +115,31 @@ const issue = visible(await getCollection('research')).sort(
         These are personal perspectives. The Fieldbook’s simulations explain
         specific mechanisms; they do not establish these forecasts.
       </p>
+    </div>
+  </section>
+  <section
+    class="shell leadership-feature"
+    aria-labelledby="leadership-heading"
+  >
+    <div>
+      <p class="eyebrow">Leadership & Organizations</p>
+      <h2 id="leadership-heading">How AI changes the work of leading.</h2>
+      <p>
+        Management, team design, architecture, and accountability. My analysis,
+        with readings that make the evidence and its limits visible.
+      </p>
+      <a class="text-link" href="/leadership/">
+        Explore Leadership & Organizations <span aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="leadership-feature-links">
+      {leadership.map((note) => (
+        <a href={`/notes/${note.id}/`}>
+          <span class="eyebrow">Signed essay</span>
+          <strong>{note.data.title}</strong>
+          <span aria-hidden="true">↗</span>
+        </a>
+      ))}
     </div>
   </section>
   <section

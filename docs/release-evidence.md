@@ -1,5 +1,18 @@
 # Release evidence
 
+## Leadership & Organizations — September 21, 2026
+
+Local evidence for `/leadership/`, two new essays, the curated reading list, and homepage/archive/article pathways:
+
+- Type checking (63 files), lint, 37 unit tests, production build, internal page/section links, metadata, feeds, and the 100 KB compressed JavaScript budget pass. No additional client-side JavaScript was introduced.
+- All 68 browser journeys pass across Chromium, Firefox, WebKit, and mobile emulation. New coverage checks leadership discovery, both essays, personal attribution, social-image paths, feeds, topic filtering, source-access labels, no-JavaScript reading, 320–1440 pixel reflow, and axe accessibility checks in light and dark themes.
+- A topic-label wrapping regression on the existing perspective essay was caught by the narrow-screen tests and fixed before release. All browser tests then passed.
+- Real-build draft/future exclusion and automated-authorship fixtures verify that ineligible entries do not appear in the leadership section. The dependency audit reports zero vulnerabilities.
+- Desktop hub and reading list in light/dark themes, and the mobile manager essay, were visually inspected. Source methods, versions, and access limitations are recorded in `docs/product/leadership-organizations.md`.
+- Production verification runs after passing GitHub Actions with `npm run smoke:production`: exact deployed commit, the new hub and both essay journeys, existing Fieldbook/lab journeys, HTTPS pages, assets, feeds, and legacy redirects.
+
+Rollback baseline: `24d077b105243c2f23fcb2ec17fc14aa683a6c68`, successful Pages run `35644774996`; both its Pages and verified-site artifacts were confirmed available before release. Physical devices, manual screen-reader usability, and a production rollback drill remain unverified. No new Lighthouse or reader-comprehension result is claimed.
+
 ## Perspective release — September 21, 2026
 
 Local evidence for the homepage thesis, three perspective pathways, and “What changes when AI can do the work?”:

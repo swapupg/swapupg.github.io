@@ -20,6 +20,14 @@ The homepage thesis lives in `src/lib/identity.ts`; its featured essay and three
 
 Publish the destination with the homepage change. Builds reject featured notes that are missing, drafts, future-dated, or automated; generated section links are also checked. The featured essay is excluded from the latest signed-note cards to avoid duplicate promotion, but remains in Notes, search, the combined feed, and the signed-writing feed. Review the author’s first-person conclusions and preserve the AI-assistance disclosure. Scheduled generation does not select the homepage perspective or edit its configuration.
 
+## Leadership & Organizations
+
+Use `docs/templates/leadership.md` for an essay or short note in `src/content/notes/`. Add `Leadership` to its topics and use personal authorship. Eligible signed entries automatically appear at `/leadership/`, in Notes, and in the signed and combined feeds. The hub excludes automated, draft, and future entries. Its curated reading list lives in `src/lib/leadership.ts`; update the checked date in the hub when rechecking it.
+
+Start with an organizational decision and develop an original interpretation. Cite primary studies and reputable editorial analysis where they support a claim. Record the publication/version, study design, population, and limits of generalization when relevant. Separate survey responses from causal evidence, and forecasts from observed changes. Do not infer universal headcount or role changes from gains on one task. Clearly label hypothetical examples and recommendations.
+
+For paywalled readings, state exactly what was accessible. A preview can support a reading suggestion, not a reconstructed summary of the full article. Never imply that HBR, Gartner, a research institution, or an employer endorses the site. Keep interpretations in the author's voice without inventing personal experiences. Scheduled workflows do not select or modify this section or publish personal leadership opinions.
+
 ## Corrections
 
 Preserve published slugs. For substantial corrections set `updated`, refresh `reviewed` if sources were rechecked, and add a visible correction paragraph explaining the change. Keep source history. Never silently relabel a research summary as a reproduced experiment.

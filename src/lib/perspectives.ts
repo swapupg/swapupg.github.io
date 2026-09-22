@@ -44,9 +44,8 @@ export const perspectives: readonly Perspective[] = [
     implication:
       'Decide what to delegate, who remains accountable, and when people intervene.',
     reading: {
-      label: 'How to compare AI models',
-      href: '/notes/comparing-ai-models/',
-      noteId: 'comparing-ai-models',
+      label: 'Leadership & Organizations',
+      href: '/leadership/',
     },
   },
 ];

@@ -20,7 +20,16 @@ const shared = {
   author: z.enum(['Swapnil', 'Model Fieldnotes']),
   authorship: z.enum(['human', 'automated']).default('human'),
   topics: z
-    .array(z.enum(['Agents', 'Models', 'Economics', 'Governance', 'Research']))
+    .array(
+      z.enum([
+        'Agents',
+        'Models',
+        'Economics',
+        'Governance',
+        'Research',
+        'Leadership',
+      ]),
+    )
     .min(1),
   sources: z.array(source).min(1),
 };

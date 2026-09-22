@@ -1,0 +1,135 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import NoteCard from '../../components/NoteCard.astro';
+import { leadershipNotes, leadershipReadings } from '../../lib/leadership';
+const notes = leadershipNotes(await getCollection('notes'));
+---
+
+<Base
+  title="Leadership & Organizations"
+  description="Analysis by Swapnil Upganlawar on how generative AI changes management, team design, architecture, and accountability, with curated original readings."
+>
+  <div class="shell page-content leadership-page">
+    <header class="page-heading">
+      <p class="eyebrow">Leadership & Organizations / By Swapnil Upganlawar</p>
+      <h1>
+        AI changes the work.
+        <br />
+        <span>How should we lead?</span>
+      </h1>
+      <p>
+        Original analysis on the choices behind AI adoption: how teams are
+        organized, how people develop judgment, and who remains accountable for
+        useful outcomes.
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="#analysis">
+          Explore the analysis <span aria-hidden="true">↓</span>
+        </a>
+        <a class="text-link" href="#reading-list">
+          Curated readings <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </header>
+    <div
+      class="leadership-questions"
+      aria-label="Questions this section explores"
+    >
+      <div>
+        <p class="eyebrow">01 / Management</p>
+        <h2>What changes for managers?</h2>
+        <p>
+          Delegation, coaching, trust, and the choice of how to use time saved.
+        </p>
+      </div>
+      <div>
+        <p class="eyebrow">02 / Organization</p>
+        <h2>Where does the work move?</h2>
+        <p>
+          Handoffs, review capacity, incentives, and the gap between faster
+          tasks and better outcomes.
+        </p>
+      </div>
+      <div>
+        <p class="eyebrow">03 / Expertise</p>
+        <h2>Who owns the whole system?</h2>
+        <p>
+          Architecture, decision rights, and accountability across people and AI
+          tools.
+        </p>
+      </div>
+    </div>
+    <section
+      id="analysis"
+      class="leadership-analysis"
+      aria-labelledby="analysis-heading"
+    >
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">The analysis</p>
+          <h2 id="analysis-heading">Decisions worth examining.</h2>
+        </div>
+        <a class="text-link" href="/writing/rss.xml">
+          Follow my writing ↗
+        </a>
+      </div>
+      <div class="notes-grid">
+        {notes.map((note) => (
+          <NoteCard note={note} />
+        ))}
+      </div>
+    </section>
+    <section id="reading-list" aria-labelledby="reading-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">The reading desk / Checked 21 September 2026</p>
+          <h2 id="reading-heading">Go to the original thinking.</h2>
+          <p class="section-intro">
+            A curated starting point, with the kind of evidence and access made
+            explicit.
+          </p>
+        </div>
+      </div>
+      <ul class="leadership-readings">
+        {leadershipReadings.map((reading) => (
+          <li>
+            <div>
+              <p class="eyebrow">
+                {reading.publisher} · {reading.date}
+              </p>
+              <h3>
+                <a href={reading.url}>
+                  {reading.title} <span aria-hidden="true">↗</span>
+                </a>
+              </h3>
+            </div>
+            <div>
+              <span class="pill">{reading.evidence}</span>
+              <p>{reading.access}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+    <aside class="leadership-method prose">
+      <h2>Evidence, then interpretation.</h2>
+      <p>
+        The essays distinguish study findings, survey responses, analyst
+        forecasts, and my proposed decision frameworks. Illustrations are
+        labeled; a result from one task or company does not establish a
+        universal organization design.
+      </p>
+      <p>
+        Research and drafting are AI-assisted. This section is separate from
+        automated briefings. Sources are linked for inspection, not as
+        endorsements of Model Fieldnotes. See the{' '}
+        <a href="/editorial/">editorial policy</a> or{' '}
+        <a href="https://github.com/swapupg/swapupg.github.io/issues/new?title=Leadership%20reading%20suggestion">
+          suggest a source or correction
+        </a>
+        .
+      </p>
+    </aside>
+  </div>
+</Base>

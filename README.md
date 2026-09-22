@@ -10,7 +10,9 @@ Open-source experiments and practical analysis on agent reliability, evaluation,
 
 The opening perspective: **the next phase of AI will be judged by the useful work it can reliably complete—and the economics of delivering it.** Read [What changes when AI can do the work?](https://modelfieldnotes.com/notes/what-changes-when-ai-can-do-the-work/) for the implications for products, teams, and business decisions, with dated predictions and explicit uncertainties.
 
-The Agent Reliability Fieldbook contains three simulation-based guides to duplicate actions, lost constraints, and premature completion. Each connects a reproducible teaching simulation with the mechanism, repair, production considerations, and limits. These are not live-model measurements. The site also includes five sourced essays, a five-paper foundational research collection, and Agent Explainer in public beta.
+The Agent Reliability Fieldbook contains three simulation-based guides to duplicate actions, lost constraints, and premature completion. Each connects a reproducible teaching simulation with the mechanism, repair, production considerations, and limits. These are not live-model measurements. The site also includes seven sourced essays, a five-paper foundational research collection, and Agent Explainer in public beta.
+
+[Leadership & Organizations](https://modelfieldnotes.com/leadership/) connects original analysis of management, team design, and architecture with curated readings from HBR, Gartner, and published workplace research. Each reading identifies its evidence type and the material actually reviewed. The section is maintained separately from automated briefings.
 
 ## Local setup
 
