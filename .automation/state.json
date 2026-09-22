@@ -339,8 +339,13 @@
       "reason": "Human review required"
     },
     "daily-2026-09-22": {
-      "status": "running",
-      "at": "2026-09-22T16:57:31.596Z"
+      "status": "candidate",
+      "at": "2026-09-22T16:57:31.596Z",
+      "sourceIds": [
+        "https://huggingface.co/blog/transformers-llama-cpp-quants",
+        "https://huggingface.co/blog/omlx"
+      ],
+      "reason": "review"
     }
   }
 }
