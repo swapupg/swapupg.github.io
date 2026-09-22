@@ -339,15 +339,15 @@
       "reason": "Human review required"
     },
     "daily-2026-09-22": {
-      "status": "candidate",
-      "at": "2026-09-22T17:02:02.218Z",
+      "status": "review",
+      "at": "2026-09-22T17:02:04.385Z",
       "sourceIds": [
         "https://huggingface.co/blog/transformers-llama-cpp-quants",
         "https://huggingface.co/blog/omlx"
       ],
       "url": "https://github.com/swapupg/swapupg.github.io/pull/7",
       "commit": "627e7fe85777e41162377828fcd4b5063aa2969a",
-      "reason": "Content committed; awaiting validation dispatch"
+      "reason": "Human review required"
     }
   }
 }
