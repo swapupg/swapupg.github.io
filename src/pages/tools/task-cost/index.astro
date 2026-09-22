@@ -45,7 +45,7 @@ import CostDesign from '../../../components/CostDesign.astro';
         worked example below remain available.
       </p>
     </noscript>
-    <form id="cost-form" hidden novalidate>
+    <form id="cost-form" hidden novalidate autocomplete="off">
       <div class="cost-mode">
         <label>
           <input type="checkbox" id="compare-designs" /> Compare two designs
@@ -215,6 +215,8 @@ import CostDesign from '../../../components/CostDesign.astro';
     syncComparison();
     error.hidden = true;
   });
+  // Browsers can restore form values on reload or history navigation.
+  window.addEventListener('pageshow', () => form.reset());
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     hideResults();

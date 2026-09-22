@@ -31,8 +31,11 @@ test('cost guide to calculator, compare, edit, reset, and copy fallback', async 
   await page.getByRole('button', { name: 'Reset example' }).click();
   await expect(page.locator('[data-design="b"]')).toBeHidden();
   await expect(page.locator('#cost-results')).toBeHidden();
+  await page.locator('#a-succeeded').fill('7');
+  await page.getByLabel('Compare two designs').check();
   await page.reload();
   await expect(page.locator('#a-succeeded')).toHaveValue('40');
+  await expect(page.locator('[data-design="b"]')).toBeHidden();
 });
 test('invalid data is recoverable and live results do not become stale', async ({
   page,
