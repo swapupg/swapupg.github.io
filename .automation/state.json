@@ -369,13 +369,15 @@
     },
     "daily-2026-09-23": {
       "status": "candidate",
-      "at": "2026-09-23T16:57:58.956Z",
+      "at": "2026-09-23T17:02:27.192Z",
       "sourceIds": [
         "https://huggingface.co/blog/nvidia/nemotron-diarization",
         "https://www.microsoft.com/en-us/research/blog/offloaded-inference-for-real-world-physical-ai-robotics/",
         "https://arxiv.org/abs/2609.26781v1"
       ],
-      "reason": "review"
+      "url": "https://github.com/swapupg/swapupg.github.io/pull/9",
+      "commit": "2d4d13aa8afaf617f38741ec27406aa5edd4fc95",
+      "reason": "Content committed; awaiting validation dispatch"
     }
   }
 }
