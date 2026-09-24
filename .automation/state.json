@@ -398,8 +398,14 @@
       "reason": "Human review required"
     },
     "daily-2026-09-24": {
-      "status": "running",
-      "at": "2026-09-24T17:10:53.436Z"
+      "status": "candidate",
+      "at": "2026-09-24T17:10:53.436Z",
+      "sourceIds": [
+        "https://huggingface.co/blog/LiquidAI/lfm2-5-vl-dspark",
+        "https://huggingface.co/blog/nvidia/how-to-use-nvidia-warp-and-mjwarp",
+        "https://arxiv.org/abs/2609.28471v1"
+      ],
+      "reason": "review"
     }
   }
 }
