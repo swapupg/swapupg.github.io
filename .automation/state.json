@@ -399,13 +399,15 @@
     },
     "daily-2026-09-24": {
       "status": "candidate",
-      "at": "2026-09-24T17:10:53.436Z",
+      "at": "2026-09-24T17:15:11.383Z",
       "sourceIds": [
         "https://huggingface.co/blog/LiquidAI/lfm2-5-vl-dspark",
         "https://huggingface.co/blog/nvidia/how-to-use-nvidia-warp-and-mjwarp",
         "https://arxiv.org/abs/2609.28471v1"
       ],
-      "reason": "review"
+      "url": "https://github.com/swapupg/swapupg.github.io/pull/11",
+      "commit": "4360bb02540407a54baeda1e53732733a800d9cf",
+      "reason": "Content committed; awaiting validation dispatch"
     }
   }
 }
