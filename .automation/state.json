@@ -528,8 +528,16 @@
       "reason": "Human review required"
     },
     "research-2026-09-25": {
-      "status": "running",
-      "at": "2026-09-25T17:57:44.376Z"
+      "status": "candidate",
+      "at": "2026-09-25T17:57:44.376Z",
+      "sourceIds": [
+        "https://arxiv.org/abs/2609.30264v1",
+        "https://arxiv.org/abs/2609.30250v1",
+        "https://arxiv.org/abs/2609.30249v1",
+        "https://arxiv.org/abs/2609.30247v1",
+        "https://arxiv.org/abs/2609.30233v1"
+      ],
+      "reason": "review"
     }
   }
 }
