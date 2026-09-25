@@ -350,6 +350,14 @@
       "reserved": 0.21108,
       "status": "settled",
       "actual": 0.049184
+    },
+    {
+      "id": "c74ac50a-b5d0-40c9-91c4-120530587504",
+      "run": "36170351072",
+      "kind": "research",
+      "month": "2026-09",
+      "reserved": 0.155918,
+      "status": "reserved"
     }
   ],
   "editions": {
