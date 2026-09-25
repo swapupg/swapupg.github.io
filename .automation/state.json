@@ -529,7 +529,7 @@
     },
     "research-2026-09-25": {
       "status": "candidate",
-      "at": "2026-09-25T17:57:44.376Z",
+      "at": "2026-09-25T18:05:03.190Z",
       "sourceIds": [
         "https://arxiv.org/abs/2609.30264v1",
         "https://arxiv.org/abs/2609.30250v1",
@@ -537,7 +537,9 @@
         "https://arxiv.org/abs/2609.30247v1",
         "https://arxiv.org/abs/2609.30233v1"
       ],
-      "reason": "review"
+      "url": "https://github.com/swapupg/swapupg.github.io/pull/15",
+      "commit": "15ab92773283f22b912fd3ce5e6a6bf1d41f5110",
+      "reason": "Content committed; awaiting validation dispatch"
     }
   }
 }
