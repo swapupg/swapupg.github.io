@@ -402,7 +402,8 @@
       "kind": "research",
       "month": "2026-09",
       "reserved": 0.152202,
-      "status": "reserved"
+      "status": "settled",
+      "actual": 0.038742
     }
   ],
   "editions": {
