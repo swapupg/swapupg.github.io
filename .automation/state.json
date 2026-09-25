@@ -429,11 +429,13 @@
     },
     "daily-2026-09-25": {
       "status": "candidate",
-      "at": "2026-09-25T17:10:52.236Z",
+      "at": "2026-09-25T17:15:12.540Z",
       "sourceIds": [
         "https://arxiv.org/abs/2609.30266v1"
       ],
-      "reason": "review"
+      "url": "https://github.com/swapupg/swapupg.github.io/pull/13",
+      "commit": "7c229d400ce9c41c0a9753cb50ab412244ff20ca",
+      "reason": "Content committed; awaiting validation dispatch"
     }
   }
 }
