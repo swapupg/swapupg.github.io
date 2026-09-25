@@ -428,8 +428,12 @@
       "reason": "Human review required"
     },
     "daily-2026-09-25": {
-      "status": "running",
-      "at": "2026-09-25T17:10:52.236Z"
+      "status": "candidate",
+      "at": "2026-09-25T17:10:52.236Z",
+      "sourceIds": [
+        "https://arxiv.org/abs/2609.30266v1"
+      ],
+      "reason": "review"
     }
   }
 }
