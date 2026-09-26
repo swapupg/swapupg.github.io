@@ -554,6 +554,11 @@
       "status": "skipped",
       "at": "2026-09-26T16:23:49.530Z",
       "reason": "No readable fresh sources"
+    },
+    "build-2026-09-26": {
+      "status": "failed",
+      "at": "2026-09-26T17:15:15.827Z",
+      "reason": "Expected matching package name, MIT, and node --test"
     }
   }
 }
