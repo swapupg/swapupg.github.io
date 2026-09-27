@@ -561,8 +561,9 @@
       "reason": "Expected matching package name, MIT, and node --test"
     },
     "daily-2026-09-27": {
-      "status": "running",
-      "at": "2026-09-27T16:58:00.863Z"
+      "status": "skipped",
+      "at": "2026-09-27T16:58:00.863Z",
+      "reason": "No readable fresh sources"
     }
   }
 }
