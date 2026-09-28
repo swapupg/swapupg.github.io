@@ -564,6 +564,10 @@
       "status": "skipped",
       "at": "2026-09-27T16:58:00.863Z",
       "reason": "No readable fresh sources"
+    },
+    "daily-2026-09-28": {
+      "status": "running",
+      "at": "2026-09-28T19:40:48.705Z"
     }
   }
 }
