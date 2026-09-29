@@ -589,8 +589,9 @@
       "reason": "No readable fresh sources"
     },
     "daily-2026-09-29": {
-      "status": "running",
-      "at": "2026-09-29T18:05:09.288Z"
+      "status": "failed",
+      "at": "2026-09-29T18:05:09.288Z",
+      "reason": "Incomplete model output; no publication"
     }
   }
 }
