@@ -456,7 +456,8 @@
       "kind": "daily",
       "month": "2026-09",
       "reserved": 0.198236,
-      "status": "reserved"
+      "status": "settled",
+      "actual": 0.040968
     }
   ],
   "editions": {
