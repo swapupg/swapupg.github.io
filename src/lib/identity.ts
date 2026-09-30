@@ -1,5 +1,7 @@
 export const identity = {
   name: 'Swapnil Upganlawar',
+  forbesProfile:
+    'https://councils.forbes.com/profile/Swapnil-Upganlawar-Senior-Leader-Generative-AI-AWS-Amazon/ac3b730e-d73c-43b5-9df0-89f7116dad0f',
   headline: 'AI agents, beyond the demo.',
   description:
     'Open-source experiments and practical analysis on agent reliability, evaluation, and the cost of getting useful work done.',
