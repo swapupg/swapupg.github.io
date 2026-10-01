@@ -625,8 +625,9 @@
       "reason": "Incomplete model output; no publication"
     },
     "daily-2026-10-01": {
-      "status": "running",
-      "at": "2026-10-01T18:25:40.641Z"
+      "status": "failed",
+      "at": "2026-10-01T18:25:40.641Z",
+      "reason": "Model API returned 429 (credit_balance_exhausted); reservation retained"
     }
   }
 }
