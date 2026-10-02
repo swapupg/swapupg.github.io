@@ -641,6 +641,10 @@
       "status": "failed",
       "at": "2026-10-02T17:52:28.537Z",
       "reason": "Model API returned 429 (credit_balance_exhausted); reservation retained"
+    },
+    "research-2026-10-02": {
+      "status": "running",
+      "at": "2026-10-02T18:25:31.870Z"
     }
   }
 }
