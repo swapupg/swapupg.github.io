@@ -2432,6 +2432,69 @@ main:focus {
 }
 
 /* Signed perspectives and release coverage use the same reading surfaces. */
+.latest-development {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) auto;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 48px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+}
+.latest-development-label {
+  display: grid;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.latest-development-label .eyebrow {
+  margin: 0 0 4px;
+  color: var(--accent);
+}
+.latest-development-copy h2 {
+  margin: 0 0 8px;
+  font-size: clamp(22px, 2.3vw, 30px);
+  line-height: 1.25;
+}
+.latest-development-copy h2 a {
+  text-decoration: none;
+}
+.latest-development-copy h2 a:hover {
+  text-decoration: underline;
+}
+.latest-development-copy p {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--muted);
+  font-size: 14px;
+}
+.latest-development > .text-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .latest-development {
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 16px 24px;
+  }
+  .latest-development > .text-link {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+@media (max-width: 540px) {
+  .latest-development {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 22px;
+    gap: 16px;
+  }
+  .latest-development > .text-link {
+    grid-column: auto;
+  }
+}
 .perspective-topics,
 .development-method {
   display: grid;
@@ -2466,10 +2529,9 @@ main:focus {
 }
 .archive-controls.with-focus {
   max-width: none;
-  grid-template-columns: minmax(160px, 2fr) minmax(100px, 1fr) minmax(
-      120px,
-      1fr
-    ) minmax(205px, 1.3fr) auto;
+  grid-template-columns:
+    minmax(160px, 2fr) minmax(100px, 1fr) minmax(120px, 1fr)
+    minmax(205px, 1.3fr) auto;
 }
 .development-feature > aside {
   padding: 32px;
