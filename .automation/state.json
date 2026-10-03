@@ -509,6 +509,14 @@
       "month": "2026-10",
       "reserved": 0.230698,
       "status": "reserved"
+    },
+    {
+      "id": "857772c7-464e-43b9-bd8d-c6d3ec6fc2f9",
+      "run": "37140037485",
+      "kind": "build",
+      "month": "2026-10",
+      "reserved": 0.227814,
+      "status": "reserved"
     }
   ],
   "editions": {
