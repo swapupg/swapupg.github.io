@@ -646,6 +646,10 @@
       "status": "skipped",
       "at": "2026-10-02T18:25:31.870Z",
       "reason": "Only 4 accessible full papers; retained selection in artifact"
+    },
+    "daily-2026-10-03": {
+      "status": "running",
+      "at": "2026-10-03T16:17:24.057Z"
     }
   }
 }
