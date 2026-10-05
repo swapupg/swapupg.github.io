@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,follow">
+<title>Model Fieldnotes has moved</title>
+<link rel="canonical" href="https://modelfieldnotes.com/">
+<style>body{font:1.1rem system-ui,sans-serif;max-width:42rem;margin:12vh auto;padding:1.5rem;line-height:1.6;color:#173c3b;background:#fafaf6}a{color:#075c58}</style>
+</head>
+<body>
+<h1>Model Fieldnotes has moved</h1>
+<p><a id="destination" href="https://modelfieldnotes.com/">Continue to Model Fieldnotes</a></p>
+<noscript><p>Visit modelfieldnotes.com to find articles, projects, and the Agent Reliability Fieldbook.</p></noscript>
+<script>
+const destination = new URL('https://modelfieldnotes.com/');
+destination.pathname = window.location.pathname;
+destination.search = window.location.search;
+destination.hash = window.location.hash;
+if (destination.pathname === '/' && destination.hash.startsWith('#/experiment/')) destination.pathname = '/agent-explainer/';
+document.getElementById('destination').href = destination.href;
+window.location.replace(destination.href);
+</script>
+</body>
+</html>
